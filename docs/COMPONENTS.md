@@ -1,43 +1,59 @@
-# Component Specifications
+# Đặc tả Thành phần Ứng dụng (Components Specification)
 
-## PitchCard — thẻ sân
+## 1. Activities & Controllers (Quy tắc $\le 150$ dòng code)
 
-Hiển thị ảnh, tên, khu vực/địa chỉ rút gọn, loại sân, đánh giá nếu có dữ liệu, tiện ích nổi bật, giá/giờ và CTA. Toàn thẻ có thể mở chi tiết, nhưng nút yêu thích (nếu có) phải có vùng bấm riêng. Ảnh lỗi dùng fallback.
+| Activity / Controller | Mục đích & Trách nhiệm chính |
+|---|---|
+| `AuthActivity` | Quản lý màn hình Đăng nhập / Đăng ký, chuyển đổi tab, validate form và chuyển hướng vào `MainActivity`. |
+| `MainActivity` | Quản lý BottomNavigationView điều hướng 4 Fragment chính (`PitchList`, `Favorites`, `MyBookings`, `Profile`). |
+| `PitchFilterActivity` | Nhận và trả về kết quả bộ lọc nâng cao (loại sân, giá, tiện ích) qua Intent result. |
+| `PitchDetailActivity` | Hiển thị thông tin sân, 4 hình ảnh sân sạch, toggle yêu thích, dải chọn ngày có slot trống và danh sách khung giờ chưa đặt. |
+| `BookingConfirmActivity` | Tóm tắt đơn hàng, tiếp nhận thông tin người đặt và xác nhận tạo booking qua `BookingRepository`. |
+| `BookingSuccessActivity` | Hiển thị kết quả đặt sân thành công với mã đặt và nút điều hướng tới lịch đặt hoặc trang chủ. |
+| `BookingDetailActivity` | Chi tiết lịch đặt, điều phối mở dialog xác nhận hủy lịch hoặc dialog đổi khung giờ chơi. |
+| `EditProfileActivity` | Chỉnh sửa họ tên, SĐT, email, địa chỉ và ngày sinh (sử dụng Material DatePicker tùy biến sáng sủa). |
+| `NotificationActivity` | Danh sách thông báo hệ thống và cập nhật trạng thái lịch đặt sân. |
 
-## SearchBar / SearchFilters
+## 2. Fragments
 
-- Khu vực, ngày chơi, loại sân; trên mobile có thể gom thành nút mở bộ lọc.
-- Có giá trị hiện tại, xóa lọc, áp dụng và trạng thái loading.
-- Kết quả rỗng cần gợi ý đổi ngày/khu vực hoặc xóa bộ lọc.
+- **`PitchListFragment`**: Tìm kiếm từ khóa, chip phân loại sân 5/7/11, danh sách RecyclerView sân bóng.
+- **`FavoritesFragment`**: Danh sách sân yêu thích, hỗ trợ bỏ yêu thích trực tiếp trên thẻ.
+- **`MyBookingsFragment`**: 3 tab trạng thái (Sắp tới, Đã hoàn thành, Đã hủy) kèm RecyclerView danh sách lịch đặt.
+- **`ProfileFragment`**: Thống kê số trận đá, sân thích, điều hướng chỉnh sửa hồ sơ và đăng xuất.
 
-## DatePicker
+## 3. Adapters
 
-Hiển thị ngày và thứ tiếng Việt; hỗ trợ ngày hiện tại và các ngày được phép đặt. Ngày đã qua bị vô hiệu hóa. Mobile có thể là dải ngày cuộn ngang.
+- **`PitchAdapter`**: Hiển thị thẻ sân bóng trong danh sách tìm kiếm (`item_pitch_card.xml`).
+- **`FavoritePitchAdapter`**: Hiển thị thẻ sân bóng yêu thích (`item_favorite_pitch.xml`).
+- **`DateChipAdapter`**: Hiển thị từng chip ngày trong tuần (`item_date_chip.xml`), tự động làm mờ hoặc ẩn các ngày không có khung giờ nào còn trống.
+- **`TimeSlotAdapter`**: Hiển thị danh sách khung giờ (`item_time_slot.xml`), hỗ trợ chọn 1 slot tại một thời điểm, chỉ nạp các slot chưa đặt (`SlotStatus.AVAILABLE`).
+- **`BookingAdapter`**: Hiển thị thẻ lịch đặt (`item_booking_card.xml`) với badge trạng thái màu sắc rõ ràng.
+- **`NotificationAdapter`**: Hiển thị thẻ thông báo (`item_notification.xml`) với icon danh mục tương ứng.
 
-## TimeSlotPicker
+## 4. Dialogs
 
-Mỗi slot hiển thị khoảng giờ và giá nếu có khác biệt. Trạng thái cần phân biệt bằng màu, nhãn/accessible name và kiểu tương tác. Chỉ một slot được chọn cho một lượt đặt MVP.
+- **`DialogCancelBooking` (`dialog_cancel_booking.xml`)**: Dialog xác nhận hủy sân với các lựa chọn lý do (Bận việc đột xuất, Thay đổi thời gian, Thời tiết không thuận lợi, Khác).
+- **`DialogRescheduleSlot` (`dialog_reschedule_slot.xml`)**: Dialog đổi lịch đặt sân, cho phép chọn ngày mới và slot giờ trống mới trực tiếp trên popup.
 
-## FormField
+## 5. Dữ liệu & Tiện ích (Data & Utilities)
 
-Có label, hint tùy chọn, trạng thái lỗi cụ thể; không dùng placeholder thay label. Số điện thoại hỗ trợ bàn phím số và kiểm tra định dạng mức cơ bản.
+- **`BookingRepository`**: Singleton quản lý trạng thái dữ liệu (Sân, Slot, Booking) xuyên suốt vòng đời ứng dụng.
+- **`MockPitchData` / `MockSlotData`**: Cung cấp dữ liệu mẫu phong phú cho các sân bóng tại Hà Nội kèm các khung giờ đa dạng.
+- **`CurrencyUtils`**: Định dạng tiền tệ VND chuẩn Việt Nam (`###,### đ`).
+- **`DateTimeUtils`**: Định dạng ngày, thứ trong tuần tiếng Việt (`Thứ Hai`, `Thứ Ba`, v.v.) và format giờ bắt đầu - kết thúc.
+- **`ValidationUtils`**: Hàm kiểm tra số điện thoại Việt Nam (10 số, đầu số hợp lệ) và kiểm tra định dạng email chuẩn.
+- **`IdGenerator`**: Sinh mã booking ngẫu nhiên định dạng `SANBONG-XXXXXX`.
 
-## BookingSummary
+## 6. Hệ thống Icon Remix Icons (Vector Drawables)
 
-Hiển thị sân, ngày, giờ, thời lượng, đơn giá và tổng tạm tính. Tổng tiền phải được tính từ dữ liệu slot, không nhập tay ở nhiều nơi.
-
-## BookingStatusBadge
-
-Trạng thái: sắp tới/đã xác nhận, hoàn thành, đã hủy. Dùng nhãn chữ và màu semantic.
-
-## Button
-
-Variants: primary, secondary, outline, ghost, danger. Có kích thước phù hợp desktop/mobile, focus rõ, disabled/loading không gửi form lặp.
-
-## Dialog / BottomSheet
-
-Dùng cho xác nhận hủy, bộ lọc trên mobile hoặc thông báo ngắn. Đóng bằng nút rõ ràng; Escape hoạt động trên desktop; focus không chạy ra ngoài khi dialog mở.
-
-## Feedback states
-
-Toast chỉ cho phản hồi ngắn. Lỗi cần hành động khắc phục thì đặt ngay cạnh nội dung/field liên quan. Thành công đặt sân nên dùng trang/xác nhận rõ, có mã đặt và nút xem lịch.
+Toàn bộ icon ứng dụng được chuẩn hóa 100% theo vector drawable của bộ **Remix Icons**:
+- `ic_ri_heart`, `ic_ri_heart_fill`: Yêu thích / Bỏ thích.
+- `ic_ri_calendar`: Lịch, ngày tháng.
+- `ic_ri_time`: Đồng hồ, khung giờ.
+- `ic_ri_map_pin`: Vị trí, địa chỉ sân.
+- `ic_ri_bolt`: Đèn LED chiếu sáng.
+- `ic_ri_car`: Bãi gửi xe máy & ô tô.
+- `ic_ri_shirt`: Phòng thay đồ, áo bib.
+- `ic_ri_drop`: Nước uống miễn phí.
+- `ic_ri_football`: Quả bóng đá, biểu tượng sân.
+- `ic_ri_edit`, `ic_ri_camera`, `ic_ri_delete_bin`: Thao tác người dùng.
