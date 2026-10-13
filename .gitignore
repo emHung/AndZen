@@ -1,0 +1,18 @@
+*.iml
+.gradle
+/local.properties
+/.idea/
+.idea/
+.vscode/
+.DS_Store
+/build
+/*/build
+*.apk
+*.ap_
+*.aab
+/captures
+.externalNativeBuild
+.cxx
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/

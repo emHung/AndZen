@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardTimeSlot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1.5dp"
+    app:strokeColor="@color/slot_available_stroke"
+    app:cardBackgroundColor="@color/slot_available_bg">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="8dp">
+
+            <TextView
+                android:id="@+id/tvTimeRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/slot_available_text"
+                android:text="15:00 - 16:30" />
+
+            <TextView
+                android:id="@+id/tvSlotPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/slot_available_text"
+                android:text="350.000 đ" />
+
+            <TextView
+                android:id="@+id/tvSlotStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="11sp"
+                android:text="Còn trống"
+                android:textColor="@color/slot_available_text" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivSelectedCheck"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="12dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_ri_check_circle"
+            app:tint="@color/surface" />
+
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>
+ 

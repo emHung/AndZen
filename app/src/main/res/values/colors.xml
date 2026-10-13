@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Green matching mockups -->
+    <color name="primary_green">#0A5C36</color>
+    <color name="primary_green_dark">#074528</color>
+    <color name="primary_green_light">#E8F5E9</color>
+    <color name="primary_green_badge_text">#0D683D</color>
+    <color name="primary_green_hover">#064D2C</color>
+
+    <color name="brand_950">#074528</color>
+    <color name="brand_800">#0A5C36</color>
+    <color name="brand_700">#0D683D</color>
+    <color name="brand_600">#10804D</color>
+    <color name="brand_100">#E6F4EA</color>
+    <color name="brand_50">#F4FBF7</color>
+
+    <!-- Surfaces & Neutrals -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="background">#F4F7F5</color>
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#4B5563</color>
+    <color name="text_muted">#6B7280</color>
+    <color name="border">#E5E7EB</color>
+    <color name="card_stroke">#E5E7EB</color>
+
+    <!-- Semantic states -->
+    <color name="star_gold">#F59E0B</color>
+    <color name="success">#0A5C36</color>
+    <color name="warning">#D97706</color>
+    <color name="danger">#D32F2F</color>
+    <color name="danger_bg">#FDEDED</color>
+    <color name="info">#1E40AF</color>
+    <color name="info_bg">#E0F2FE</color>
+
+    <!-- Slot states -->
+    <color name="slot_available_bg">#EAF7EE</color>
+    <color name="slot_available_stroke">#48BB78</color>
+    <color name="slot_available_text">#0A5C36</color>
+
+    <color name="slot_selected_bg">#0A5C36</color>
+    <color name="slot_selected_text">#FFFFFF</color>
+
+    <color name="slot_booked_bg">#F1F3F5</color>
+    <color name="slot_booked_stroke">#E2E8F0</color>
+    <color name="slot_booked_text">#718096</color>
+</resources>

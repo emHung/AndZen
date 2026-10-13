@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Sân Bóng</string>
+    <string name="tab_pitches">Tìm sân</string>
+    <string name="tab_my_bookings">Lịch của tôi</string>
+    
+    <string name="search_pitch_hint">Tìm kiếm sân theo tên, khu vực...</string>
+    <string name="all_types">Tất cả loại sân</string>
+    <string name="pitch_type_5">Sân 5</string>
+    <string name="pitch_type_7">Sân 7</string>
+    <string name="pitch_type_11">Sân 11</string>
+    
+    <string name="select_date">Chọn ngày chơi</string>
+    <string name="select_slot">Khung giờ còn trống</string>
+    <string name="no_slot_available">Không còn khung giờ trống trong ngày này</string>
+    
+    <string name="book_pitch_btn">Đặt sân ngay</string>
+    <string name="customer_name_label">Họ và tên người đặt *</string>
+    <string name="customer_phone_label">Số điện thoại liên hệ *</string>
+    <string name="customer_name_hint">Ví dụ: Nguyễn Văn A</string>
+    <string name="customer_phone_hint">Ví dụ: 0912345678</string>
+    
+    <string name="confirm_booking_title">Xác nhận đặt sân</string>
+    <string name="btn_confirm">Xác nhận đặt (Demo)</string>
+    <string name="booking_summary_title">Tóm tắt đặt chỗ</string>
+    <string name="pitch_label">Sân:</string>
+    <string name="date_label">Ngày:</string>
+    <string name="time_label">Giờ:</string>
+    <string name="price_label">Đơn giá:</string>
+    <string name="total_label">Tổng tiền:</string>
+    
+    <string name="booking_success_title">Đặt sân thành công!</string>
+    <string name="booking_code_label">Mã đặt sân:</string>
+    <string name="btn_view_my_bookings">Xem lịch của tôi</string>
+    <string name="btn_back_home">Về trang chủ</string>
+    
+    <string name="cancel_booking">Hủy đặt sân</string>
+    <string name="confirm_cancel_msg">Bạn có chắc chắn muốn hủy lượt đặt này không? Khung giờ sẽ được mở lại cho người khác.</string>
+    <string name="no_bookings_yet">Bạn chưa có lịch đặt sân nào</string>
+    <string name="no_pitches_found">Không tìm thấy sân bóng phù hợp</string>
+    <string name="status_confirmed">Đã xác nhận</string>
+    <string name="status_cancelled">Đã hủy</string>
+</resources>

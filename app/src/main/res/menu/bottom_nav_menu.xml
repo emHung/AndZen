@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_pitches"
+        android:icon="@drawable/ic_ri_search"
+        android:title="Tìm sân" />
+    <item
+        android:id="@+id/nav_my_bookings"
+        android:icon="@drawable/ic_ri_calendar"
+        android:title="Lịch của tôi" />
+    <item
+        android:id="@+id/nav_favorites"
+        android:icon="@drawable/ic_ri_heart"
+        android:title="Yêu thích" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_ri_user"
+        android:title="Tài khoản" />
+</menu>
