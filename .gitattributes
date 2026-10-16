@@ -1,0 +1,7 @@
+# GitHub Linguist overrides
+# Bỏ qua các file script và database migrations để thanh thống kê ngôn ngữ tập trung vào Java (Android) và Python (Backend)
+
+*.ps1 linguist-detectable=false
+backend/run-local.ps1 linguist-detectable=false
+backend/supabase/** linguist-detectable=false
+tools/** linguist-detectable=false
