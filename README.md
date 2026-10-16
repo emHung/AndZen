@@ -56,21 +56,129 @@ Tất cả hình ảnh dưới đây được chụp trực tiếp từ môi tr�
 
 ---
 
+## 🚀 Hướng Dẫn Cài Đặt Môi Trường & Chạy Dự Án
+
+### 1. Yêu cầu môi trường (Prerequisites)
+- **Java**: JDK 17 (khuyên dùng OpenJDK 17 hoặc Oracle JDK 17).
+- **Android Studio**: Android Studio Ladybug hoặc mới hơn (Android SDK 34/36).
+- **Python**: Python 3.11+ (cho Backend FastAPI).
+- **Thiết bị chạy**: Máy thật Android hoặc Android Emulator (API 24+).
+- **Git**: Đã cài đặt trên máy.
+
+---
+
+### 2. Cài đặt & Khởi chạy Backend (FastAPI + Supabase)
+
+#### Bước 2.1: Chuẩn bị môi trường Python
+Mở terminal và di chuyển vào thư mục `backend/`:
+```bash
+cd backend
+python -m venv .venv
+```
+
+Kích hoạt môi trường ảo:
+- Trên Windows PowerShell:
+  ```powershell
+  .\.venv\Scripts\Activate.ps1
+  ```
+- Trên Linux / macOS:
+  ```bash
+  source .venv/bin/activate
+  ```
+
+Cài đặt các thư viện phụ thuộc:
+```bash
+pip install -r requirements.txt
+```
+
+#### Bước 2.2: Cấu hình biến môi trường
+Tạo file `backend/.env` dựa theo file mẫu `backend/.env.example`:
+```env
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-publishable-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+PORT=8011
+```
+
+#### Bước 2.3: Khởi chạy máy chủ API
+* **Cách 1 (Nhanh nhất trên Windows qua PowerShell script)**:
+  Script này tự động cấu hình `adb reverse` để máy ảo kết nối được với backend và chạy Uvicorn:
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .\run-local.ps1
+  ```
+* **Cách 2 (Chạy thủ công bằng Uvicorn)**:
+  ```bash
+  uvicorn app.main:app --host 127.0.0.1 --port 8011 --reload
+  ```
+  Sau khi khởi chạy, bạn có thể kiểm tra API tại: `http://127.0.0.1:8011/docs` (Swagger UI).
+
+---
+
+### 3. Cài đặt & Khởi chạy Ứng dụng Android
+
+#### Bước 3.1: Mở dự án trong Android Studio
+1. Khởi động Android Studio.
+2. Chọn **Open** và duyệt tới thư mục gốc của dự án `d:\AndZen`.
+3. Chờ Gradle đồng bộ (Sync) xong dependencies.
+
+#### Bước 3.2: Cấu hình `local.properties`
+Tạo hoặc cập nhật file `local.properties` tại thư mục gốc với nội dung:
+```properties
+sdk.dir=C\:\\Users\\<Tên_User>\\AppData\\Local\\Android\\Sdk
+sanbong.supabaseUrl=https://your-project.supabase.co
+sanbong.supabasePublishableKey=your-publishable-key
+sanbong.apiBaseUrl=http://127.0.0.1:8000
+```
+
+#### Bước 3.3: Kết nối mạng giữa Emulator và Backend
+Nếu chạy thử nghiệm trên Android Emulator, mở terminal chạy lệnh chuyển tiếp cổng:
+```bash
+adb reverse tcp:8000 tcp:8011
+```
+*(Lệnh này giúp ứng dụng Android gọi `http://127.0.0.1:8000` được định tuyến thẳng tới port `8011` của Backend trên máy tính).*
+
+#### Bước 3.4: Biên dịch và cài đặt ứng dụng
+- **Trong Android Studio**: Nhấn nút **Run** (hoặc tổ hợp phím `Shift + F10`).
+- **Hoặc qua dòng lệnh (Terminal)**:
+  ```bash
+  # Build bản Debug
+  ./gradlew assembleDebug
+
+  # Cài đặt trực tiếp lên Emulator/Thiết bị
+  ./gradlew installDebug
+  ```
+
+---
+
+### 4. Kiểm Thử Tự Động (Running Tests)
+
+* **Chạy Unit Test phía Android**:
+  ```bash
+  ./gradlew test
+  ```
+* **Chạy Contract Test phía Backend**:
+  ```bash
+  cd backend
+  python -m unittest tests/test_contracts.py
+  ```
+
+---
+
 ## 🛠️ Kiến Trúc & Công Nghệ
 
 - **Client**: Android Native (Java 17), Android SDK 34/36, Min SDK 24.
 - **UI System**: Material Design 3, màu thương hiệu Emerald Green (`#10B981`), 100% vector icon từ Remix Icons (`ic_ri_*`).
 - **Quy chuẩn mã nguồn**: Tất cả Activity và Controller tuân thủ giới hạn $\le 150$ dòng code, tách biệt rành mạch giữa UI Controller, Adapter và Repository/API Client.
-- **Backend API**: FastAPI (Python 3.14) chạy uvicorn, bảo mật bằng JWT và Row-Level Security trên Supabase PostgreSQL.
+- **Backend API**: FastAPI (Python 3.14) chạy Uvicorn, bảo mật bằng JWT và Row-Level Security trên Supabase PostgreSQL.
 
 ---
 
-## 📖 Tài Liệu Chi Tiết
+## 📖 Danh Mục Tài Liệu Chi Tiết
 
 Xem thêm các tài liệu kỹ thuật chuyên đề trong thư mục [`docs/`](docs/):
-- [`docs/SYSTEM.md`](docs/SYSTEM.md): Kiến trúc hệ thống và quy tắc coding.
+- [`docs/SITEMAP.md`](docs/SITEMAP.md): Cây điều hướng màn hình và danh mục API endpoints.
+- [`docs/SYSTEM.md`](docs/SYSTEM.md): Kiến trúc hệ thống và quy tắc coding chuẩn.
 - [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md): Đặc tả nghiệp vụ và sản phẩm chi tiết.
-- [`docs/SITEMAP.md`](docs/SITEMAP.md): Cây điều hướng màn hình và luồng tương tác.
 - [`docs/COMPONENTS.md`](docs/COMPONENTS.md): Danh mục các Activity, Fragment, Dialog và Adapter.
 - [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md): Hệ thống thiết kế, màu sắc và icon.
 - [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md): Kịch bản kiểm thử và nghiệm thu.

@@ -30,6 +30,7 @@ com.sanbong.app
 │       ├── Header thông tin (Avatar, Tên, Số điện thoại, Email)
 │       ├── Nút "Chỉnh sửa thông tin" -> Mở EditProfileActivity
 │       ├── Thống kê nhanh số trận đã đặt & sân yêu thích
+│       ├── Menu quản trị "Quản lý sân bóng (Admin)" -> Mở AdminActivity (nếu là Admin/Staff)
 │       ├── Cài đặt thông báo, đổi mật khẩu, chính sách & điều khoản
 │       └── Nút Đăng xuất -> Chuyển về AuthActivity
 │
@@ -76,7 +77,46 @@ com.sanbong.app
 │   ├── Bộ chọn ngày sinh trực quan (Material DatePicker phong cách sáng, dễ nhìn)
 │   └── Nút "Lưu thay đổi" -> Cập nhật trực tiếp vào ProfileFragment
 │
+├── AdminActivity (Khu vực Quản trị viên & Chủ sân)
+│   ├── Tab 1: Quản lý sân bóng (AdminPitchSection)
+│   │   ├── Danh sách cụm sân & trạng thái hoạt động (Active/Inactive)
+│   │   └── Thêm sân mới, chỉnh sửa thông tin sân & tiện ích
+│   ├── Tab 2: Quản lý khung giờ (AdminSlotSection)
+│   │   ├── Lưới khung giờ theo ngày của từng sân
+│   │   └── Thao tác Khóa slot (Lock) / Mở slot (Unlock) linh hoạt
+│   ├── Tab 3: Quản lý đơn đặt (AdminBookingSection)
+│   │   ├── Danh sách toàn bộ đơn đặt sân của khách hàng
+│   │   └── Duyệt đơn, cập nhật trạng thái hoặc xử lý hủy lịch
+│   └── Tab 4: Quản lý nhân viên (AdminStaffSection)
+│       └── Phân quyền nhân viên quản lý sân, danh sách tài khoản staff
+│
 └── Dialogs & BottomSheets:
     ├── DialogCancelBooking (Xác nhận lý do hủy đơn: Bận việc, Đổi ý, Thời tiết xấu, Khác)
     └── DialogRescheduleSlot (Chọn ngày và khung giờ trống mới để dời lịch)
 ```
+
+---
+
+## Cấu trúc API Backend (FastAPI Endpoints)
+
+| Nhóm chức năng | Phương thức | Đường dẫn API | Mô tả |
+|---|:---:|---|---|
+| **Health** | `GET` | `/health` | Kiểm tra tình trạng hoạt động của API service |
+| **Catalog** | `GET` | `/v1/pitches` | Lấy danh sách sân bóng (hỗ trợ lọc theo loại, giá, tiện ích) |
+| | `GET` | `/v1/pitches/{id}` | Lấy chi tiết sân bóng |
+| | `GET` | `/v1/slots` | Lấy danh sách khung giờ trống theo sân và ngày |
+| **Account** | `POST` | `/v1/auth/signup` | Đăng ký tài khoản mới |
+| | `POST` | `/v1/auth/signin` | Đăng nhập lấy JWT access token |
+| | `GET` | `/v1/me` | Lấy thông tin hồ sơ người dùng |
+| | `PUT` | `/v1/me` | Cập nhật hồ sơ cá nhân |
+| | `POST` | `/v1/me/avatar` | Tải lên ảnh đại diện mới |
+| **Bookings** | `POST` | `/v1/bookings` | Tạo đơn đặt sân mới (có khóa giữ chỗ an toàn) |
+| | `GET` | `/v1/bookings/my` | Lấy danh sách lịch đặt của tài khoản hiện tại |
+| | `GET` | `/v1/bookings/{id}` | Lấy chi tiết đơn đặt |
+| | `POST` | `/v1/bookings/{id}/cancel` | Hủy đơn đặt sân và giải phóng slot |
+| | `POST` | `/v1/bookings/{id}/reschedule` | Đổi lịch đặt sang ngày hoặc khung giờ mới |
+| **Admin** | `GET` / `POST` | `/v1/admin/pitches` | Quản lý danh mục sân bóng |
+| | `PUT` | `/v1/admin/slots/{id}/lock` | Khóa khung giờ chơi |
+| | `PUT` | `/v1/admin/slots/{id}/unlock` | Mở lại khung giờ chơi |
+| | `GET` | `/v1/admin/bookings` | Quản lý toàn bộ danh sách đơn đặt |
+| | `GET` / `POST` | `/v1/admin/staff` | Quản lý phân quyền nhân viên sân |
