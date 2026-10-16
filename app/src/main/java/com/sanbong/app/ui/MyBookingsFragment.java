@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.res.ColorStateList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -14,13 +15,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sanbong.app.R;
-import com.sanbong.app.data.BookingRepository;
+import com.sanbong.app.data.ApiClient;
+import com.sanbong.app.data.BookingMapper;
 import com.sanbong.app.model.Booking;
 import com.sanbong.app.model.BookingStatus;
 import com.sanbong.app.util.DateTimeUtils;
 import com.sanbong.app.ui.adapter.BookingAdapter;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.json.JSONArray;
 
 /**
  * Màn hình quản lý các lịch đặt của người dùng
@@ -33,6 +38,8 @@ public class MyBookingsFragment extends Fragment implements BookingAdapter.OnCan
 
     private int selectedTab = 0; // 0: Sắp tới, 1: Đã hoàn thành, 2: Đã hủy
     private View tabUpcoming, tabCompleted, tabCancelled;
+    private TextView tvUpcomingCount;
+    private final ExecutorService bookingExecutor = Executors.newSingleThreadExecutor();
 
     @Nullable
     @Override
@@ -72,15 +79,50 @@ public class MyBookingsFragment extends Fragment implements BookingAdapter.OnCan
         tabUpcoming = view.findViewById(R.id.tabUpcoming);
         tabCompleted = view.findViewById(R.id.tabCompleted);
         tabCancelled = view.findViewById(R.id.tabCancelled);
+        tvUpcomingCount = view.findViewById(R.id.tvUpcomingCount);
 
         if (tabUpcoming != null) tabUpcoming.setOnClickListener(v -> switchTab(0));
         if (tabCompleted != null) tabCompleted.setOnClickListener(v -> switchTab(1));
         if (tabCancelled != null) tabCancelled.setOnClickListener(v -> switchTab(2));
+        renderSelectedTab();
     }
 
     private void switchTab(int tab) {
         selectedTab = tab;
+        renderSelectedTab();
         loadBookings();
+    }
+
+    private void renderSelectedTab() {
+        styleTab(tabUpcoming, selectedTab == 0);
+        styleTab(tabCompleted, selectedTab == 1);
+        styleTab(tabCancelled, selectedTab == 2);
+    }
+
+    private void styleTab(View tab, boolean selected) {
+        if (tab == null || getContext() == null) return;
+
+        int backgroundColor = getResources().getColor(
+                selected ? R.color.slot_available_bg : R.color.surface, requireContext().getTheme());
+        int textColor = getResources().getColor(
+                selected ? R.color.primary_green : R.color.text_secondary, requireContext().getTheme());
+        tab.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
+
+        if (tab instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) tab;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                if (child instanceof TextView && child.getId() != R.id.tvUpcomingCount) {
+                    TextView label = (TextView) child;
+                    label.setTextColor(textColor);
+                    label.setTypeface(null, selected ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+                }
+            }
+        } else if (tab instanceof TextView) {
+            TextView label = (TextView) tab;
+            label.setTextColor(textColor);
+            label.setTypeface(null, selected ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+        }
     }
 
     private void setupRecyclerView() {
@@ -95,14 +137,35 @@ public class MyBookingsFragment extends Fragment implements BookingAdapter.OnCan
     }
 
     private void loadBookings() {
-        List<Booking> all = BookingRepository.getInstance().getMyBookings();
+        bookingExecutor.execute(() -> {
+          try {
+            JSONArray remoteBookings = ApiClient.getArray(requireContext(), "/v1/bookings");
+            List<Booking> all = new java.util.ArrayList<>();
+            for (int i = 0; i < remoteBookings.length(); i++) {
+                org.json.JSONObject row = remoteBookings.optJSONObject(i);
+                if (row != null) all.add(BookingMapper.fromJson(row));
+            }
+            if (!isAdded()) return;
+            requireActivity().runOnUiThread(() -> displayBookings(all));
+          } catch (Exception exception) {
+            if (isAdded()) requireActivity().runOnUiThread(() ->
+                    Toast.makeText(getContext(), "Không tải được lịch đặt: " + exception.getMessage(), Toast.LENGTH_LONG).show());
+          }
+        });
+    }
+
+    private void displayBookings(List<Booking> all) {
         java.util.List<Booking> filtered = new java.util.ArrayList<>();
-        String today = DateTimeUtils.getNextDays(1).get(0);
+        int upcomingCount = 0;
+        for (Booking booking : all) {
+            if (booking.getStatus() == BookingStatus.CONFIRMED && !DateTimeUtils.hasBookingEnded(booking.getDate(), booking.getTimeRange())) upcomingCount++;
+        }
+        if (tvUpcomingCount != null) tvUpcomingCount.setText(String.valueOf(upcomingCount));
         for (Booking b : all) {
-            int dateCompare = b.getDate().compareTo(today);
-            if (selectedTab == 0 && b.getStatus() == BookingStatus.CONFIRMED && dateCompare >= 0) {
+            boolean ended = DateTimeUtils.hasBookingEnded(b.getDate(), b.getTimeRange());
+            if (selectedTab == 0 && b.getStatus() == BookingStatus.CONFIRMED && !ended) {
                 filtered.add(b);
-            } else if (selectedTab == 1 && b.getStatus() == BookingStatus.CONFIRMED && dateCompare < 0) {
+            } else if (selectedTab == 1 && b.getStatus() == BookingStatus.CONFIRMED && ended) {
                 filtered.add(b);
             } else if (selectedTab == 2 && b.getStatus() == BookingStatus.CANCELLED) {
                 filtered.add(b);
@@ -149,10 +212,22 @@ public class MyBookingsFragment extends Fragment implements BookingAdapter.OnCan
     }
 
     private void performCancel(Booking booking) {
-        boolean success = BookingRepository.getInstance().cancelBooking(booking.getBookingCode());
-        if (success) {
-            Toast.makeText(getContext(), "Đã hủy lịch đặt " + booking.getBookingCode(), Toast.LENGTH_SHORT).show();
-            loadBookings();
-        }
+        bookingExecutor.execute(() -> {
+            try {
+                ApiClient.post(requireContext(), "/v1/bookings/" + booking.getId() + "/cancel", new org.json.JSONObject());
+                if (isAdded()) requireActivity().runOnUiThread(() -> {
+                    Toast.makeText(getContext(), "Đã hủy lịch đặt " + booking.getBookingCode(), Toast.LENGTH_SHORT).show();
+                    loadBookings();
+                });
+            } catch (Exception exception) {
+                if (isAdded()) requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_LONG).show());
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        bookingExecutor.shutdownNow();
+        super.onDestroy();
     }
 }

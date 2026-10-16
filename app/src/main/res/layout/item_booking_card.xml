@@ -73,7 +73,7 @@
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                android:text="Sân bóng Thượng Đình" />
+                android:text="" />
 
             <!-- Địa chỉ -->
             <LinearLayout
@@ -96,7 +96,7 @@
                     android:layout_marginStart="6dp"
                     android:textSize="13sp"
                     android:textColor="@color/text_secondary"
-                    android:text="129 Nguyễn Trãi, Thanh Xuân, Hà Nội" />
+                    android:text="" />
             </LinearLayout>
 
             <!-- Huy hiệu loại sân -->
@@ -220,7 +220,7 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_green"
-                        android:text="350.000 đ" />
+                        android:text="" />
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton

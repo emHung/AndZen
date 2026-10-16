@@ -110,12 +110,12 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
-                <!-- Phone Input -->
+                <!-- Email Input -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    android:text="Số điện thoại"
+                    android:text="Email"
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -125,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    app:startIconDrawable="@drawable/ic_ri_phone"
+                    app:startIconDrawable="@drawable/ic_ri_mail"
                     app:startIconTint="@color/text_muted"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
@@ -137,9 +137,8 @@
                         android:id="@+id/etLoginPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Nhập số điện thoại"
-                        android:inputType="phone"
-                        android:text="0912345678"
+                        android:hint="Nhập email của tài khoản"
+                        android:inputType="textEmailAddress"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -174,7 +173,6 @@
                         android:layout_height="wrap_content"
                         android:hint="Nhập mật khẩu"
                         android:inputType="textPassword"
-                        android:text="123456"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -197,7 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="16dp"
-                    android:text="Đăng nhập"
+                    android:text="Đăng nhập bằng email"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -206,6 +204,17 @@
                     app:icon="@drawable/ic_ri_arrow_right"
                     app:iconGravity="textEnd"
                     app:iconTint="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLoginOtp"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Đăng nhập bằng số điện thoại OTP SMS"
+                    android:textColor="@color/primary_green"
+                    app:strokeColor="@color/primary_green"
+                    app:cornerRadius="12dp" />
 
                 <!-- Divider hoặc -->
                 <LinearLayout

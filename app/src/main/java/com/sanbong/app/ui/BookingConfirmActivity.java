@@ -3,6 +3,7 @@ package com.sanbong.app.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,14 +12,18 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sanbong.app.R;
-import com.sanbong.app.data.BookingRepository;
+import com.sanbong.app.data.ApiClient;
 import com.sanbong.app.model.Booking;
 import com.sanbong.app.model.Pitch;
 import com.sanbong.app.model.TimeSlot;
 import com.sanbong.app.util.CurrencyUtils;
 import com.sanbong.app.util.DateTimeUtils;
-import com.sanbong.app.util.IdGenerator;
 import com.sanbong.app.util.ValidationUtils;
+
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Màn hình điền thông tin người đặt và xác nhận đặt sân
@@ -32,6 +37,7 @@ public class BookingConfirmActivity extends AppCompatActivity {
     private TextInputLayout tilCustomerName, tilCustomerPhone;
     private EditText etCustomerName, etCustomerPhone;
     private MaterialButton btnSubmitBooking;
+    private final ExecutorService bookingExecutor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +86,7 @@ public class BookingConfirmActivity extends AppCompatActivity {
         tvSummaryAddress.setText(pitch.getAddress());
         TextView tvDate = findViewById(R.id.tvSummaryDate);
         if (tvDate != null) tvDate.setText(DateTimeUtils.formatDisplayDate(slot.getDate()));
-        tvSummaryTime.setText(slot.getTimeRange() + " · 1,5 giờ");
+        tvSummaryTime.setText(slot.getTimeRange());
         String formattedPrice = CurrencyUtils.formatVnd(slot.getPrice());
         TextView tvPitchPrice = findViewById(R.id.tvPitchPrice);
         if (tvPitchPrice != null) tvPitchPrice.setText(formattedPrice);
@@ -113,30 +119,65 @@ public class BookingConfirmActivity extends AppCompatActivity {
         }
 
         if (!isValid) return;
-
-        String bookingCode = IdGenerator.generateBookingCode();
-        Booking booking = new Booking(
-                bookingCode,
-                pitch.getId(),
-                pitch.getName(),
-                pitch.getAddress(),
-                slot.getId(),
-                slot.getDate(),
-                slot.getTimeRange(),
-                slot.getPrice(),
-                name,
-                phone
-        );
-
-        boolean confirmed = BookingRepository.getInstance().confirmBooking(booking);
-        if (confirmed) {
-            Intent intent = new Intent(this, BookingSuccessActivity.class);
-            intent.putExtra("booking", booking);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, "Khung giờ này vừa có người đặt. Vui lòng chọn khung giờ khác!", Toast.LENGTH_LONG).show();
-            finish();
+        if (!((android.widget.CheckBox) findViewById(R.id.cbConfirmTerms)).isChecked()) {
+            Toast.makeText(this, "Vui lòng đồng ý điều khoản trước khi đặt sân.", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        RadioGroup paymentOptions = findViewById(R.id.rgPaymentMethod);
+        String paymentMethod = paymentOptions.getCheckedRadioButtonId() == R.id.rbPaymentQr ? "qr" : "cash";
+        JSONObject payload = new JSONObject();
+        try {
+            payload.put("pitch_id", pitch.getId());
+            payload.put("slot_id", slot.getId());
+            payload.put("booking_date", slot.getDate());
+            payload.put("customer_name", name);
+            payload.put("customer_phone", phone);
+            payload.put("payment_method", paymentMethod);
+        } catch (Exception exception) {
+            Toast.makeText(this, "Không tạo được yêu cầu đặt sân.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        btnSubmitBooking.setEnabled(false);
+        bookingExecutor.execute(() -> {
+            try {
+                JSONObject response = ApiClient.post(this, "/v1/bookings", payload);
+                Booking booking = new Booking(
+                        response.optString("id"), response.optString("booking_code"),
+                        response.optString("pitch_id", pitch.getId()),
+                        response.optString("pitch_name", pitch.getName()),
+                        response.optString("pitch_address", pitch.getAddress()),
+                        response.optString("slot_id", slot.getId()),
+                        response.optString("booking_date", slot.getDate()),
+                        response.optString("time_range", slot.getTimeRange()),
+                        response.optLong("total_price", slot.getPrice()), name, phone,
+                        response.optString("payment_method", paymentMethod),
+                        response.optString("payment_status", paymentMethod.equals("qr") ? "qr_due" : "cash_due"),
+                        com.sanbong.app.model.BookingStatus.CONFIRMED
+                );
+                booking.setPitch(pitch);
+                runOnUiThread(() -> {
+                    if (isFinishing()) return;
+                    Intent intent = new Intent(this, BookingSuccessActivity.class);
+                    intent.putExtra("booking", booking);
+                    startActivity(intent);
+                    finish();
+                });
+            } catch (Exception exception) {
+                runOnUiThread(() -> {
+                    if (isFinishing()) return;
+                    btnSubmitBooking.setEnabled(true);
+                    Toast.makeText(this, exception.getMessage() == null
+                            ? "Không đặt được sân. Hãy thử lại." : exception.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        bookingExecutor.shutdownNow();
+        super.onDestroy();
     }
 }

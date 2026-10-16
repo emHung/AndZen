@@ -46,7 +46,7 @@
                         android:layout_width="92dp"
                         android:layout_height="92dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/avatar_minhanh"
+                        android:src="@drawable/ic_ri_user_fill"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
 
                     <FrameLayout
@@ -119,7 +119,7 @@
                         android:layout_marginTop="6dp"
                         android:background="@drawable/bg_input_field"
                         android:paddingHorizontal="14dp"
-                        android:text="Minh Anh"
+                    android:hint="Họ và tên"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp" />
 
@@ -128,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="Số điện thoại"
+                        android:text="Số điện thoại liên hệ"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
 
@@ -140,7 +140,7 @@
                         android:background="@drawable/bg_input_field"
                         android:inputType="phone"
                         android:paddingHorizontal="14dp"
-                        android:text="0912 345 678"
+                        android:hint="Nhập số điện thoại liên hệ"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp" />
 
@@ -169,7 +169,7 @@
                         android:background="@drawable/bg_input_field"
                         android:inputType="textEmailAddress"
                         android:paddingHorizontal="14dp"
-                        android:text="minhanh@email.com"
+                        android:hint="Email"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp" />
 
@@ -198,7 +198,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Thanh Xuân, Hà Nội"
+                            android:text="Chưa cập nhật"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp" />
 

@@ -17,10 +17,17 @@ public class Pitch implements Serializable {
     private final List<String> amenities;
     private final String description;
     private final int imageResId;
+    private final String imageKey;
 
     public Pitch(String id, String name, String district, String address, 
                  PitchType type, long minPrice, double rating, 
                  List<String> amenities, String description, int imageResId) {
+        this(id, name, district, address, type, minPrice, rating, amenities, description, imageResId, null);
+    }
+
+    public Pitch(String id, String name, String district, String address,
+                 PitchType type, long minPrice, double rating,
+                 List<String> amenities, String description, int imageResId, String imageKey) {
         this.id = id;
         this.name = name;
         this.district = district;
@@ -31,6 +38,7 @@ public class Pitch implements Serializable {
         this.amenities = amenities;
         this.description = description;
         this.imageResId = imageResId;
+        this.imageKey = imageKey;
     }
 
     public String getId() { return id; }
@@ -43,4 +51,5 @@ public class Pitch implements Serializable {
     public List<String> getAmenities() { return amenities; }
     public String getDescription() { return description; }
     public int getImageResId() { return imageResId; }
+    public String getImageKey() { return imageKey; }
 }

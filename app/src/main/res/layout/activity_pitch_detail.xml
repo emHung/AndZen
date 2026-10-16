@@ -111,7 +111,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:text="Sân bóng Thượng Đình" />
+                            android:text="" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -131,7 +131,7 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
-                                android:text="4.8" />
+                                android:text="—" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
                                 android:layout_marginStart="4dp"
                                 android:textSize="12sp"
                                 android:textColor="@color/text_muted"
-                                android:text="(128 đánh giá)" />
+                                android:text="Chưa có đánh giá" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -164,7 +164,7 @@
                             android:layout_marginStart="6dp"
                             android:textSize="13sp"
                             android:textColor="@color/text_secondary"
-                            android:text="129 Nguyễn Trãi, Thanh Xuân, Hà Nội" />
+                            android:text="" />
                     </LinearLayout>
 
                     <!-- Huy hiệu loại sân -->
@@ -192,7 +192,7 @@
                         android:layout_marginTop="10dp"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:text="Mặt cỏ nhân tạo mới thay năm 2024, hệ thống thoát nước tốt, đèn sáng chuẩn thi đấu." />
+                        android:text="" />
 
                     <!-- Dải tiện ích -->
                     <HorizontalScrollView
@@ -427,7 +427,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary_green"
-                android:text="350.000 đ" />
+                android:text="" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

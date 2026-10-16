@@ -1,0 +1,9 @@
+{
+  "device": "emulator-5554",
+  "resolution": [
+    720,
+    1280
+  ],
+  "source": "ADB exec-out screencap -p",
+  "edited": false
+}

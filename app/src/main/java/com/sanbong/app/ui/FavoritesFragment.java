@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sanbong.app.R;
-import com.sanbong.app.data.BookingRepository;
+import com.sanbong.app.data.ApiClient;
+import com.sanbong.app.data.PitchMapper;
 import com.sanbong.app.model.Pitch;
 import com.sanbong.app.ui.adapter.FavoritePitchAdapter;
 
@@ -21,6 +22,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import org.json.JSONArray;
 
 public class FavoritesFragment extends Fragment {
 
@@ -28,6 +36,8 @@ public class FavoritesFragment extends Fragment {
     private View layoutEmptyFavorites;
     private TextView chipFavAll;
     private FavoritePitchAdapter adapter;
+    private List<Pitch> favoriteData = new ArrayList<>();
+    private final ExecutorService favoritesExecutor = Executors.newFixedThreadPool(2);
 
     @Nullable
     @Override
@@ -56,7 +66,6 @@ public class FavoritesFragment extends Fragment {
 
         setupFilterChips(view);
         setupRecyclerView();
-        loadFavorites();
         return view;
     }
 
@@ -70,7 +79,7 @@ public class FavoritesFragment extends Fragment {
         chipFavAll.setOnClickListener(v -> loadFavorites());
         view.findViewById(R.id.chipFavRecent).setOnClickListener(v -> loadFavorites());
         view.findViewById(R.id.chipFavGoodPrice).setOnClickListener(v -> {
-            List<Pitch> list = new ArrayList<>(BookingRepository.getInstance().getFavoritePitches());
+            List<Pitch> list = new ArrayList<>(favoriteData);
             Collections.sort(list, Comparator.comparingLong(Pitch::getMinPrice));
             adapter.updateData(list);
             Toast.makeText(getContext(), "Đã sắp xếp theo giá tốt nhất", Toast.LENGTH_SHORT).show();
@@ -78,21 +87,62 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        adapter = new FavoritePitchAdapter(() -> {
-            int count = BookingRepository.getInstance().getFavoriteCount();
-            if (chipFavAll != null) chipFavAll.setText("Tất cả (" + count + ")");
-            if (layoutEmptyFavorites != null) layoutEmptyFavorites.setVisibility(count == 0 ? View.VISIBLE : View.GONE);
-            rvFavorites.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
-        });
+        adapter = new FavoritePitchAdapter(this::loadFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
         rvFavorites.setAdapter(adapter);
     }
 
     private void loadFavorites() {
-        List<Pitch> list = BookingRepository.getInstance().getFavoritePitches();
-        if (chipFavAll != null) chipFavAll.setText("Tất cả (" + list.size() + ")");
-        adapter.updateData(list);
-        if (layoutEmptyFavorites != null) layoutEmptyFavorites.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
-        rvFavorites.setVisibility(list.isEmpty() ? View.GONE : View.VISIBLE);
+        android.content.Context appContext = requireContext().getApplicationContext();
+        CompletableFuture<JSONArray> favoritesFuture = CompletableFuture.supplyAsync(() -> {
+            try { return ApiClient.getArray(appContext, "/v1/favorites"); }
+            catch (Exception exception) { throw new CompletionException(exception); }
+        }, favoritesExecutor);
+        CompletableFuture<JSONArray> pitchesFuture = CompletableFuture.supplyAsync(() -> {
+            try { return ApiClient.getPublicArray("/v1/pitches"); }
+            catch (Exception exception) { throw new CompletionException(exception); }
+        }, favoritesExecutor);
+        CompletableFuture.allOf(favoritesFuture, pitchesFuture).whenComplete((ignored, failure) -> {
+            android.app.Activity activity = getActivity();
+            if (activity == null) return;
+            if (failure != null) {
+                Throwable cause = failure instanceof CompletionException && failure.getCause() != null
+                        ? failure.getCause() : failure;
+                activity.runOnUiThread(() -> {
+                    if (isAdded()) Toast.makeText(getContext(), "Không tải được sân yêu thích: " + cause.getMessage(), Toast.LENGTH_LONG).show();
+                });
+                return;
+            }
+            try {
+                JSONArray favoriteIds = favoritesFuture.join();
+                Set<String> ids = new HashSet<>();
+                for (int i = 0; i < favoriteIds.length(); i++) ids.add(favoriteIds.optString(i));
+                JSONArray pitchRows = pitchesFuture.join();
+                List<Pitch> list = new ArrayList<>();
+                for (int i = 0; i < pitchRows.length(); i++) {
+                    if (pitchRows.optJSONObject(i) == null) continue;
+                    Pitch pitch = PitchMapper.fromJson(pitchRows.getJSONObject(i));
+                    if (ids.contains(pitch.getId())) list.add(pitch);
+                }
+                activity.runOnUiThread(() -> {
+                    if (!isAdded() || getView() == null) return;
+                    favoriteData = list;
+                    if (chipFavAll != null) chipFavAll.setText("Tất cả (" + list.size() + ")");
+                    adapter.updateData(list);
+                    if (layoutEmptyFavorites != null) layoutEmptyFavorites.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+                    rvFavorites.setVisibility(list.isEmpty() ? View.GONE : View.VISIBLE);
+                });
+            } catch (Exception exception) {
+                activity.runOnUiThread(() -> {
+                    if (isAdded()) Toast.makeText(getContext(), "Không đọc được dữ liệu sân yêu thích: " + exception.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        favoritesExecutor.shutdownNow();
+        super.onDestroy();
     }
 }

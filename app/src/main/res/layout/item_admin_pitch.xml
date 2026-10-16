@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp" app:cardElevation="0dp" app:strokeWidth="1dp"
+    app:strokeColor="@color/border" app:cardBackgroundColor="@color/surface">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="12dp">
+
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+            android:layout_height="104dp" app:cardCornerRadius="10dp" app:cardElevation="0dp" app:strokeWidth="0dp">
+            <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+                <ImageView android:id="@+id/adminPitchImage" android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:scaleType="centerCrop"
+                    android:background="@color/brand_100" android:importantForAccessibility="no" />
+                <TextView android:id="@+id/adminPitchStatus" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layout_gravity="top|end"
+                    android:layout_margin="8dp" android:paddingHorizontal="10dp" android:paddingVertical="6dp"
+                    android:textSize="12sp" android:textStyle="bold" />
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView android:id="@+id/adminPitchName" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="10dp"
+            android:textSize="18sp" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView android:id="@+id/adminPitchType" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="6dp"
+            android:background="@drawable/bg_tag_light_green" android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp" android:drawableStart="@drawable/ic_ri_group"
+            android:drawableTint="@color/primary_green" android:drawablePadding="6dp"
+            android:textColor="@color/primary_green" android:textSize="12sp" />
+        <TextView android:id="@+id/adminPitchDistrict" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_ri_map_pin_line" android:drawableTint="@color/text_secondary"
+            android:drawablePadding="6dp" android:textColor="@color/text_secondary" android:textSize="13sp" />
+        <TextView android:id="@+id/adminPitchAddress" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="4dp"
+            android:textSize="12sp" android:textColor="@color/text_muted" />
+        <TextView android:id="@+id/adminPitchPrice" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:textSize="18sp" android:textStyle="bold" android:textColor="@color/primary_green" />
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:layout_marginVertical="10dp" android:background="@color/border" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <com.google.android.material.button.MaterialButton android:id="@+id/adminEditPitch"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                android:layout_marginEnd="8dp" android:insetTop="0dp" android:insetBottom="0dp"
+                android:text="Chỉnh sửa sân" android:textAllCaps="false" android:textSize="12sp"
+                android:paddingHorizontal="8dp" android:textColor="@color/primary_green"
+                app:strokeColor="@color/primary_green" app:cornerRadius="10dp"
+                app:icon="@drawable/ic_ri_edit" app:iconSize="18dp" app:iconTint="@color/primary_green"
+                app:iconGravity="textStart" app:iconPadding="6dp" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/adminViewPitchSlots"
+                android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                android:insetTop="0dp" android:insetBottom="0dp" android:paddingHorizontal="8dp"
+                android:text="Xem lịch" android:textAllCaps="false" android:textSize="12sp"
+                android:textColor="@color/primary_green" app:backgroundTint="@color/brand_100"
+                app:cornerRadius="10dp" app:icon="@drawable/ic_ri_calendar" app:iconSize="18dp"
+                app:iconTint="@color/primary_green" app:iconGravity="textStart" app:iconPadding="6dp" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

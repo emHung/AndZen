@@ -66,8 +66,28 @@ public final class ThemePickerUtils {
     }
 
     public static void showDatePicker(Context context, Calendar initial, DatePickerDialog.OnDateSetListener listener) {
+        showDatePicker(context, initial, null, null, listener);
+    }
+
+    public static void showDatePicker(Context context, Calendar initial, Calendar minimum,
+                                      Calendar maximum, DatePickerDialog.OnDateSetListener listener) {
         DatePickerDialog dp = new DatePickerDialog(context, R.style.ThemeOverlay_SanBong_DatePicker, listener,
                 initial.get(Calendar.YEAR), initial.get(Calendar.MONTH), initial.get(Calendar.DAY_OF_MONTH));
+        if (minimum != null) dp.getDatePicker().setMinDate(minimum.getTimeInMillis());
+        if (maximum != null) dp.getDatePicker().setMaxDate(maximum.getTimeInMillis());
+        dp.setButton(android.content.DialogInterface.BUTTON_POSITIVE, "Chọn", (dialog, which) -> {
+            android.widget.DatePicker picker = dp.getDatePicker();
+            listener.onDateSet(picker, picker.getYear(), picker.getMonth(), picker.getDayOfMonth());
+        });
+        dp.setButton(android.content.DialogInterface.BUTTON_NEGATIVE, "Hủy", (dialog, which) -> dp.dismiss());
+        dp.setOnShowListener(dialog -> {
+            android.widget.Button confirm = dp.getButton(android.content.DialogInterface.BUTTON_POSITIVE);
+            android.widget.Button cancel = dp.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
+            confirm.setTextColor(context.getColor(R.color.primary_green));
+            cancel.setTextColor(context.getColor(R.color.text_secondary));
+            confirm.setVisibility(android.view.View.VISIBLE);
+            cancel.setVisibility(android.view.View.VISIBLE);
+        });
         dp.show();
     }
 }

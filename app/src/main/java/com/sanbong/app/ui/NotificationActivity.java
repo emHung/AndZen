@@ -2,93 +2,82 @@ package com.sanbong.app.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.sanbong.app.R;
-import com.sanbong.app.data.BookingRepository;
+import com.sanbong.app.data.ApiClient;
+import com.sanbong.app.data.BookingMapper;
 import com.sanbong.app.model.Booking;
 import com.sanbong.app.model.NotificationItem;
-import com.sanbong.app.model.Pitch;
 import com.sanbong.app.ui.adapter.NotificationAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.json.JSONArray;
 
 public class NotificationActivity extends AppCompatActivity {
-
     private final List<NotificationItem> list = new ArrayList<>();
+    private final List<Booking> bookings = new ArrayList<>();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private NotificationAdapter adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @Override protected void onCreate(Bundle state) {
+        super.onCreate(state);
         setContentView(R.layout.activity_notifications);
-
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         findViewById(R.id.btnMarkAllRead).setOnClickListener(v -> markAllRead());
-
-        initData();
-        setupRecyclerView();
-    }
-
-    private void initData() {
-        List<Booking> myBookings = BookingRepository.getInstance().getMyBookings();
-        if (!myBookings.isEmpty()) {
-            Booking b = myBookings.get(0);
-            list.add(new NotificationItem("b1", "Đặt sân thành công!",
-                    "Lịch đá tại " + b.getPitchName() + " (" + b.getTimeRange() + ") đã xác nhận. Mã: " + b.getBookingCode(),
-                    "10 phút trước", R.drawable.ic_ri_football, false, "BOOKING", b.getBookingCode()));
-            list.add(new NotificationItem("b2", "Nhắc nhở giờ thi đấu",
-                    "Trận đấu tại " + b.getPitchName() + " sắp diễn ra. Vui lòng có mặt trước 15 phút!",
-                    "1 giờ trước", R.drawable.ic_ri_time, false, "BOOKING", b.getBookingCode()));
-        }
-
-        Pitch p1 = BookingRepository.getInstance().getPitchById("p1");
-        if (p1 != null) {
-            list.add(new NotificationItem("p1", "Ưu đãi 20% đặt sân cuối tuần",
-                    "Nhập mã FOOTBALL20 khi đặt tại " + p1.getName() + " để nhận ưu đãi 20%!",
-                    "Hôm qua", R.drawable.ic_ri_coins, true, "PITCH", "p1"));
-        }
-
-        Pitch p2 = BookingRepository.getInstance().getPitchById("p2");
-        if (p2 != null) {
-            list.add(new NotificationItem("p2", "Sân hot: " + p2.getName(),
-                    "Khám phá ngay mặt sân cỏ nhân tạo đạt chuẩn tại " + p2.getAddress(),
-                    "2 ngày trước", R.drawable.ic_ri_star, true, "PITCH", "p2"));
-        }
-    }
-
-    private void setupRecyclerView() {
         RecyclerView rv = findViewById(R.id.rvNotifications);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NotificationAdapter(list, item -> {
-            item.setRead(true);
-            adapter.notifyDataSetChanged();
-            if ("BOOKING".equals(item.getTargetType()) && item.getTargetId() != null) {
-                Booking b = BookingRepository.getInstance().getBookingByCode(item.getTargetId());
-                if (b != null) {
-                    Intent intent = new Intent(this, BookingDetailActivity.class);
-                    intent.putExtra("booking", b);
-                    startActivity(intent);
+        adapter = new NotificationAdapter(list, this::openNotification);
+        rv.setAdapter(adapter);
+        loadBookings();
+    }
+
+    private void loadBookings() {
+        executor.execute(() -> {
+            try {
+                JSONArray rows = ApiClient.getArray(this, "/v1/bookings");
+                List<Booking> loadedBookings = new ArrayList<>();
+                List<NotificationItem> loadedItems = new ArrayList<>();
+                for (int i = 0; i < rows.length(); i++) {
+                    if (rows.optJSONObject(i) == null) continue;
+                    Booking booking = BookingMapper.fromJson(rows.getJSONObject(i));
+                    loadedBookings.add(booking);
+                    boolean updated = !rows.getJSONObject(i).isNull("rescheduled_at");
+                    String title = booking.getStatus() == com.sanbong.app.model.BookingStatus.CANCELLED
+                            ? "Lịch đặt đã hủy" : updated ? "Lịch đặt đã cập nhật" : "Lịch đặt sân đã xác nhận";
+                    String body = (updated ? "Ngày/giờ mới: " : "") + booking.getPitchName() + " · " + booking.getDate()
+                            + " · " + booking.getTimeRange() + " · Mã " + booking.getBookingCode();
+                    loadedItems.add(new NotificationItem(booking.getBookingCode(), title, body, "Cập nhật từ lịch đặt", R.drawable.ic_ri_football,
+                            false, "BOOKING", booking.getBookingCode()));
                 }
-            } else if ("PITCH".equals(item.getTargetType()) && item.getTargetId() != null) {
-                Pitch p = BookingRepository.getInstance().getPitchById(item.getTargetId());
-                if (p != null) {
-                    Intent intent = new Intent(this, PitchDetailActivity.class);
-                    intent.putExtra("pitch", p);
-                    startActivity(intent);
-                }
+                runOnUiThread(() -> {
+                    bookings.clear(); bookings.addAll(loadedBookings);
+                    list.clear(); list.addAll(loadedItems); adapter.notifyDataSetChanged();
+                    if (list.isEmpty()) Toast.makeText(this, "Bạn chưa có lịch đặt để thông báo.", Toast.LENGTH_SHORT).show();
+                });
+            } catch (Exception exception) {
+                runOnUiThread(() -> Toast.makeText(this, "Không tải được thông báo: " + exception.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
-        rv.setAdapter(adapter);
+    }
+
+    private void openNotification(NotificationItem item) {
+        for (Booking booking : bookings) {
+            if (booking.getBookingCode().equals(item.getTargetId())) {
+                startActivity(new Intent(this, BookingDetailActivity.class).putExtra("booking", booking));
+                return;
+            }
+        }
     }
 
     private void markAllRead() {
-        for (NotificationItem item : list) {
-            item.setRead(true);
-        }
+        for (NotificationItem item : list) item.setRead(true);
         adapter.notifyDataSetChanged();
     }
+
+    @Override protected void onDestroy() { executor.shutdownNow(); super.onDestroy(); }
 }

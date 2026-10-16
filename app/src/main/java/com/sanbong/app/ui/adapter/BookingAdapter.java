@@ -98,6 +98,9 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         void bind(Booking booking, OnCancelClickListener cancelListener, OnBookingClickListener itemClickListener) {
             tvBookingCode.setText("Mã: " + booking.getBookingCode());
             tvPitchName.setText(booking.getPitchName());
+            ((TextView) itemView.findViewById(R.id.tvBookingType)).setText(
+                    booking.getPitch() == null ? "Sân bóng" : booking.getPitch().getType().getDisplayName());
+            ivBookingBanner.setImageResource(booking.getPitch() == null ? 0 : booking.getPitch().getImageResId());
             if (tvBookingAddress != null) tvBookingAddress.setText(booking.getPitchAddress());
             if (tvBookingDate != null) tvBookingDate.setText(DateTimeUtils.formatDisplayDate(booking.getDate()));
             if (tvBookingTime != null) tvBookingTime.setText(booking.getTimeRange());
@@ -105,11 +108,12 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             tvTotalPrice.setText(CurrencyUtils.formatVnd(booking.getTotalPrice()));
 
             boolean isConfirmed = (booking.getStatus() == BookingStatus.CONFIRMED);
-            tvBookingStatus.setText(booking.getStatus().getTitle());
+            tvBookingStatus.setText(isConfirmed && DateTimeUtils.hasBookingEnded(booking.getDate(), booking.getTimeRange())
+                    ? "Đã hoàn thành" : booking.getStatus().getTitle());
             int statusColor = isConfirmed ? R.color.primary_green : R.color.text_muted;
             tvBookingStatus.setTextColor(ContextCompat.getColor(itemView.getContext(), statusColor));
 
-            btnCancelBooking.setVisibility(isConfirmed ? View.VISIBLE : View.GONE);
+            btnCancelBooking.setVisibility(isConfirmed && !DateTimeUtils.hasBookingStarted(booking.getDate(), booking.getTimeRange()) ? View.VISIBLE : View.GONE);
             btnCancelBooking.setOnClickListener(v -> cancelListener.onCancelBooking(booking));
 
             if (btnDetailsBooking != null) {

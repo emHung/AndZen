@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+        android:layout_height="wrap_content" app:cardCornerRadius="14dp"
+        app:cardElevation="0dp" app:strokeWidth="0dp" app:cardBackgroundColor="@color/brand_100">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="14dp" android:gravity="center_vertical">
+            <TextView android:id="@+id/adminTotalPitches" android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_weight="1"
+                android:drawableStart="@drawable/ic_ri_football" android:drawableTint="@color/primary_green"
+                android:drawablePadding="10dp" android:textColor="@color/text_primary" android:textSize="14sp" />
+            <View android:layout_width="1dp" android:layout_height="36dp" android:background="@color/slot_available_stroke"
+                android:alpha="0.25" android:layout_marginHorizontal="12dp" />
+            <TextView android:id="@+id/adminActivePitches" android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_weight="1"
+                android:drawableStart="@drawable/ic_ri_check" android:drawableTint="@color/primary_green"
+                android:drawablePadding="10dp" android:textColor="@color/text_primary" android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="12dp" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="Danh sách sân" android:textSize="20sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/adminAddPitch"
+            android:layout_width="wrap_content" android:layout_height="48dp"
+            android:text="＋ Thêm sân" android:textAllCaps="false" android:textSize="13sp"
+            android:insetTop="0dp" android:insetBottom="0dp" android:textColor="@color/white"
+            app:backgroundTint="@color/primary_green" app:cornerRadius="12dp" />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="12dp" app:hintEnabled="false" app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/surface" app:boxStrokeColor="@color/border"
+        app:boxCornerRadiusTopStart="12dp" app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp" app:boxCornerRadiusBottomEnd="12dp"
+        app:startIconDrawable="@drawable/ic_ri_search" app:startIconTint="@color/text_muted">
+        <com.google.android.material.textfield.TextInputEditText android:id="@+id/adminSearchPitches"
+            android:layout_width="match_parent" android:layout_height="52dp"
+            android:hint="Tìm tên sân, khu vực…" android:singleLine="true" android:inputType="text"
+            android:imeOptions="actionDone" android:textSize="14sp" android:textColor="@color/text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout android:id="@+id/adminPitchCards" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="12dp" />
+    <TextView android:id="@+id/adminEmptyPitches" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:padding="24dp" android:gravity="center"
+        android:textColor="@color/text_secondary" android:visibility="gone" />
+</LinearLayout>

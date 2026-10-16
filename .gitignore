@@ -1,6 +1,8 @@
 *.iml
 .gradle
 /local.properties
+/backend/.env
+/backend/.venv/
 /.idea/
 .idea/
 .vscode/
@@ -13,6 +15,15 @@
 /captures
 .externalNativeBuild
 .cxx
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Supabase temp
+/backend/supabase/.temp/
 
 # graft's local graph cache — regenerable, not committed (run `graft build`).
 /graft/

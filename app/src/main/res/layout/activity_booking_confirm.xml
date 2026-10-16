@@ -82,7 +82,7 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/primary_green"
-                                android:text="Sân bóng Thượng Đình" />
+                                android:text="" />
 
                             <TextView
                                 android:id="@+id/tvSummaryPitchType"
@@ -121,7 +121,7 @@
                                 android:layout_marginStart="6dp"
                                 android:textSize="13sp"
                                 android:textColor="@color/text_secondary"
-                                android:text="129 Nguyễn Trãi, Thanh Xuân, Hà Nội" />
+                                android:text="" />
                         </LinearLayout>
 
                         <!-- Ngày & Giờ -->
@@ -197,7 +197,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="13sp"
                                 android:textColor="@color/text_primary"
-                                android:text="350.000 đ" />
+                                android:text="" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -244,7 +244,7 @@
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/primary_green"
-                                android:text="350.000 đ" />
+                                android:text="" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -328,7 +328,46 @@
                             android:inputType="phone" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Notice banner demo -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Phương thức thanh toán"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/rgPaymentMethod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/rbPaymentCash"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="Tiền mặt tại sân" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/rbPaymentQr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Chuyển khoản qua QR (xem hướng dẫn sau)" />
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/tvPaymentHint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Lịch xác nhận ngay sau khi đặt. QR hiện chưa quét hoặc đối soát tự động."
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <!-- Booking information -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -351,7 +390,7 @@
                             android:layout_marginStart="8dp"
                             android:textSize="12sp"
                             android:textColor="@color/primary_green"
-                            android:text="Đây là bản demo, bạn chưa bị thu phí." />
+                            android:text="Chọn QR chỉ ghi nhận phương thức dự kiến; chưa phát sinh giao dịch." />
                     </LinearLayout>
 
                     <!-- Checkbox xác nhận -->
@@ -403,14 +442,14 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary_green"
-                android:text="350.000 đ" />
+                android:text="" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="11sp"
                 android:textColor="@color/text_muted"
-                android:text="Demo · Không thanh toán thật" />
+                android:text="Xác nhận ngay sau khi đặt" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

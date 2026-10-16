@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sanbong.app.R;
+import com.sanbong.app.data.AuthSession;
 
 /**
  * Activity chính chứa thanh điều hướng đáy và chuyển đổi màn hình
@@ -17,6 +18,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!AuthSession.hasSession(this)) {
+            startActivity(new android.content.Intent(this, AuthActivity.class));
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_main);
 
         initViews();

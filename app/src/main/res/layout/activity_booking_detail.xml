@@ -122,7 +122,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="1 / 5"
+                            android:id="@+id/tvDetailPhotoCount"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -156,7 +157,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Sân bóng Thượng Đình"
+                            android:text=""
                             android:textColor="@color/text_primary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -171,7 +172,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="4.8 (120)"
+                            android:text="Chưa có đánh giá"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -194,7 +195,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="129 Nguyễn Trãi, Thanh Xuân, Hà Nội"
+                            android:text=""
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -225,7 +226,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="Sân 7 người"
+                                android:id="@+id/tvDetailPitchType"
+                                android:text=""
                                 android:textColor="@color/primary_green"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
@@ -248,7 +250,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="Đèn LED"
+                                android:id="@+id/tvDetailAmenityOne"
+                                android:text=""
                                 android:textColor="@color/text_secondary"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -270,7 +273,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="Bãi xe rộng"
+                                android:id="@+id/tvDetailAmenityTwo"
+                                android:text=""
                                 android:textColor="@color/text_secondary"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -458,7 +462,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:text="1 giờ 30 phút"
+                                android:id="@+id/tvDetailDuration"
+                                android:text=""
                                 android:textColor="@color/text_primary"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -516,7 +521,7 @@
                             android:id="@+id/tvDetailPitchPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="350.000 đ"
+                            android:text=""
                             android:textColor="@color/text_primary"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -565,7 +570,7 @@
                             android:id="@+id/tvDetailTotalPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="350.000 đ"
+                            android:text=""
                             android:textColor="@color/primary_green"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -608,7 +613,7 @@
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="44dp"
                             android:layout_height="44dp"
-                            android:src="@drawable/avatar_minhanh"
+                            android:src="@drawable/ic_ri_user_fill"
                             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
 
                         <LinearLayout
@@ -622,7 +627,7 @@
                                 android:id="@+id/tvDetailCustomerName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Minh Anh"
+                                android:text=""
                                 android:textColor="@color/text_primary"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
@@ -631,7 +636,7 @@
                                 android:id="@+id/tvDetailCustomerPhone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0912 345 678"
+                                android:text=""
                                 android:textColor="@color/text_secondary"
                                 android:textSize="13sp" />
                         </LinearLayout>

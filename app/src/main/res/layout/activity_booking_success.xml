@@ -167,7 +167,7 @@
                                     android:textSize="15sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_primary"
-                                    android:text="Sân bóng Thượng Đình" />
+                                    android:text="" />
 
                                 <TextView
                                     android:id="@+id/tvSuccessAddress"
@@ -175,7 +175,7 @@
                                     android:layout_height="wrap_content"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary"
-                                    android:text="129 Nguyễn Trãi, Thanh Xuân, Hà Nội" />
+                                    android:text="" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -279,7 +279,7 @@
                                     android:textSize="18sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/primary_green"
-                                    android:text="350.000 đ" />
+                                    android:text="" />
                             </LinearLayout>
                         </LinearLayout>
 

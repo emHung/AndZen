@@ -18,20 +18,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.ChipGroup;
 import com.sanbong.app.R;
-import com.sanbong.app.data.BookingRepository;
+import com.sanbong.app.data.ApiClient;
+import com.sanbong.app.data.PitchMapper;
 import com.sanbong.app.model.Pitch;
 import com.sanbong.app.model.PitchType;
-import com.sanbong.app.model.TimeSlot;
 import com.sanbong.app.ui.adapter.PitchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.net.URLEncoder;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.json.JSONArray;
 
 /**
  * Màn hình danh sách sân bóng kèm tìm kiếm và bộ lọc loại sân
  */
 public class PitchListFragment extends Fragment implements PitchAdapter.OnPitchClickListener {
+    private final ExecutorService catalogExecutor = Executors.newSingleThreadExecutor();
+    private final java.util.Set<String> availablePitchIds = new java.util.HashSet<>();
+    private boolean availabilityLoaded;
 
     private static final int REQUEST_FILTER = 1001;
 
@@ -53,16 +60,14 @@ public class PitchListFragment extends Fragment implements PitchAdapter.OnPitchC
         setupRecyclerView();
         setupSearchListener();
         setupFilterChips();
-        loadData();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (pitchAdapter != null) {
-            pitchAdapter.notifyDataSetChanged();
-        }
+        if (pitchAdapter != null) loadData();
+        if (hasAvailabilityFilter()) loadAvailability();
     }
 
     private void initViews(View view) {
@@ -113,8 +118,23 @@ public class PitchListFragment extends Fragment implements PitchAdapter.OnPitchC
     }
 
     private void loadData() {
-        allPitches = BookingRepository.getInstance().getAllPitches();
-        applyFilters();
+        catalogExecutor.execute(() -> {
+            try {
+                JSONArray rows = ApiClient.getPublicArray("/v1/pitches");
+                List<Pitch> loaded = new ArrayList<>();
+                for (int i = 0; i < rows.length(); i++) if (rows.optJSONObject(i) != null) loaded.add(PitchMapper.fromJson(rows.getJSONObject(i)));
+                java.util.Set<String> favorites = new java.util.HashSet<>();
+                if (com.sanbong.app.data.AuthSession.hasSession(requireContext())) {
+                    JSONArray favoriteRows = ApiClient.getArray(requireContext(), "/v1/favorites");
+                    for (int i = 0; i < favoriteRows.length(); i++) favorites.add(favoriteRows.optString(i));
+                }
+                if (!isAdded()) return;
+                requireActivity().runOnUiThread(() -> { allPitches = loaded; pitchAdapter.setFavoriteIds(favorites); applyFilters(); });
+            } catch (Exception exception) {
+                if (!isAdded()) return;
+                requireActivity().runOnUiThread(() -> android.widget.Toast.makeText(getContext(), "Không tải được danh sách sân: " + exception.getMessage(), android.widget.Toast.LENGTH_LONG).show());
+            }
+        });
     }
 
     @Override
@@ -129,6 +149,9 @@ public class PitchListFragment extends Fragment implements PitchAdapter.OnPitchC
         maxPrice = data.getLongExtra(PitchFilterActivity.EXTRA_MAX_PRICE, Long.MAX_VALUE);
         selectedTimePeriod = data.getStringExtra(PitchFilterActivity.EXTRA_TIME_PERIOD);
         requiredAmenities = data.getStringArrayListExtra(PitchFilterActivity.EXTRA_AMENITIES);
+        if (requiredAmenities == null) requiredAmenities = new ArrayList<>();
+        availabilityLoaded = !hasAvailabilityFilter();
+        if (hasAvailabilityFilter()) loadAvailability();
         applyFilters();
     }
 
@@ -137,6 +160,34 @@ public class PitchListFragment extends Fragment implements PitchAdapter.OnPitchC
     private long maxPrice = Long.MAX_VALUE;
     private String selectedTimePeriod;
     private List<String> requiredAmenities = new ArrayList<>();
+
+    private boolean hasAvailabilityFilter() {
+        return filterDate != null || (selectedTimePeriod != null && !"ALL".equals(selectedTimePeriod));
+    }
+
+    private void loadAvailability() {
+        String date = filterDate;
+        String period = selectedTimePeriod;
+        android.content.Context appContext = requireContext().getApplicationContext();
+        catalogExecutor.execute(() -> {
+            java.util.Set<String> matching = new java.util.HashSet<>();
+            try {
+                String path = "/v1/availability?";
+                if (date != null) path += "date=" + date + "&";
+                if (period != null && !"ALL".equals(period)) path += "time_range=" + android.net.Uri.encode(period);
+                JSONArray rows = ApiClient.getArray(appContext, path);
+                for (int i = 0; i < rows.length(); i++) matching.add(rows.optString(i));
+                if (!isAdded()) return;
+                requireActivity().runOnUiThread(() -> {
+                    if (!isAdded() || !java.util.Objects.equals(date, filterDate) || !java.util.Objects.equals(period, selectedTimePeriod)) return;
+                    availablePitchIds.clear(); availablePitchIds.addAll(matching); availabilityLoaded = true; applyFilters();
+                });
+            } catch (Exception exception) {
+                if (!isAdded()) return;
+                requireActivity().runOnUiThread(() -> android.widget.Toast.makeText(getContext(), "Không tải được tình trạng khung giờ: " + exception.getMessage(), android.widget.Toast.LENGTH_LONG).show());
+            }
+        });
+    }
 
     private void applyFilters() {
         List<Pitch> filtered = new ArrayList<>();
@@ -151,7 +202,7 @@ public class PitchListFragment extends Fragment implements PitchAdapter.OnPitchC
                     p.getDistrict().equalsIgnoreCase(currentDistrict.replace(", Hà Nội", "").trim());
             boolean matchesPrice = p.getMinPrice() <= maxPrice;
             boolean matchesAmenities = p.getAmenities().containsAll(requiredAmenities);
-            boolean matchesAvailability = filterDate == null || hasMatchingSlot(p, filterDate);
+            boolean matchesAvailability = !hasAvailabilityFilter() || (availabilityLoaded && availablePitchIds.contains(p.getId()));
 
             if (matchesType && matchesKeyword && matchesDistrict && matchesPrice && matchesAmenities && matchesAvailability) {
                 filtered.add(p);
@@ -161,19 +212,15 @@ public class PitchListFragment extends Fragment implements PitchAdapter.OnPitchC
         tvEmptyPitches.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
-    private boolean hasMatchingSlot(Pitch pitch, String date) {
-        for (TimeSlot slot : BookingRepository.getInstance().getSlots(pitch.getId(), date)) {
-            if (!slot.isAvailable()) continue;
-            if (selectedTimePeriod == null || selectedTimePeriod.equals("ALL")) return true;
-            if (slot.getTimeRange().equals(selectedTimePeriod)) return true;
-        }
-        return false;
-    }
-
     @Override
     public void onPitchClick(Pitch pitch) {
         Intent intent = new Intent(getContext(), PitchDetailActivity.class);
         intent.putExtra("pitch", pitch);
         startActivity(intent);
+    }
+
+    @Override public void onDestroy() {
+        catalogExecutor.shutdownNow();
+        super.onDestroy();
     }
 }

@@ -12,13 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sanbong.app.R;
-import com.sanbong.app.data.BookingRepository;
+import com.sanbong.app.data.ApiClient;
 import com.sanbong.app.model.Pitch;
 import com.sanbong.app.ui.PitchDetailActivity;
 import com.sanbong.app.util.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FavoritePitchAdapter extends RecyclerView.Adapter<FavoritePitchAdapter.ViewHolder> {
 
@@ -28,6 +30,7 @@ public class FavoritePitchAdapter extends RecyclerView.Adapter<FavoritePitchAdap
 
     private final List<Pitch> pitchList = new ArrayList<>();
     private final OnFavoriteChangeListener changeListener;
+    private final ExecutorService favoriteExecutor = Executors.newSingleThreadExecutor();
 
     public FavoritePitchAdapter(OnFavoriteChangeListener changeListener) {
         this.changeListener = changeListener;
@@ -74,14 +77,19 @@ public class FavoritePitchAdapter extends RecyclerView.Adapter<FavoritePitchAdap
             int pos = holder.getBindingAdapterPosition();
             if (pos != RecyclerView.NO_POSITION && pos < pitchList.size()) {
                 Pitch target = pitchList.get(pos);
-                BookingRepository.getInstance().toggleFavorite(target.getId());
-                Toast.makeText(context, "Đã bỏ lưu: " + target.getName(), Toast.LENGTH_SHORT).show();
-                pitchList.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, pitchList.size());
-                if (changeListener != null) {
-                    changeListener.onFavoriteChanged();
-                }
+                favoriteExecutor.execute(() -> {
+                    try {
+                        ApiClient.put(context, "/v1/favorites/" + target.getId() + "?enabled=false", new org.json.JSONObject());
+                        android.os.Handler main = new android.os.Handler(android.os.Looper.getMainLooper());
+                        main.post(() -> {
+                            Toast.makeText(context, "Đã bỏ lưu: " + target.getName(), Toast.LENGTH_SHORT).show();
+                            if (changeListener != null) changeListener.onFavoriteChanged();
+                        });
+                    } catch (Exception exception) {
+                        new android.os.Handler(android.os.Looper.getMainLooper()).post(() ->
+                                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show());
+                    }
+                });
             }
         });
     }

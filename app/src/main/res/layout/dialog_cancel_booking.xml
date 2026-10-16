@@ -93,7 +93,7 @@
                         android:id="@+id/tvDialogPitchName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sân bóng Thượng Đình"
+                        android:text=""
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
@@ -139,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
-                            android:text="129 Nguyễn Trãi, Thanh Xuân, Hà Nội"
+                            android:text=""
                             android:textSize="11sp"
                             android:textColor="@color/text_muted" />
                     </LinearLayout>

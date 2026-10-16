@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.sanbong.app.R;
-import com.sanbong.app.data.BookingRepository;
+import com.sanbong.app.data.ApiClient;
 import com.sanbong.app.model.Pitch;
 import com.sanbong.app.util.CurrencyUtils;
 
@@ -27,6 +27,8 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
 
     private final List<Pitch> pitchList = new ArrayList<>();
     private final OnPitchClickListener listener;
+    private final java.util.Set<String> favoriteIds = new java.util.HashSet<>();
+    private final java.util.concurrent.ExecutorService favoriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
 
     public PitchAdapter(OnPitchClickListener listener) {
         this.listener = listener;
@@ -37,6 +39,12 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
         if (newPitches != null) {
             pitchList.addAll(newPitches);
         }
+        notifyDataSetChanged();
+    }
+
+    public void setFavoriteIds(java.util.Set<String> ids) {
+        favoriteIds.clear();
+        if (ids != null) favoriteIds.addAll(ids);
         notifyDataSetChanged();
     }
 
@@ -51,7 +59,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
     @Override
     public void onBindViewHolder(@NonNull PitchViewHolder holder, int position) {
         Pitch pitch = pitchList.get(position);
-        holder.bind(pitch, listener);
+        holder.bind(pitch, listener, favoriteIds, favoriteExecutor);
     }
 
     @Override
@@ -85,7 +93,8 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
             btnViewDetails = itemView.findViewById(R.id.btnViewDetails);
         }
 
-        void bind(Pitch pitch, OnPitchClickListener listener) {
+        void bind(Pitch pitch, OnPitchClickListener listener, java.util.Set<String> favoriteIds,
+                  java.util.concurrent.ExecutorService favoriteExecutor) {
             if (ivPitchImage != null && pitch.getImageResId() != 0) {
                 ivPitchImage.setImageResource(pitch.getImageResId());
             }
@@ -98,24 +107,55 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
 
             if (tvAvailableSlots != null) {
                 String today = com.sanbong.app.util.DateTimeUtils.getNextDays(1).get(0);
-                tvAvailableSlots.setText(BookingRepository.getInstance().getAvailabilityText(pitch.getId(), today));
+                tvAvailableSlots.setTag(pitch.getId());
+                tvAvailableSlots.setText("Đang tải khung giờ...");
+                favoriteExecutor.execute(() -> {
+                    try {
+                        org.json.JSONArray slots = ApiClient.getArray(itemView.getContext(),
+                                "/v1/pitches/" + pitch.getId() + "/slots?date=" + today);
+                        int count = 0;
+                        for (int i = 0; i < slots.length(); i++)
+                            if ("available".equals(slots.optJSONObject(i).optString("status"))) count++;
+                        String label = count == 0 ? "Hết giờ trống" : count + " khung giờ còn trống";
+                        new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                            if (pitch.getId().equals(tvAvailableSlots.getTag())) tvAvailableSlots.setText(label);
+                        });
+                    } catch (Exception exception) {
+                        new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                            if (pitch.getId().equals(tvAvailableSlots.getTag())) tvAvailableSlots.setText("Mở sân để xem khung giờ");
+                        });
+                    }
+                });
             }
 
             if (ivFavoritePitch != null) {
-                boolean isFav = BookingRepository.getInstance().isFavorite(pitch.getId());
+                boolean isFav = favoriteIds.contains(pitch.getId());
                 ivFavoritePitch.setImageResource(isFav ? R.drawable.ic_ri_heart_fill : R.drawable.ic_ri_heart);
                 ivFavoritePitch.setColorFilter(isFav ? 0xFFE53935 : 0xFFFFFFFF);
                 ivFavoritePitch.setOnClickListener(v -> {
-                    boolean newFav = BookingRepository.getInstance().toggleFavorite(pitch.getId());
-                    ivFavoritePitch.setImageResource(newFav ? R.drawable.ic_ri_heart_fill : R.drawable.ic_ri_heart);
-                    ivFavoritePitch.setColorFilter(newFav ? 0xFFE53935 : 0xFFFFFFFF);
-                    String msg = newFav ? "Đã thêm vào yêu thích: " : "Đã bỏ lưu: ";
-                    android.widget.Toast.makeText(v.getContext(), msg + pitch.getName(), android.widget.Toast.LENGTH_SHORT).show();
+                    boolean newFav = !favoriteIds.contains(pitch.getId());
+                    favoriteExecutor.execute(() -> {
+                        try {
+                            ApiClient.put(v.getContext(), "/v1/favorites/" + pitch.getId() + "?enabled=" + newFav, new org.json.JSONObject());
+                            android.os.Handler main = new android.os.Handler(android.os.Looper.getMainLooper());
+                            main.post(() -> {
+                                if (newFav) favoriteIds.add(pitch.getId()); else favoriteIds.remove(pitch.getId());
+                                ivFavoritePitch.setImageResource(newFav ? R.drawable.ic_ri_heart_fill : R.drawable.ic_ri_heart);
+                                ivFavoritePitch.setColorFilter(newFav ? 0xFFE53935 : 0xFFFFFFFF);
+                                String msg = newFav ? "Đã thêm vào yêu thích: " : "Đã bỏ lưu: ";
+                                android.widget.Toast.makeText(v.getContext(), msg + pitch.getName(), android.widget.Toast.LENGTH_SHORT).show();
+                            });
+                        } catch (Exception exception) {
+                            new android.os.Handler(android.os.Looper.getMainLooper()).post(() ->
+                                    android.widget.Toast.makeText(v.getContext(), exception.getMessage(), android.widget.Toast.LENGTH_LONG).show());
+                        }
+                    });
                 });
             }
 
             itemView.setOnClickListener(v -> listener.onPitchClick(pitch));
             btnViewDetails.setOnClickListener(v -> listener.onPitchClick(pitch));
         }
+
     }
 }

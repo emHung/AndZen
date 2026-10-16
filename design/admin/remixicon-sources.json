@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/Remix-Design/RemixIcon",
+  "commit": "9fb7967c0a4c09910161192bde99efd3df09f5eb",
+  "license": "https://github.com/Remix-Design/RemixIcon/blob/9fb7967c0a4c09910161192bde99efd3df09f5eb/License",
+  "icons": {
+    "ic_ri_refresh_line": "icons/System/refresh-line.svg",
+    "ic_ri_add_line": "icons/System/add-line.svg",
+    "ic_ri_lock_line": "icons/System/lock-line.svg",
+    "ic_ri_lock_unlock_line": "icons/System/lock-unlock-line.svg",
+    "ic_ri_check_line": "icons/System/check-line.svg",
+    "ic_ri_arrow_down_s_line": "icons/Arrows/arrow-down-s-line.svg",
+    "ic_ri_file_list_3_line": "icons/Document/file-list-3-line.svg"
+  }
+}

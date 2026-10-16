@@ -20,7 +20,7 @@
     <string name="customer_phone_hint">Ví dụ: 0912345678</string>
     
     <string name="confirm_booking_title">Xác nhận đặt sân</string>
-    <string name="btn_confirm">Xác nhận đặt (Demo)</string>
+    <string name="btn_confirm">Xác nhận đặt sân</string>
     <string name="booking_summary_title">Tóm tắt đặt chỗ</string>
     <string name="pitch_label">Sân:</string>
     <string name="date_label">Ngày:</string>

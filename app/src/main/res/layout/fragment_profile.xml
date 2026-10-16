@@ -112,6 +112,16 @@
                     android:padding="16dp">
 
                     <!-- Avatar + Name + Edit -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAdminManagement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Quản lý sân bóng"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_ri_settings"
+                        app:iconGravity="textStart" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -123,10 +133,11 @@
                             android:layout_height="68dp">
 
                             <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/ivProfileAvatar"
                                 android:layout_width="68dp"
                                 android:layout_height="68dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/avatar_minhanh"
+                                android:src="@drawable/ic_ri_user_fill"
                                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
 
                             <FrameLayout
@@ -154,9 +165,10 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tvProfileName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Minh Anh"
+                                android:text="Tài khoản"
                                 android:textColor="@color/text_primary"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
@@ -242,7 +254,7 @@
                                 android:id="@+id/tvStatBookingsNum"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="12"
+                                android:text="—"
                                 android:textColor="@color/text_primary"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
@@ -274,7 +286,7 @@
                                 android:id="@+id/tvStatFavoritesNum"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="3"
+                                android:text="—"
                                 android:textColor="@color/text_primary"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
@@ -309,7 +321,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="4.8"
+                                    android:text="—"
                                     android:textColor="@color/text_primary"
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
@@ -382,7 +394,7 @@
                         android:layout_width="100dp"
                         android:layout_height="72dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_pitch_sunset"
+                        android:src="@drawable/ic_ri_calendar"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
 
                     <LinearLayout
@@ -396,7 +408,7 @@
                             android:id="@+id/tvFrequentPitchName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sân bóng Thượng Đình"
+                            android:text="Chưa có lịch đặt"
                             android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -418,7 +430,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="Thanh Xuân, Hà Nội"
+                                android:text="Đặt sân để xem thông tin tại đây"
                                 android:textColor="@color/text_secondary"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -509,12 +521,13 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvProfilePhone"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
                             android:layout_marginEnd="8dp"
-                            android:text="0912 345 678"
+                            android:text=""
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
 
@@ -557,12 +570,13 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvProfileEmail"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
                             android:layout_marginEnd="8dp"
-                            android:text="minhanh@email.com"
+                            android:text="Chưa cập nhật"
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
 
@@ -605,15 +619,102 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvProfileArea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
                             android:layout_marginEnd="8dp"
-                            android:text="Thanh Xuân, Hà Nội"
+                            android:text="Chưa cập nhật"
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
 
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_ri_arrow_right_s"
+                            app:tint="@color/text_muted" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F5F5F5" android:layout_marginStart="62dp" />
+
+                    <LinearLayout
+                        android:id="@+id/btnProfileGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="14dp">
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_tag_light_green">
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_ri_user_fill"
+                                app:tint="@color/primary_green" />
+                        </FrameLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="Giới tính"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/tvProfileGender"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:layout_marginEnd="8dp"
+                            android:text="Chưa cập nhật"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_ri_arrow_right_s"
+                            app:tint="@color/text_muted" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F5F5F5" android:layout_marginStart="62dp" />
+
+                    <LinearLayout
+                        android:id="@+id/btnProfileBirthdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="14dp">
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_tag_light_green">
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_ri_calendar"
+                                app:tint="@color/primary_green" />
+                        </FrameLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="Ngày sinh"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/tvProfileBirthdate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:layout_marginEnd="8dp"
+                            android:text="Chưa cập nhật"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"

@@ -41,7 +41,7 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:textColor="@color/slot_available_text"
-                android:text="350.000 đ" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/tvSlotStatus"

@@ -93,6 +93,7 @@
                 android:text="Sắp tới" />
 
             <TextView
+                android:id="@+id/tvUpcomingCount"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginStart="6dp"
@@ -102,7 +103,7 @@
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:text="1" />
+                android:text="0" />
         </LinearLayout>
 
         <TextView

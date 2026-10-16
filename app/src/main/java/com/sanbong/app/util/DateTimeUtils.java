@@ -6,14 +6,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Tiện ích xử lý ngày và thứ tiếng Việt
  */
 public final class DateTimeUtils {
 
-    private static final SimpleDateFormat ISO_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    private static final SimpleDateFormat DISPLAY_FORMAT = new SimpleDateFormat("dd/MM", Locale.getDefault());
+    private static final TimeZone BUSINESS_TIMEZONE = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+
+    private static SimpleDateFormat formatter(String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ROOT);
+        format.setTimeZone(BUSINESS_TIMEZONE);
+        format.setLenient(false);
+        return format;
+    }
 
     private DateTimeUtils() {
         // Tránh khởi tạo instance
@@ -24,12 +31,23 @@ public final class DateTimeUtils {
      */
     public static List<String> getNextDays(int numberOfDays) {
         List<String> days = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(BUSINESS_TIMEZONE);
         for (int i = 0; i < numberOfDays; i++) {
-            days.add(ISO_FORMAT.format(calendar.getTime()));
+            days.add(formatter("yyyy-MM-dd").format(calendar.getTime()));
             calendar.add(Calendar.DAY_OF_YEAR, 1);
         }
         return days;
+    }
+
+    /** Hôm nay và tối đa 7 ngày tiếp theo được nhận đặt sân. */
+    public static List<String> getBookableDates() {
+        return getNextDays(8);
+    }
+
+    public static Calendar getLatestBookableDay() {
+        Calendar latest = Calendar.getInstance(BUSINESS_TIMEZONE);
+        latest.add(Calendar.DAY_OF_YEAR, 7);
+        return latest;
     }
 
     /**
@@ -37,27 +55,58 @@ public final class DateTimeUtils {
      */
     public static String formatDisplayDate(String isoDate) {
         try {
-            Date date = ISO_FORMAT.parse(isoDate);
+            Date date = formatter("yyyy-MM-dd").parse(isoDate);
             if (date == null) return isoDate;
 
-            Calendar today = Calendar.getInstance();
-            Calendar target = Calendar.getInstance();
+            Calendar today = Calendar.getInstance(BUSINESS_TIMEZONE);
+            Calendar target = Calendar.getInstance(BUSINESS_TIMEZONE);
             target.setTime(date);
 
             if (isSameDay(today, target)) {
-                return "Hôm nay, " + DISPLAY_FORMAT.format(date);
+                return "Hôm nay, " + formatter("dd/MM").format(date);
             }
 
             today.add(Calendar.DAY_OF_YEAR, 1);
             if (isSameDay(today, target)) {
-                return "Ngày mai, " + DISPLAY_FORMAT.format(date);
+                return "Ngày mai, " + formatter("dd/MM").format(date);
             }
 
             int dayOfWeek = target.get(Calendar.DAY_OF_WEEK);
             String dayName = getVietnameseDayOfWeek(dayOfWeek);
-            return dayName + ", " + DISPLAY_FORMAT.format(date);
+            return dayName + ", " + formatter("dd/MM").format(date);
         } catch (Exception e) {
             return isoDate;
+        }
+    }
+
+    public static boolean hasBookingStarted(String date, String range) {
+        return bookingTimeReached(date, range, 0, System.currentTimeMillis());
+    }
+
+    public static String durationLabel(String range) {
+        if (range == null || !range.matches("\\d{2}:\\d{2}\\s*[-–]\\s*\\d{2}:\\d{2}")) return "—";
+        String[] times = range.split("\\s*[-–]\\s*");
+        String[] start = times[0].split(":"), end = times[1].split(":");
+        int startHour = Integer.parseInt(start[0]), startMinute = Integer.parseInt(start[1]);
+        int endHour = Integer.parseInt(end[0]), endMinute = Integer.parseInt(end[1]);
+        int minutes = endHour * 60 + endMinute - startHour * 60 - startMinute;
+        if (startHour > 23 || endHour > 23 || startMinute > 59 || endMinute > 59 || minutes <= 0) return "—";
+        return minutes % 60 == 0 ? (minutes / 60) + " giờ"
+                : minutes < 60 ? minutes + " phút" : (minutes / 60) + " giờ " + (minutes % 60) + " phút";
+    }
+
+    public static boolean hasBookingEnded(String date, String range) {
+        return bookingTimeReached(date, range, 1, System.currentTimeMillis());
+    }
+
+    public static boolean bookingTimeReached(String date, String range, int part, long nowMillis) {
+        try {
+            String[] times = range.split("\\s*[-–]\\s*");
+            if (times.length != 2 || part < 0 || part > 1) return false;
+            Date moment = formatter("yyyy-MM-dd HH:mm").parse(date + " " + times[part].trim());
+            return moment != null && moment.getTime() <= nowMillis;
+        } catch (Exception invalid) {
+            return false;
         }
     }
 
