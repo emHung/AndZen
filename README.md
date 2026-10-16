@@ -136,73 +136,24 @@ graph TD
 
 ---
 
-## 📸 Bộ Ảnh Chụp Màn Hình Minh Họa Ứng Dụng
+## 📸 Bộ Ảnh Chụp Màn Hình Minh Họa Ứng Dụng (Screenshots 3x3)
 
 Toàn bộ ảnh chụp dưới đây được ghi lại trực tiếp từ thiết bị Android Emulator thực tế của dự án:
 
-### I. Cổng Đặt Sân & Trải Nghiệm Khách Hàng
+| 1. Trang chủ / Tìm sân | 2. Chi tiết sân bóng | 3. Xác nhận đặt sân |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/trangchu.png" width="240" alt="Trang chủ / Tìm sân" /> | <img src="docs/screenshots/chitietsan.png" width="240" alt="Chi tiết sân bóng" /> | <img src="docs/screenshots/xacnhandatsan.png" width="240" alt="Xác nhận đặt sân" /> |
+| **Trang chủ (`trangchu.png`)**<br/>Tìm kiếm sân, lọc loại sân 5/7/11, sân gần bạn | **Chi tiết sân (`chitietsan.png`)**<br/>Tiện ích, dải chọn ngày & lưới khung giờ trống | **Xác nhận (`xacnhandatsan.png`)**<br/>Tóm tắt đơn, thông tin người đặt & phương thức trả |
 
-#### 1. Trang Chủ / Tìm Kiếm Sân Bóng (`trangchu.png`)
-*Thanh tìm kiếm thông minh, chip lọc nhanh sân 5/7/11, danh sách thẻ sân bóng kèm giá, tiện ích và đánh giá.*
-<p align="center">
-  <img src="docs/screenshots/trangchu.png" width="360" alt="Trang chủ tìm sân" />
-</p>
+| 4. Đặt sân thành công | 5. Danh sách lịch đã đặt | 6. Chi tiết đơn đã đặt |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/datsanthanhcong.png" width="240" alt="Đặt sân thành công" /> | <img src="docs/screenshots/lichdadat.png" width="240" alt="Lịch đã đặt" /> | <img src="docs/screenshots/chitietsandadat.png" width="240" alt="Chi tiết đơn đã đặt" /> |
+| **Thành công (`datsanthanhcong.png`)**<br/>Mã đơn đặt sân duy nhất, chuyển nhanh tới lịch | **Lịch của tôi (`lichdadat.png`)**<br/>Phân loại Sắp tới / Đã xong / Đã hủy | **Chi tiết (`chitietsandadat.png`)**<br/>Thông tin đơn đặt, thao tác đổi lịch & hủy sân |
 
-#### 2. Chi Tiết Sân Bóng & Chọn Khung Giờ (`chitietsan.png`)
-*Hình ảnh sân thực tế sắc nét, danh sách tiện ích, dải ngày cuộn ngang tự động lọc ngày còn sân và lưới khung giờ trống.*
-<p align="center">
-  <img src="docs/screenshots/chitietsan.png" width="360" alt="Chi tiết sân bóng" />
-</p>
-
-#### 3. Xác Nhận Thông Tin & Thanh Toán (`xacnhandatsan.png`)
-*Tóm tắt đơn đặt, nhập họ tên & số điện thoại người nhận sân, lựa chọn phương thức thanh toán linh hoạt.*
-<p align="center">
-  <img src="docs/screenshots/xacnhandatsan.png" width="360" alt="Xác nhận đặt sân" />
-</p>
-
-#### 4. Đặt Sân Thành Công (`datsanthanhcong.png`)
-*Thông báo đặt thành công kèm mã đặt sân độc nhất (`SANBONG-XXXXXX`), hỗ trợ điều hướng nhanh tới trang lịch.*
-<p align="center">
-  <img src="docs/screenshots/datsanthanhcong.png" width="360" alt="Đặt sân thành công" />
-</p>
-
----
-
-### II. Quản Lý Đơn Đặt & Tài Khoản Cá Nhân
-
-#### 5. Danh Sách Lịch Đã Đặt (`lichdadat.png`)
-*Phân loại trực quan 3 trạng thái: Sắp tới (Upcoming), Đã hoàn thành (Completed) và Đã hủy (Cancelled).*
-<p align="center">
-  <img src="docs/screenshots/lichdadat.png" width="360" alt="Lịch đã đặt" />
-</p>
-
-#### 6. Chi Tiết Đơn Đặt Sân & Thao Tác Hủy/Đổi Lịch (`chitietsandadat.png`)
-*Hiển thị đầy đủ thông tin trận đấu, hỗ trợ đổi lịch sang khung giờ mới hoặc hủy lịch kèm dialog xác nhận lý do.*
-<p align="center">
-  <img src="docs/screenshots/chitietsandadat.png" width="360" alt="Chi tiết đơn đã đặt" />
-</p>
-
-#### 7. Hồ Sơ Cá Nhân & Thống Kê Trận Đấu (`profile.png`)
-*Thông tin tài khoản, avatar, thống kê số trận đã tham gia, sân bóng yêu thích và lối vào khu vực Quản trị.*
-<p align="center">
-  <img src="docs/screenshots/profile.png" width="360" alt="Hồ sơ cá nhân" />
-</p>
-
-#### 8. Trung Tâm Thông Báo Hệ Thống (`thongbao.png`)
-*Cập nhật trạng thái đơn đặt sân theo thời gian thực, nhắc nhở trước giờ bóng lăn và tin tức ưu đãi.*
-<p align="center">
-  <img src="docs/screenshots/thongbao.png" width="360" alt="Trung tâm thông báo" />
-</p>
-
----
-
-### III. Khu Vực Quản Trị Viên & Chủ Sân (Admin Portal)
-
-#### 9. Bảng Điều Khiển Quản Lý Sân Bóng (`quanlysan.png`)
-*Phân hệ dành riêng cho ban quản lý: kiểm soát danh mục sân, khóa/mở khung giờ, duyệt đơn đặt và quản lý nhân viên.*
-<p align="center">
-  <img src="docs/screenshots/quanlysan.png" width="360" alt="Quản lý sân bóng Admin" />
-</p>
+| 7. Quản lý sân (Admin) | 8. Thông báo hệ thống | 9. Hồ sơ cá nhân |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/quanlysan.png" width="240" alt="Quản lý sân bóng" /> | <img src="docs/screenshots/thongbao.png" width="240" alt="Thông báo" /> | <img src="docs/screenshots/profile.png" width="240" alt="Hồ sơ cá nhân" /> |
+| **Quản trị (`quanlysan.png`)**<br/>Bảng điều khiển Admin, khóa/mở khung giờ sân | **Thông báo (`thongbao.png`)**<br/>Cập nhật đơn đặt, lời nhắc trước giờ thi đấu | **Tài khoản (`profile.png`)**<br/>Quản lý thông tin, đổi avatar & thống kê số trận |
 
 ---
 
