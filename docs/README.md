@@ -20,6 +20,15 @@ Tài liệu chính thức của toàn bộ dự án với đầy đủ hướng 
 
 ---
 
+## 💾 Cơ Sở Dữ Liệu & Dữ Liệu Mẫu (Database & Seed Data)
+
+Dự án cung cấp sẵn trọn bộ script SQL và công cụ Python để import cơ sở dữ liệu trên Supabase:
+- [`backend/supabase/schema.sql`](file:///d:/AndZen/backend/supabase/schema.sql): DDL tổng hợp toàn bộ bảng, RLS, triggers và stored procedures (`create_booking`, `cancel_booking`, `reschedule_booking`,...).
+- [`backend/supabase/seed.sql`](file:///d:/AndZen/backend/supabase/seed.sql): Script nạp 6 sân bóng mẫu thực tế tại Hà Nội và tự động sinh toàn bộ khung giờ trống cho 7 ngày tới tính từ ngày chạy script.
+- [`backend/scripts/seed_supabase.py`](file:///d:/AndZen/backend/scripts/seed_supabase.py): Công cụ Python CLI nạp dữ liệu mẫu vào Supabase tự động qua API.
+
+---
+
 ## 📱 Danh Mục Hình Ảnh Giao Diện Thực Tế
 
 Bộ ảnh chụp màn hình chất lượng cao ghi lại từ thiết bị Android Emulator được lưu trữ trong thư mục [`docs/screenshots/`](file:///d:/AndZen/docs/screenshots/):

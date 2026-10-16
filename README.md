@@ -207,7 +207,22 @@ PORT=8011
 
 > ⚠️ **LƯU Ý BẢO MẬT:** `SUPABASE_SERVICE_ROLE_KEY` chỉ được đặt tại `backend/.env` phục vụ backend nghiệp vụ. **Tuyệt đối không đưa key này vào app Android Client**.
 
-#### Bước 2.3: Khởi chạy máy chủ Backend
+#### Bước 2.3: Nạp Database Schema & Dữ Liệu Mẫu (Supabase)
+Dự án đã chuẩn bị sẵn trọn bộ file DDL tạo bảng, stored procedures và dữ liệu mẫu (danh mục sân bóng, khung giờ động theo ngày thực tế) tại thư mục `backend/supabase/`:
+
+* **Cách 1: Nạp trực tiếp qua Supabase Dashboard (Nhanh nhất & Khuyên dùng)**:
+  1. Truy cập dự án trên [Supabase Dashboard](https://supabase.com/dashboard) $\rightarrow$ Chọn mục **SQL Editor**.
+  2. Mở file [`backend/supabase/schema.sql`](backend/supabase/schema.sql), sao chép toàn bộ nội dung, dán vào SQL Editor và nhấn **Run** để tự động tạo toàn bộ bảng (`profiles`, `pitches`, `time_slots`, `bookings`, `favorites`, `user_settings`, `staff_pitch_assignments`), các RLS policies, triggers và stored procedures (`create_booking`, `cancel_booking`, `reschedule_booking`,...).
+  3. Mở tiếp file [`backend/supabase/seed.sql`](backend/supabase/seed.sql), dán vào SQL Editor và nhấn **Run**. Script sẽ nạp 6 sân bóng thực tế tại Hà Nội và tự động sinh toàn bộ khung giờ trống (11 ca/ngày/sân từ 06:00 đến 22:30) cho 7 ngày tới tính từ ngày chạy script.
+
+* **Cách 2: Nạp dữ liệu mẫu tự động bằng Python CLI**:
+  Sau khi đã chạy `schema.sql` và có file `backend/.env`, bạn có thể chạy script Python để nạp dữ liệu:
+  ```bash
+  python scripts/seed_supabase.py
+  ```
+  *(Script đọc thông tin từ `backend/.env` và nạp dữ liệu thông qua Supabase Service Role API).*
+
+#### Bước 2.4: Khởi chạy máy chủ Backend
 * **Cách 1: Khởi chạy tự động với ADB reverse (Khuyên dùng trên Windows)**:
   Script này tự động chuyển tiếp cổng kết nối từ Android Emulator và bật máy chủ Uvicorn:
   ```powershell
