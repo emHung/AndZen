@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Small blocking HTTP client. Call it only from a worker thread. */
 public final class ApiClient {
@@ -109,10 +111,58 @@ public final class ApiClient {
         connection.disconnect();
         if (status >= 400) {
             String message = "Máy chủ trả lỗi " + status + ".";
-            try { message = new JSONObject(response).optString("detail", message); } catch (Exception ignoredError) { }
+            try {
+                JSONArray arr = null;
+                String trimmed = response != null ? response.trim() : "";
+                if (trimmed.startsWith("[")) {
+                    arr = new JSONArray(trimmed);
+                } else if (trimmed.startsWith("{")) {
+                    JSONObject json = new JSONObject(trimmed);
+                    Object detailObj = json.opt("detail");
+                    if (detailObj instanceof JSONArray) {
+                        arr = (JSONArray) detailObj;
+                    } else if (detailObj != null && !detailObj.toString().isEmpty()) {
+                        message = detailObj.toString();
+                    }
+                }
+                if (arr != null) {
+                    List<String> errors = new ArrayList<>();
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject item = arr.optJSONObject(i);
+                        if (item != null) {
+                            JSONArray loc = item.optJSONArray("loc");
+                            String field = loc != null && loc.length() > 0 ? loc.optString(loc.length() - 1) : "";
+                            String fieldName = translateField(field);
+                            String msg = item.optString("msg", "");
+                            JSONObject ctx = item.optJSONObject("ctx");
+                            if (msg.contains("at least") || "string_too_short".equals(item.optString("type"))) {
+                                int min = ctx != null ? ctx.optInt("min_length", 2) : 2;
+                                errors.add(fieldName + " phải có tối thiểu " + min + " ký tự.");
+                            } else if (msg.contains("at most") || "string_too_long".equals(item.optString("type"))) {
+                                int max = ctx != null ? ctx.optInt("max_length", 120) : 120;
+                                errors.add(fieldName + " không được vượt quá " + max + " ký tự.");
+                            } else {
+                                errors.add(fieldName + ": " + msg);
+                            }
+                        }
+                    }
+                    if (!errors.isEmpty()) message = String.join("\n", errors);
+                }
+            } catch (Exception ignoredError) { }
             throw new IllegalStateException(message);
         }
         return response;
+    }
+
+    private static String translateField(String field) {
+        if ("address".equals(field)) return "Địa chỉ";
+        if ("name".equals(field)) return "Tên sân";
+        if ("district".equals(field)) return "Khu vực";
+        if ("id".equals(field)) return "Mã sân";
+        if ("base_price".equals(field)) return "Giá cơ bản";
+        if ("description".equals(field)) return "Mô tả";
+        if ("pitch_type".equals(field)) return "Loại sân";
+        return field;
     }
 
     private static String readAll(InputStream input) throws Exception {

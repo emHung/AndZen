@@ -153,15 +153,18 @@ public class AdminActivity extends AppCompatActivity {
     private void showPitchForm(JSONObject current) {
         pitchFormDialog = new AdminPitchFormDialog(this, current,
                 () -> pitchImagePicker.launch("image/*"),
-                body -> {
+                (body, onError, onSuccess) -> {
                     String path = current == null ? "/v1/admin/pitches" : "/v1/admin/pitches/" + current.optString("id");
                     executor.execute(() -> {
                         try {
                             if (current == null) ApiClient.post(this, path, body);
                             else ApiClient.patch(this, path, body);
-                            runOnUiThread(this::loadData);
+                            runOnUiThread(() -> {
+                                onSuccess.run();
+                                loadData();
+                            });
                         } catch (Exception exception) {
-                            runOnUiThread(() -> message.setText("Không lưu được sân: " + exception.getMessage()));
+                            runOnUiThread(() -> onError.accept("Không lưu được sân: " + exception.getMessage()));
                         }
                     });
                 });

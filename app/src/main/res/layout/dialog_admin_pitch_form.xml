@@ -87,6 +87,7 @@
 
         <!-- Scrollable Content -->
         <ScrollView
+            android:id="@+id/formPitchScroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -564,21 +565,28 @@
                     android:textColor="@color/text_primary"
                     android:checked="true"
                     app:useMaterialThemeColors="true" />
-
-                <!-- Thông báo lỗi nếu có -->
-                <TextView
-                    android:id="@+id/formPitchError"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:padding="8dp"
-                    android:background="@drawable/bg_tag_red_light"
-                    android:text="Vui lòng điền đủ các trường bắt buộc"
-                    android:textSize="12sp"
-                    android:textColor="@color/danger"
-                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
+
+        <!-- Thông báo lỗi (Ghim cố định phía trên các nút bấm) -->
+        <TextView
+            android:id="@+id/formPitchError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_tag_red_light"
+            android:drawableStart="@drawable/ic_ri_info"
+            android:drawableTint="@color/danger"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="Vui lòng điền đủ các trường bắt buộc"
+            android:textSize="12sp"
+            android:textColor="@color/danger"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"

@@ -26,9 +26,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class AdminPitchFormDialog {
+    public interface FormSubmitHandler {
+        void submit(JSONObject body, Consumer<String> onError, Runnable onSuccess);
+    }
+
     private final AppCompatActivity activity;
     private final JSONObject current;
-    private final Consumer<JSONObject> onSave;
+    private final FormSubmitHandler onSubmit;
     private final Runnable onRequestPickImage;
     private AlertDialog dialog;
 
@@ -39,17 +43,19 @@ public class AdminPitchFormDialog {
     private SwitchMaterial swActive;
     private TextView tvError;
     private TextView[] presetChips;
+    private Button btnSave, btnCancel;
+    private ScrollView formScroll;
 
     private String selectedPresetKey = "img_pitch_1";
     private Bitmap customPickedBitmap = null;
     private Uri customPickedUri = null;
 
     public AdminPitchFormDialog(AppCompatActivity activity, JSONObject current,
-                                Runnable onRequestPickImage, Consumer<JSONObject> onSave) {
+                                Runnable onRequestPickImage, FormSubmitHandler onSubmit) {
         this.activity = activity;
         this.current = current;
         this.onRequestPickImage = onRequestPickImage;
-        this.onSave = onSave;
+        this.onSubmit = onSubmit;
     }
 
     public void show() {
@@ -116,6 +122,9 @@ public class AdminPitchFormDialog {
         etDescription = v.findViewById(R.id.formPitchDescription);
         swActive = v.findViewById(R.id.formPitchActiveSwitch);
         tvError = v.findViewById(R.id.formPitchError);
+        btnCancel = v.findViewById(R.id.btnCancelPitchForm);
+        btnSave = v.findViewById(R.id.btnSavePitchForm);
+        formScroll = v.findViewById(R.id.formPitchScroll);
 
         presetChips = new TextView[]{
                 v.findViewById(R.id.chipPreset1),
@@ -132,6 +141,7 @@ public class AdminPitchFormDialog {
         TextView tvTitle = dialogTitleView();
         if (current == null) {
             etId.setEnabled(true);
+            etPrice.setText("350000");
             selectedPresetKey = "img_pitch_1";
             ivPreview.setImageResource(R.drawable.img_pitch_1);
             badgeStatus.setText("✓ Ảnh mẫu 1");
@@ -239,17 +249,97 @@ public class AdminPitchFormDialog {
         String district = etDistrict.getText().toString().trim();
         String address = etAddress.getText().toString().trim();
 
-        if (id.isEmpty() || name.isEmpty() || priceStr.isEmpty() || district.isEmpty() || address.isEmpty()) {
-            showError("Vui lòng nhập đầy đủ các trường có dấu (*)");
+        etId.setError(null);
+        etName.setError(null);
+        etDistrict.setError(null);
+        etAddress.setError(null);
+        etPrice.setError(null);
+        tvError.setVisibility(View.GONE);
+
+        if (id.isEmpty()) {
+            etId.setError("Vui lòng nhập mã sân");
+            etId.requestFocus();
+            showError("Vui lòng nhập mã sân (*)");
+            scrollToView(etId);
+            return;
+        }
+        if (name.isEmpty()) {
+            etName.setError("Vui lòng nhập tên sân");
+            etName.requestFocus();
+            showError("Vui lòng nhập tên sân bóng (*)");
+            scrollToView(etName);
+            return;
+        }
+        if (priceStr.isEmpty()) {
+            etPrice.setError("Vui lòng nhập giá cơ bản");
+            etPrice.requestFocus();
+            showError("Vui lòng nhập giá cơ bản (*)");
+            scrollToView(etPrice);
+            return;
+        }
+        if (district.isEmpty()) {
+            etDistrict.setError("Vui lòng nhập khu vực");
+            etDistrict.requestFocus();
+            showError("Vui lòng nhập khu vực (quận/huyện) (*)");
+            scrollToView(etDistrict);
+            return;
+        }
+        if (address.isEmpty()) {
+            etAddress.setError("Vui lòng nhập địa chỉ cụ thể");
+            etAddress.requestFocus();
+            showError("Vui lòng nhập địa chỉ cụ thể (*)");
+            scrollToView(etAddress);
+            return;
+        }
+
+        if (id.length() < 2) {
+            etId.setError("Mã sân phải có tối thiểu 2 ký tự (VD: p7)");
+            etId.requestFocus();
+            showError("Mã sân (ID) phải có tối thiểu 2 ký tự (VD: p7)");
+            scrollToView(etId);
+            return;
+        }
+        if (!id.matches("^[a-zA-Z0-9_-]+$")) {
+            etId.setError("Mã sân chỉ gồm chữ cái, số, gạch dưới (_) hoặc gạch nối (-)");
+            etId.requestFocus();
+            showError("Mã sân chỉ gồm chữ cái, số, gạch dưới (_) hoặc gạch nối (-)");
+            scrollToView(etId);
+            return;
+        }
+
+        if (name.length() < 2) {
+            etName.setError("Tên sân bóng phải có tối thiểu 2 ký tự");
+            etName.requestFocus();
+            showError("Tên sân bóng phải có tối thiểu 2 ký tự");
+            scrollToView(etName);
+            return;
+        }
+
+        if (district.length() < 2) {
+            etDistrict.setError("Khu vực (quận/huyện) phải có tối thiểu 2 ký tự");
+            etDistrict.requestFocus();
+            showError("Khu vực (quận/huyện) phải có tối thiểu 2 ký tự");
+            scrollToView(etDistrict);
+            return;
+        }
+
+        if (address.length() < 5) {
+            etAddress.setError("Địa chỉ cụ thể phải có tối thiểu 5 ký tự (VD: 129 Nguyễn Trãi)");
+            etAddress.requestFocus();
+            showError("Địa chỉ cụ thể phải có tối thiểu 5 ký tự (VD: 129 Nguyễn Trãi)");
+            scrollToView(etAddress);
             return;
         }
 
         long price;
         try {
             price = Long.parseLong(priceStr);
-            if (price <= 0) throw new NumberFormatException();
+            if (price <= 0 || price > 100_000_000) throw new NumberFormatException();
         } catch (Exception ex) {
-            showError("Giá cơ bản phải là số nguyên lớn hơn 0");
+            etPrice.setError("Giá cơ bản phải là số nguyên từ 1 đến 100.000.000 VNĐ");
+            etPrice.requestFocus();
+            showError("Giá cơ bản phải là số nguyên từ 1 đến 100.000.000 VNĐ");
+            scrollToView(etPrice);
             return;
         }
 
@@ -278,8 +368,24 @@ public class AdminPitchFormDialog {
             }
             body.put("amenities", amenityList);
 
-            onSave.accept(body);
-            dialog.dismiss();
+            tvError.setVisibility(View.GONE);
+            if (btnSave != null) {
+                btnSave.setEnabled(false);
+                btnSave.setText("Đang lưu...");
+            }
+
+            onSubmit.submit(body,
+                    errorMessage -> activity.runOnUiThread(() -> {
+                        if (btnSave != null) {
+                            btnSave.setEnabled(true);
+                            btnSave.setText("Lưu sân bóng");
+                        }
+                        showError(errorMessage);
+                    }),
+                    () -> activity.runOnUiThread(() -> {
+                        if (dialog != null && dialog.isShowing()) dialog.dismiss();
+                    })
+            );
         } catch (Exception ex) {
             showError("Lỗi cấu trúc dữ liệu: " + ex.getMessage());
         }
@@ -303,6 +409,18 @@ public class AdminPitchFormDialog {
     private void showError(String msg) {
         tvError.setText(msg);
         tvError.setVisibility(View.VISIBLE);
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void scrollToView(View view) {
+        if (formScroll != null && view != null) {
+            formScroll.post(() -> {
+                android.graphics.Rect rect = new android.graphics.Rect();
+                view.getDrawingRect(rect);
+                formScroll.offsetDescendantRectToMyCoords(view, rect);
+                formScroll.requestChildRectangleOnScreen(view, rect, false);
+            });
+        }
     }
 
     private TextView dialogTitleView() {
