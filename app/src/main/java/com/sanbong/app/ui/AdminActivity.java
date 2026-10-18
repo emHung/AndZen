@@ -29,6 +29,10 @@ public class AdminActivity extends AppCompatActivity {
     private String selectedPitchId;
     private AdminSection section;
     private String focusedSlotId, focusedSlotDay;
+    private AdminPitchFormDialog pitchFormDialog;
+    private final androidx.activity.result.ActivityResultLauncher<String> pitchImagePicker =
+            registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.GetContent(),
+                    uri -> { if (uri != null && pitchFormDialog != null) pitchFormDialog.handleImagePicked(uri); });
 
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
@@ -147,45 +151,23 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void showPitchForm(JSONObject current) {
-        LinearLayout fields = new LinearLayout(this); fields.setPadding(dp(18), dp(4), dp(18), dp(4)); fields.setOrientation(LinearLayout.VERTICAL);
-        EditText id = field(fields, "Mã sân", current == null ? "" : current.optString("id"), false);
-        EditText name = field(fields, "Tên sân", current == null ? "" : current.optString("name"), false);
-        EditText district = field(fields, "Khu vực", current == null ? "" : current.optString("district"), false);
-        EditText address = field(fields, "Địa chỉ", current == null ? "" : current.optString("address"), false);
-        Spinner type = new Spinner(this); type.setAdapter(new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new String[]{"Sân 5 người", "Sân 7 người", "Sân 11 người"}));
-        if (current != null) type.setSelection(java.util.Arrays.asList("FIVE", "SEVEN", "ELEVEN").indexOf(current.optString("pitch_type")));
-        fields.addView(type);
-        EditText price = field(fields, "Giá cơ bản", current == null ? "" : String.valueOf(current.optLong("base_price")), true);
-        EditText description = field(fields, "Mô tả", current == null ? "" : current.optString("description"), false);
-        EditText amenities = field(fields, "Tiện ích (phân tách bằng dấu phẩy)", current == null ? "" : join(current.optJSONArray("amenities")), false);
-        CheckBox active = new CheckBox(this); active.setText("Sân đang hoạt động"); active.setChecked(current == null || current.optBoolean("is_active", true)); if (current != null) fields.addView(active);
-        ScrollView scroll = new ScrollView(this); scroll.addView(fields);
-        new androidx.appcompat.app.AlertDialog.Builder(this).setTitle(current == null ? "Thêm sân" : "Sửa sân")
-                .setView(scroll).setNegativeButton("Hủy", null).setPositiveButton("Lưu", (d, w) -> {
-                    try {
-                        JSONObject body = new JSONObject(); if (current == null) body.put("id", id.getText().toString().trim());
-                        body.put("name", name.getText().toString().trim()).put("district", district.getText().toString().trim())
-                                .put("address", address.getText().toString().trim()).put("pitch_type", new String[]{"FIVE", "SEVEN", "ELEVEN"}[type.getSelectedItemPosition()])
-                                .put("base_price", Long.parseLong(price.getText().toString().trim())).put("rating", current == null ? 0 : current.optDouble("rating"))
-                                .put("description", description.getText().toString().trim()).put("image_key", current == null ? JSONObject.NULL : current.opt("image_key"))
-                                .put("is_active", active.isChecked());
-                        JSONArray amenityList = new JSONArray(); for (String part : amenities.getText().toString().split(",")) if (!part.trim().isEmpty()) amenityList.put(part.trim());
-                        body.put("amenities", amenityList);
-                        String path = current == null ? "/v1/admin/pitches" : "/v1/admin/pitches/" + current.optString("id");
-                        executor.execute(() -> {
-                            try { if (current == null) ApiClient.post(this, path, body); else ApiClient.patch(this, path, body); runOnUiThread(this::loadData); }
-                            catch (Exception exception) { runOnUiThread(() -> message.setText("Không lưu được sân: " + exception.getMessage())); }
-                        });
-                    } catch (Exception exception) { message.setText("Thông tin sân chưa hợp lệ: " + exception.getMessage()); }
-                }).show();
+        pitchFormDialog = new AdminPitchFormDialog(this, current,
+                () -> pitchImagePicker.launch("image/*"),
+                body -> {
+                    String path = current == null ? "/v1/admin/pitches" : "/v1/admin/pitches/" + current.optString("id");
+                    executor.execute(() -> {
+                        try {
+                            if (current == null) ApiClient.post(this, path, body);
+                            else ApiClient.patch(this, path, body);
+                            runOnUiThread(this::loadData);
+                        } catch (Exception exception) {
+                            runOnUiThread(() -> message.setText("Không lưu được sân: " + exception.getMessage()));
+                        }
+                    });
+                });
+        pitchFormDialog.show();
     }
 
-    private EditText field(LinearLayout parent, String hint, String value, boolean numeric) {
-        EditText input = new EditText(this); input.setSingleLine(false); input.setHint(hint); input.setText(value);
-        if (numeric) input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        parent.addView(input, new LinearLayout.LayoutParams(-1, dp(52))); return input;
-    }
     private int dp(int value) { return (int)(value * getResources().getDisplayMetrics().density + 0.5f); }
-    private String join(JSONArray values) { if (values == null) return ""; List<String> out = new ArrayList<>(); for (int i=0;i<values.length();i++) out.add(values.optString(i)); return String.join(", ", out); }
     @Override protected void onDestroy() { if (section != null) section.close(); executor.shutdownNow(); super.onDestroy(); }
 }

@@ -94,7 +94,7 @@ public class PitchDetailActivity extends AppCompatActivity {
 
     private void bindPitchInfo() {
         ImageView iv = findViewById(R.id.ivDetailBanner);
-        if (iv != null && pitch.getImageResId() != 0) iv.setImageResource(pitch.getImageResId());
+        if (iv != null) com.sanbong.app.util.PitchImageLoader.load(iv, pitch);
         ((TextView) findViewById(R.id.tvDetailName)).setText(pitch.getName());
         ((TextView) findViewById(R.id.tvDetailAddress)).setText(pitch.getAddress());
         ((TextView) findViewById(R.id.tvDetailType)).setText(pitch.getType().getDisplayName());

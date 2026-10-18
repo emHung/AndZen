@@ -77,8 +77,8 @@ public class BookingConfirmActivity extends AppCompatActivity {
 
     private void bindSummaryData() {
         android.widget.ImageView ivBanner = findViewById(R.id.ivConfirmBanner);
-        if (ivBanner != null && pitch.getImageResId() != 0) {
-            ivBanner.setImageResource(pitch.getImageResId());
+        if (ivBanner != null) {
+            com.sanbong.app.util.PitchImageLoader.load(ivBanner, pitch);
         }
         tvSummaryPitchName.setText(pitch.getName());
         TextView tvType = findViewById(R.id.tvSummaryPitchType);

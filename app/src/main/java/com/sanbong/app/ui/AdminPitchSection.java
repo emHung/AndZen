@@ -74,7 +74,7 @@ final class AdminPitchSection {
         View card = LayoutInflater.from(context).inflate(R.layout.item_admin_pitch, parent, false);
         Pitch pitch = PitchMapper.fromJson(row);
         ImageView image = card.findViewById(R.id.adminPitchImage);
-        image.setImageResource(pitch.getImageResId());
+        com.sanbong.app.util.PitchImageLoader.load(image, pitch);
         TextView status = card.findViewById(R.id.adminPitchStatus);
         boolean active = row.optBoolean("is_active");
         status.setText(active ? "● Đang hoạt động" : "● Đã ẩn");

@@ -95,8 +95,8 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
 
         void bind(Pitch pitch, OnPitchClickListener listener, java.util.Set<String> favoriteIds,
                   java.util.concurrent.ExecutorService favoriteExecutor) {
-            if (ivPitchImage != null && pitch.getImageResId() != 0) {
-                ivPitchImage.setImageResource(pitch.getImageResId());
+            if (ivPitchImage != null) {
+                com.sanbong.app.util.PitchImageLoader.load(ivPitchImage, pitch);
             }
             tvPitchName.setText(pitch.getName());
             tvRating.setText(String.valueOf(pitch.getRating()));

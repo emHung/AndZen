@@ -15,7 +15,7 @@ public final class PitchMapper {
         List<String> amenities = new ArrayList<>();
         if (raw != null) for (int i = 0; i < raw.length(); i++) amenities.add(raw.optString(i));
         String key = row.optString("image_key", "");
-        int image = 0;
+        int image = R.drawable.img_pitch_1;
         switch (key) {
             case "img_pitch_1": image = R.drawable.img_pitch_1; break;
             case "img_pitch_2": image = R.drawable.img_pitch_2; break;
