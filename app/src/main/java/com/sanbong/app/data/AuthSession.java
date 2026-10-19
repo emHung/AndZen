@@ -106,8 +106,7 @@ public final class AuthSession {
         }
         String code = callback.getQueryParameter("code");
         if (code == null || code.isEmpty()) {
-            String error = callback.getQueryParameter("error_description");
-            throw new IllegalStateException(error == null ? "Đăng nhập Google chưa hoàn tất." : error);
+            throw new IllegalStateException("Không thể hoàn tất đăng nhập Google. Hãy thử lại hoặc chọn cách đăng nhập khác.");
         }
         String verifier = context.getSharedPreferences("auth_oauth", Context.MODE_PRIVATE)
                 .getString("pkce_verifier", null);
@@ -178,11 +177,20 @@ public final class AuthSession {
         String body = readAll(input);
         connection.disconnect();
         if (status >= 400) {
-            String message = "Yêu cầu xác thực thất bại (" + status + ").";
-            try {
-                JSONObject error = new JSONObject(body);
-                message = error.optString("msg", error.optString("message", error.optString("error_description", message)));
-            } catch (Exception ignored) { }
+            String message;
+            if (status == 400 || status == 401) {
+                message = "Thông tin đăng nhập chưa đúng hoặc phiên đăng nhập đã hết hạn.";
+            } else if (status == 403) {
+                message = "Tài khoản chưa được phép thực hiện thao tác này.";
+            } else if (status == 422) {
+                message = "Thông tin chưa hợp lệ hoặc tài khoản đã tồn tại.";
+            } else if (status == 429) {
+                message = "Bạn thao tác quá nhanh. Hãy chờ một lúc rồi thử lại.";
+            } else if (status >= 500) {
+                message = "Dịch vụ xác thực đang bận. Vui lòng thử lại sau.";
+            } else {
+                message = "Không thể hoàn tất yêu cầu xác thực. Vui lòng thử lại.";
+            }
             throw new IllegalStateException(message);
         }
         return body.trim().isEmpty() ? new JSONObject() : new JSONObject(body);

@@ -32,6 +32,35 @@ def get_supabase() -> Client:
                          options=SyncClientOptions(httpx_client=transport(), auto_refresh_token=False, persist_session=False))
 
 
+def get_user_supabase(access_token: str) -> Client:
+    settings = get_settings()
+    if not settings.supabase_url or not settings.supabase_publishable_key:
+        raise HTTPException(status_code=503, detail="Backend chưa được cấu hình Supabase.")
+    return create_client(
+        settings.supabase_url,
+        settings.supabase_publishable_key,
+        options=SyncClientOptions(
+            headers={"Authorization": f"Bearer {access_token}"},
+            auto_refresh_token=False,
+            persist_session=False,
+        ),
+    )
+
+
+@lru_cache(maxsize=1)
+def get_public_supabase() -> Client:
+    settings = get_settings()
+    if not settings.supabase_url or not settings.supabase_publishable_key:
+        raise HTTPException(status_code=503, detail="Backend chưa được cấu hình Supabase.")
+    return create_client(
+        settings.supabase_url,
+        settings.supabase_publishable_key,
+        options=SyncClientOptions(
+            httpx_client=transport(), auto_refresh_token=False, persist_session=False
+        ),
+    )
+
+
 def read_query(query):
     settings = get_settings()
     for attempt in range(settings.supabase_read_retries + 1):
@@ -47,5 +76,6 @@ def close_supabase() -> None:
     if transport.cache_info().currsize:
         transport().close()
     get_supabase.cache_clear()
+    get_public_supabase.cache_clear()
     transport.cache_clear()
 

@@ -9,7 +9,7 @@ from app.supabase_client import read_query
 from fastapi import HTTPException
 
 
-ADMIN = CurrentUser("00000000-0000-0000-0000-000000000001", "admin@example.com", None, "admin")
+ADMIN = CurrentUser("00000000-0000-0000-0000-000000000001", "admin@example.com", None, "admin", "test-token")
 BOOKING = "00000000-0000-0000-0000-000000000010"
 
 
@@ -35,24 +35,39 @@ class ContractsTest(unittest.IsolatedAsyncioTestCase):
     @patch("app.routers.admin.managed_pitch_ids", return_value=[])
     @patch("app.routers.admin.get_supabase")
     async def test_unassigned_staff_gets_no_global_booking_data(self, factory, scopes):
-        app.dependency_overrides[require_user] = lambda: CurrentUser(ADMIN.id, ADMIN.email, None, "staff")
+        app.dependency_overrides[require_user] = lambda: CurrentUser(ADMIN.id, ADMIN.email, None, "staff", "test-token")
         reply = await self.api.get("/v1/admin/bookings")
         self.assertEqual(reply.status_code, 200)
         self.assertEqual(reply.json(), [])
         factory.assert_not_called()
 
     async def test_customer_cannot_manage_or_assign_staff(self):
-        app.dependency_overrides[require_user] = lambda: CurrentUser(ADMIN.id, ADMIN.email, None, "customer")
+        app.dependency_overrides[require_user] = lambda: CurrentUser(ADMIN.id, ADMIN.email, None, "customer", "test-token")
         self.assertEqual((await self.api.get("/v1/admin/pitches")).status_code, 403)
         self.assertEqual((await self.api.get("/v1/admin/staff")).status_code, 403)
 
-    @patch("app.routers.account.get_supabase")
+    @patch("app.routers.account.get_user_supabase")
     async def test_profile_email_change_cannot_partially_write_profile(self, factory):
         client = factory.return_value
-        client.auth.admin.get_user_by_id.return_value.user = SimpleNamespace(email=ADMIN.email)
+        client.table.return_value.update.return_value.execute.return_value.data = [{"id": ADMIN.id}]
         reply = await self.api.patch("/v1/me", json={"full_name": "Example User", "email": "new@example.com"})
         self.assertEqual(reply.status_code, 422)
         client.table.assert_not_called()
+
+    @patch("app.routers.account.get_user_supabase")
+    async def test_profile_update_uses_caller_jwt_client(self, factory):
+        client = factory.return_value
+        client.table.return_value.update.return_value.eq.return_value.execute.return_value.data = [{"id": ADMIN.id, "full_name": "New Name"}]
+        reply = await self.api.patch("/v1/me", json={"full_name": "New Name"})
+        self.assertEqual(reply.status_code, 200)
+        factory.assert_called_once_with("test-token")
+
+    @patch("app.routers.bookings.get_user_supabase")
+    async def test_customer_booking_list_uses_caller_jwt_client(self, factory):
+        factory.return_value.table.return_value.select.return_value.eq.return_value.order.return_value.execute.return_value.data = []
+        reply = await self.api.get("/v1/bookings")
+        self.assertEqual(reply.status_code, 200)
+        factory.assert_called_once_with("test-token")
 
     @patch("app.routers.account.httpx.put")
     @patch("app.routers.account.get_supabase")

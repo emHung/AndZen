@@ -23,7 +23,7 @@ if ($listener) {
 }
 Push-Location $PSScriptRoot
 try {
-    $apiArguments = @('-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', $Port)
+    $apiArguments = @('-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', $Port, '--no-access-log')
     if ($Reload) { $apiArguments += '--reload' }
     & $python @apiArguments
 }

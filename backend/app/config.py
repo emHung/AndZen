@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     supabase_pool_connections: int = 20
     supabase_pool_keepalive: int = 5
     supabase_keepalive_expiry_seconds: float = Field(default=30, gt=0)
+    max_request_body_bytes: int = Field(default=6 * 1024 * 1024, gt=0)
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 

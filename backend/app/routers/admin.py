@@ -22,7 +22,7 @@ def run_mutation(function: str, values: dict) -> dict:
     except Exception as exc:
         error = mutation_error(exc)
         if error.status_code >= 500:
-            logger.exception("Management operation failed", extra={"operation": function})
+            logger.error("Management operation failed (%s)", type(exc).__name__, extra={"operation": function})
         else:
             logger.info("Management operation rejected", extra={"operation": function, "status": error.status_code})
         raise error from exc

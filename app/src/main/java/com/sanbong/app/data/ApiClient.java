@@ -68,6 +68,9 @@ public final class ApiClient {
     }
 
     public static JSONObject uploadAvatar(Context context, File file, String mimeType) throws Exception {
+        if (file.length() > 5L * 1024L * 1024L) {
+            throw new IllegalArgumentException("Ảnh đại diện tối đa 5 MB.");
+        }
         String boundary = "SanBong-" + System.currentTimeMillis();
         ByteArrayOutputStream body = new ByteArrayOutputStream();
         body.write(("--" + boundary + "\r\nContent-Disposition: form-data; name=\"file\"; filename=\"avatar\"\r\n"

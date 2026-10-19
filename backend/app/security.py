@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import lru_cache
 import logging
 
@@ -7,7 +7,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.config import get_settings
-from app.supabase_client import get_supabase, read_query
+from app.supabase_client import get_user_supabase, read_query
 
 bearer = HTTPBearer(auto_error=False)
 logger = logging.getLogger(__name__)
@@ -28,6 +28,7 @@ class CurrentUser:
     email: str | None
     phone: str | None
     role: str
+    access_token: str = field(repr=False)
 
 
 def require_user(
@@ -35,13 +36,17 @@ def require_user(
 ) -> CurrentUser:
     if credentials is None:
         raise HTTPException(status_code=401, detail="Vui lòng đăng nhập.")
+    return authenticate_token(credentials.credentials)
+
+
+def authenticate_token(token: str) -> CurrentUser:
     settings = get_settings()
-    if not settings.supabase_url or not settings.supabase_secret_key:
+    if not settings.supabase_url or not settings.supabase_publishable_key:
         raise HTTPException(status_code=503, detail="Backend chưa được cấu hình Supabase.")
     try:
-        signing_key = signing_keys().get_signing_key_from_jwt(credentials.credentials).key
+        signing_key = signing_keys().get_signing_key_from_jwt(token).key
         claims = jwt.decode(
-            credentials.credentials,
+            token,
             signing_key,
             algorithms=["ES256", "RS256"],
             audience="authenticated",
@@ -50,7 +55,7 @@ def require_user(
         )
         user_id = claims["sub"]
         profile = read_query(
-            get_supabase()
+            get_user_supabase(token)
             .table("profiles")
             .select("role")
             .eq("id", user_id)
@@ -63,6 +68,7 @@ def require_user(
             email=claims.get("email"),
             phone=claims.get("phone"),
             role=profile.get("role", "customer"),
+            access_token=token,
         )
     except HTTPException:
         raise
