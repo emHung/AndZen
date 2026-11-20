@@ -44,7 +44,7 @@ final class AdminStaffSection extends AdminSection {
             String[] words = name.replace("[TEST]", "").trim().split("\\s+");
             String initials = words.length == 0 || words[0].isEmpty() ? "NV" : words[0].substring(0, 1)
                     + (words.length > 1 ? words[words.length - 1].substring(0, 1) : "");
-            avatar.setText(initials.toUpperCase(java.util.Locale.ROOT)); avatar.setTextSize(18); avatar.setTypeface(null, 1);
+            avatar.setText(initials.toUpperCase(java.util.Locale.ROOT)); avatar.setTextSize(18); avatar.setTypeface(null, android.graphics.Typeface.BOLD);
             avatar.setTextColor(ui.color(R.color.primary_green)); avatar.setGravity(android.view.Gravity.CENTER);
             android.graphics.drawable.GradientDrawable avatarBg = new android.graphics.drawable.GradientDrawable();
             avatarBg.setShape(android.graphics.drawable.GradientDrawable.OVAL); avatarBg.setColor(ui.color(R.color.brand_100));

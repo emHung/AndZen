@@ -64,7 +64,7 @@ final class AdminUi {
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(0, -2, 1); p.setMargins(dp(2), dp(4), dp(2), dp(4)); row.addView(child, p);
     }
     void title(LinearLayout parent, String label, Runnable refresh) {
-        LinearLayout r = row(); TextView title = new TextView(activity); title.setText(label); title.setTextSize(20); title.setTypeface(null, 1); title.setTextColor(color(R.color.text_primary));
+        LinearLayout r = row(); TextView title = new TextView(activity); title.setText(label); title.setTextSize(20); title.setTypeface(null, android.graphics.Typeface.BOLD); title.setTextColor(color(R.color.text_primary));
         r.addView(title, new LinearLayout.LayoutParams(0, -2, 1));
         MaterialButton reload = button("↻", false, refresh); reload.setContentDescription("Làm mới " + label.toLowerCase(Locale.ROOT));
         reload.setText(""); reload.setIconResource(R.drawable.ic_ri_refresh_line); reload.setIconSize(dp(24));

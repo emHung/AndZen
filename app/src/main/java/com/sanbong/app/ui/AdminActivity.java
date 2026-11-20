@@ -83,7 +83,7 @@ public class AdminActivity extends AppCompatActivity {
         boolean selected = name.equals(currentTab);
         TextView tab = new TextView(this);
         tab.setText(title); tab.setTextSize(12); tab.setGravity(Gravity.CENTER);
-        tab.setTypeface(null, selected ? 1 : 0);
+        tab.setTypeface(null, selected ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
         tab.setPadding(dp(2), dp(10), dp(2), dp(10));
         int icon = "bookings".equals(name) ? R.drawable.ic_ri_calendar : "pitches".equals(name)
                 ? R.drawable.ic_ri_football : "staff".equals(name) ? R.drawable.ic_ri_group : R.drawable.ic_ri_time;
