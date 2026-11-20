@@ -85,8 +85,8 @@ public final class DateTimeUtils {
 
     public static String durationLabel(String range) {
         if (range == null || !range.matches("\\d{2}:\\d{2}\\s*[-–]\\s*\\d{2}:\\d{2}")) return "—";
-        String[] times = range.split("\\s*[-–]\\s*");
-        String[] start = times[0].split(":"), end = times[1].split(":");
+        String[] times = range.trim().split("[-–]");
+        String[] start = times[0].trim().split(":"), end = times[1].trim().split(":");
         int startHour = Integer.parseInt(start[0]), startMinute = Integer.parseInt(start[1]);
         int endHour = Integer.parseInt(end[0]), endMinute = Integer.parseInt(end[1]);
         int minutes = endHour * 60 + endMinute - startHour * 60 - startMinute;
@@ -101,7 +101,7 @@ public final class DateTimeUtils {
 
     public static boolean bookingTimeReached(String date, String range, int part, long nowMillis) {
         try {
-            String[] times = range.split("\\s*[-–]\\s*");
+            String[] times = range.trim().split("[-–]");
             if (times.length != 2 || part < 0 || part > 1) return false;
             Date moment = formatter("yyyy-MM-dd HH:mm").parse(date + " " + times[part].trim());
             return moment != null && moment.getTime() <= nowMillis;

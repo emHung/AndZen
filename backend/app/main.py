@@ -38,13 +38,7 @@ async def unexpected_error_handler(request: Request, exc: Exception):
     return JSONResponse(status_code=500, content={"detail": "Đã xảy ra lỗi hệ thống. Vui lòng thử lại."})
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=False,
-    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allow_headers=["Authorization", "Content-Type", "apikey"],
-)
+
 
 
 class RequestBodyTooLarge(Exception):
@@ -117,6 +111,13 @@ class RequestSecurityMiddleware:
 
 
 app.add_middleware(RequestSecurityMiddleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allow_headers=["Authorization", "Content-Type", "apikey"],
+)
 
 
 @app.get("/health")
