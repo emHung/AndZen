@@ -55,3 +55,13 @@ Các vấn đề còn lại cần đánh giá:
 Coverage tổng Sonar lần đầu là 8,3%, khác với coverage backend riêng; Android chưa có báo cáo JaCoCo. Scanner còn cảnh báo unresolved types/imports và preview features, nên kết quả phân tích Java có thể chưa đầy đủ. Không tự động đóng các cảnh báo còn lại hoặc tắt rule.
 
 GitHub runner không truy cập được SonarQube localhost này. Để quét trên GitHub, cần server riêng truy cập được từ runner và ba cấu hình đã nêu. CI build/test/lint hoạt động độc lập với server đó.
+
+## Xử lý 6 vấn đề còn lại — 20/11/2026
+
+- Hai cảnh báo regex của `ApiClient`: thay regex xóa dấu slash cuối URL bằng vòng lặp tuyến tính trong `ApiUrlUtils`. Kiểm thử bảo toàn scheme/path và chuỗi 100.000 dấu slash đều đạt.
+- `DateChipAdapter`: bỏ nhánh điều kiện có hai kết quả giống nhau; giữ nguyên màu đang hiển thị.
+- Debug manifest: khai báo tắt backup và HTTP toàn cục. HTTP chỉ được phép qua Network Security Configuration trong source set debug cho `localhost`, `127.0.0.1`, `10.0.2.2`, `10.0.3.2`; không cho HTTP tới địa chỉ LAN tùy ý. Thiết bị USB dùng `adb reverse`, hoặc dùng HTTPS khi API ở máy khác.
+- Kiểm tra manifest debug đã merge xác nhận `allowBackup=false`, `usesCleartextTraffic=false` và config mạng debug đúng. Manifest chính không tham chiếu ngoại lệ HTTP của debug.
+- Cảnh báo `java:S6418` tại `AuthSession` được review: literal `apikey` là tên header, giá trị lấy từ cấu hình publishable key. Đã thêm giải thích và đánh dấu false positive cho đúng một issue trên SonarQube local; không tắt rule, không thêm `NOSONAR`. Trạng thái phân loại này nằm trong DB SonarQube local; máy chủ mới cần review lại issue tương ứng.
+
+Sau các thay đổi: build debug, lint và 12 unit tests đạt; SonarQube còn 0 issue mở, Quality Gate `OK`. Android Lint vẫn có 638 cảnh báo, không có Error/Fatal; đây không phải tuyên bố code hết cảnh báo hay an toàn tuyệt đối. Các giới hạn coverage và unresolved types/imports đã nêu vẫn còn.

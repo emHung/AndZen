@@ -158,7 +158,7 @@ public class DateChipAdapter extends RecyclerView.Adapter<DateChipAdapter.DateVi
 
             int contextBg = isSelected ? R.color.brand_700 : R.color.surface;
             int textColor = isSelected ? R.color.surface : R.color.text_primary;
-            int strokeColor = isSelected ? R.color.brand_700 : (availableSlots > 0 ? R.color.border : R.color.border);
+            int strokeColor = isSelected ? R.color.brand_700 : R.color.border;
 
             cardDateChip.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(), contextBg));
             cardDateChip.setStrokeColor(ContextCompat.getColor(itemView.getContext(), strokeColor));

@@ -3,6 +3,7 @@ package com.sanbong.app.data;
 import android.content.Context;
 
 import com.sanbong.app.BuildConfig;
+import com.sanbong.app.util.ApiUrlUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,7 +55,7 @@ public final class ApiClient {
     private static String executePublic(String method, String path) throws Exception {
         String base = BuildConfig.API_BASE_URL;
         if (base == null || base.trim().isEmpty()) throw new IllegalStateException("Chưa cấu hình API_BASE_URL.");
-        HttpURLConnection connection = (HttpURLConnection) new URL(base.replaceAll("/+$", "") + path).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL(ApiUrlUtils.stripTrailingSlashes(base) + path).openConnection();
         connection.setRequestMethod(method);
         connection.setConnectTimeout(10000);
         connection.setReadTimeout(20000);
@@ -97,7 +98,7 @@ public final class ApiClient {
         if (base == null || base.trim().isEmpty()) throw new IllegalStateException("Chưa cấu hình API_BASE_URL.");
         String token = AuthSession.accessToken(context);
         if (token == null || token.isEmpty()) throw new IllegalStateException("Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.");
-        HttpURLConnection connection = (HttpURLConnection) new URL(base.replaceAll("/+$", "") + path).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL(ApiUrlUtils.stripTrailingSlashes(base) + path).openConnection();
         connection.setRequestMethod(method);
         connection.setConnectTimeout(10000);
         connection.setReadTimeout(20000);
