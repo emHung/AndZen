@@ -75,7 +75,7 @@ final class AdminUi {
     EditText search(LinearLayout parent, String hint, String initial, Consumer<String> changed) {
         EditText edit = new EditText(activity); edit.setSingleLine(true); edit.setTextSize(14); edit.setHint(hint); edit.setText(initial);
         edit.setTextColor(color(R.color.text_primary)); edit.setHintTextColor(color(R.color.text_muted));
-        edit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ri_search, 0, 0, 0); edit.setCompoundDrawableTintList(ColorStateList.valueOf(color(R.color.text_muted)));
+        edit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ri_search, 0, 0, 0); androidx.core.widget.TextViewCompat.setCompoundDrawableTintList(edit, ColorStateList.valueOf(color(R.color.text_muted)));
         edit.setCompoundDrawablePadding(dp(10)); edit.setPadding(dp(12), 0, dp(12), 0); round(edit, R.color.surface, R.color.border);
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(-1, dp(52)); p.setMargins(0, dp(12), 0, dp(8)); parent.addView(edit, p);
         edit.addTextChangedListener(new TextWatcher() {
@@ -120,7 +120,7 @@ final class AdminUi {
         round(field,R.color.surface,R.color.border); field.setClickable(true); field.setFocusable(true);
         android.util.TypedValue ripple = new android.util.TypedValue();
         activity.getTheme().resolveAttribute(android.R.attr.selectableItemBackground,ripple,true);
-        field.setForeground(activity.getDrawable(ripple.resourceId));
+        field.setForeground(androidx.appcompat.content.res.AppCompatResources.getDrawable(activity, ripple.resourceId));
         ImageView leading = new ImageView(activity); leading.setImageResource(icon); leading.setImageTintList(ColorStateList.valueOf(color(R.color.primary_green)));
         field.addView(leading,new LinearLayout.LayoutParams(dp(18),dp(18)));
         LinearLayout copy = column(); copy.setPadding(dp(8),0,dp(6),0);

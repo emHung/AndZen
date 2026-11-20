@@ -56,7 +56,7 @@ public class NotificationActivity extends AppCompatActivity {
                 }
                 runOnUiThread(() -> {
                     bookings.clear(); bookings.addAll(loadedBookings);
-                    list.clear(); list.addAll(loadedItems); adapter.notifyDataSetChanged();
+                    adapter.updateData(loadedItems);
                     if (list.isEmpty()) Toast.makeText(this, "Bạn chưa có lịch đặt để thông báo.", Toast.LENGTH_SHORT).show();
                 });
             } catch (Exception exception) {
@@ -75,8 +75,12 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void markAllRead() {
-        for (NotificationItem item : list) item.setRead(true);
-        adapter.notifyDataSetChanged();
+        for (int i = 0; i < list.size(); i++) {
+            if (!list.get(i).isRead()) {
+                list.get(i).setRead(true);
+                adapter.notifyItemChanged(i);
+            }
+        }
     }
 
     @Override protected void onDestroy() { executor.shutdownNow(); super.onDestroy(); }

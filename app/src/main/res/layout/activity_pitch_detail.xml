@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background">
-
+    android:orientation="vertical">
     <!-- Header Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -17,22 +15,21 @@
         app:navigationIcon="@drawable/ic_ri_arrow_left"
         app:navigationIconTint="@color/surface"
         app:title="Chi tiết sân bóng">
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-
             <ImageView
                 android:id="@+id/btnFavoriteDetail"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:padding="6dp"
                 android:src="@drawable/ic_ri_heart"
-                app:tint="@color/surface" />
-
+                app:tint="@color/surface"
+                android:contentDescription="@string/ui_action_btnfavoritedetail_310e8f"
+                android:focusable="true"/>
             <ImageView
                 android:id="@+id/btnShare"
                 android:layout_width="36dp"
@@ -41,44 +38,39 @@
                 android:layout_marginEnd="12dp"
                 android:padding="6dp"
                 android:src="@drawable/ic_ri_share"
-                app:tint="@color/surface" />
+                app:tint="@color/surface"
+                android:contentDescription="@string/ui_action_btnshare_e2d009"
+                android:focusable="true"/>
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
             <!-- Banner Ảnh sân với Badge 1/8 -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp">
-
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
-
                     <ImageView
                         android:id="@+id/ivDetailBanner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_pitch_sunset" />
+                        android:src="@drawable/img_pitch_sunset"
+                        android:importantForAccessibility="no"/>
                 </com.google.android.material.card.MaterialCardView>
-
-
             </FrameLayout>
-
             <!-- Card thông tin sân -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -89,20 +81,17 @@
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/border"
                 app:cardBackgroundColor="@color/surface">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <!-- Tên sân & Đánh giá -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
-
                         <TextView
                             android:id="@+id/tvDetailName"
                             android:layout_width="0dp"
@@ -111,19 +100,17 @@
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:text="" />
-
+                            android:text=""/>
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical">
-
                             <ImageView
                                 android:layout_width="16dp"
                                 android:layout_height="16dp"
                                 android:src="@drawable/ic_ri_star"
-                                app:tint="@color/star_gold" />
-
+                                app:tint="@color/star_gold"
+                                android:importantForAccessibility="no"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -131,42 +118,29 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
-                                android:text="—" />
-
+                                android:text="@string/ui_activity_pitch_detail_textview_text_1b9379"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
                                 android:textSize="12sp"
                                 android:textColor="@color/text_muted"
-                                android:text="Chưa có đánh giá" />
+                                android:text="@string/ui_activity_pitch_detail_textview_text_ff107d"/>
                         </LinearLayout>
                     </LinearLayout>
-
                     <!-- Địa chỉ -->
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvDetailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_secondary"
+                        android:text=""
+                        app:drawableStartCompat="@drawable/ic_ri_map_pin_16x16"
+                        app:drawableTint="@color/primary_green"
+                        android:drawablePadding="6dp"
                         android:layout_marginTop="6dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_ri_map_pin"
-                            app:tint="@color/primary_green" />
-
-                        <TextView
-                            android:id="@+id/tvDetailAddress"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:textSize="13sp"
-                            android:textColor="@color/text_secondary"
-                            android:text="" />
-                    </LinearLayout>
-
+                        android:gravity="center_vertical"/>
                     <!-- Huy hiệu loại sân -->
                     <TextView
                         android:id="@+id/tvDetailType"
@@ -179,11 +153,10 @@
                         android:textColor="@color/primary_green"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:drawableStart="@drawable/ic_ri_group"
                         android:drawablePadding="4dp"
                         app:drawableTint="@color/primary_green"
-                        android:text="Sân 7 người" />
-
+                        android:text="@string/ui_activity_pitch_detail_tvdetailtype_text_9408bf"
+                        app:drawableStartCompat="@drawable/ic_ri_group"/>
                     <!-- Mô tả -->
                     <TextView
                         android:id="@+id/tvDetailDescription"
@@ -192,21 +165,18 @@
                         android:layout_marginTop="10dp"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:text="" />
-
+                        android:text=""/>
                     <!-- Dải tiện ích -->
                     <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:scrollbars="none">
-
                         <LinearLayout
                             android:id="@+id/layoutAmenities"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -215,25 +185,10 @@
                                 android:paddingVertical="5dp"
                                 android:textColor="@color/primary_green"
                                 android:textSize="12sp"
-                                android:drawableStart="@drawable/ic_ri_sun"
                                 android:drawablePadding="4dp"
                                 app:drawableTint="@color/primary_green"
-                                android:text="Đèn LED" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:background="@drawable/bg_rating_badge"
-                                android:paddingHorizontal="10dp"
-                                android:paddingVertical="5dp"
-                                android:textColor="@color/primary_green"
-                                android:textSize="12sp"
-                                android:drawableStart="@drawable/ic_ri_drop"
-                                android:drawablePadding="4dp"
-                                app:drawableTint="@color/primary_green"
-                                android:text="Nước miễn phí" />
-
+                                android:text="@string/ui_activity_pitch_detail_textview_text_34811d"
+                                app:drawableStartCompat="@drawable/ic_ri_sun"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -243,11 +198,10 @@
                                 android:paddingVertical="5dp"
                                 android:textColor="@color/primary_green"
                                 android:textSize="12sp"
-                                android:drawableStart="@drawable/ic_ri_car"
                                 android:drawablePadding="4dp"
                                 app:drawableTint="@color/primary_green"
-                                android:text="Bãi xe rộng" />
-
+                                android:text="@string/ui_activity_pitch_detail_textview_text_a570bb"
+                                app:drawableStartCompat="@drawable/ic_ri_drop"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -257,16 +211,27 @@
                                 android:paddingVertical="5dp"
                                 android:textColor="@color/primary_green"
                                 android:textSize="12sp"
-                                android:drawableStart="@drawable/ic_ri_shirt"
                                 android:drawablePadding="4dp"
                                 app:drawableTint="@color/primary_green"
-                                android:text="Cho thuê giày" />
+                                android:text="@string/ui_activity_pitch_detail_textview_text_1689b1"
+                                app:drawableStartCompat="@drawable/ic_ri_car"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_rating_badge"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:textColor="@color/primary_green"
+                                android:textSize="12sp"
+                                android:drawablePadding="4dp"
+                                app:drawableTint="@color/primary_green"
+                                android:text="@string/ui_activity_pitch_detail_textview_text_f53d52"
+                                app:drawableStartCompat="@drawable/ic_ri_shirt"/>
                         </LinearLayout>
                     </HorizontalScrollView>
-
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
             <!-- Tiêu đề Chọn ngày chơi -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -274,7 +239,6 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -282,41 +246,29 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:text="Chọn ngày chơi" />
-
-                <LinearLayout
-                    android:id="@+id/btnPickCalendar"
+                    android:text="@string/ui_activity_pitch_detail_textview_text_328140"/>
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/primary_green"
+                    android:text="@string/ui_activity_pitch_detail_textview_text_5f8a3d"
+                    app:drawableEndCompat="@drawable/ic_ri_calendar_18x18"
+                    app:drawableTint="@color/primary_green"
+                    android:drawablePadding="0dp"
+                    android:id="@+id/btnPickCalendar"
                     android:padding="6dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/primary_green"
-                        android:text="Xem lịch" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_ri_calendar"
-                        app:tint="@color/primary_green" />
-                </LinearLayout>
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
             </LinearLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvDates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:clipToPadding="false"
-                android:orientation="horizontal" />
-
+                android:orientation="horizontal"/>
             <!-- Tiêu đề Khung giờ còn trống & Toggle lọc giờ chưa đặt -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -324,7 +276,6 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:id="@+id/tvAvailableSlotsTitle"
                     android:layout_width="0dp"
@@ -333,8 +284,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:text="Khung giờ còn trống" />
-
+                    android:text="@string/ui_activity_pitch_detail_tvavailableslotstitle_text_9fbb39"/>
                 <TextView
                     android:id="@+id/btnToggleSlotFilter"
                     android:layout_width="wrap_content"
@@ -345,16 +295,14 @@
                     android:textSize="12sp"
                     android:textColor="@color/primary_green"
                     android:textStyle="bold"
-                    android:text="✓ Chỉ giờ chưa đặt" />
+                    android:text="@string/ui_activity_pitch_detail_btntoggleslotfilter_text_6477b7"/>
             </LinearLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSlots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="false" />
-
+                android:nestedScrollingEnabled="false"/>
             <LinearLayout
                 android:id="@+id/layoutNoSlots"
                 android:layout_width="match_parent"
@@ -365,13 +313,12 @@
                 android:visibility="gone"
                 android:padding="20dp"
                 android:background="@drawable/bg_input_field">
-
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@drawable/ic_ri_calendar"
-                    app:tint="@color/text_muted" />
-
+                    app:tint="@color/text_muted"
+                    android:importantForAccessibility="no"/>
                 <TextView
                     android:id="@+id/tvNoSlots"
                     android:layout_width="wrap_content"
@@ -380,8 +327,7 @@
                     android:gravity="center"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp"
-                    android:text="Ngày này đã hết khung giờ trống (đã đặt kín)" />
-
+                    android:text="@string/ui_activity_pitch_detail_tvnoslots_text_481b4c"/>
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSuggestNextAvailable"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -391,11 +337,10 @@
                     android:textSize="12sp"
                     android:textColor="@color/primary_green"
                     app:strokeColor="@color/primary_green"
-                    android:text="Chuyển sang ngày trống gần nhất" />
+                    android:text="@string/ui_activity_pitch_detail_btnsuggestnextavailable_text_32892d"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
     <!-- Bottom Action Bar -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -405,21 +350,18 @@
         android:padding="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/tvSelectedSlotSummary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary"
-                android:text="1 khung giờ · 1,5 giờ" />
-
+                android:text="@string/ui_activity_pitch_detail_tvselectedslotsummary_text_766039"/>
             <TextView
                 android:id="@+id/tvSelectedSlotPrice"
                 android:layout_width="wrap_content"
@@ -427,21 +369,19 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary_green"
-                android:text="" />
+                android:text=""/>
         </LinearLayout>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnProceedBooking"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
-            android:text="Tiếp tục"
+            android:text="@string/ui_activity_pitch_detail_btnproceedbooking_text_5d92d0"
             android:enabled="false"
             app:cornerRadius="12dp"
             android:backgroundTint="@color/primary_green"
             android:textColor="@color/surface"
             app:icon="@drawable/ic_ri_arrow_right"
             app:iconGravity="end"
-            app:iconTint="@color/surface" />
+            app:iconTint="@color/surface"/>
     </LinearLayout>
-
 </LinearLayout>

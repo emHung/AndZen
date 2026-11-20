@@ -30,8 +30,8 @@ final class AdminPitchSection {
         parent.addView(section);
         int active = 0;
         for (JSONObject row : rows) if (row.optBoolean("is_active")) active++;
-        ((TextView) section.findViewById(R.id.adminTotalPitches)).setText("Tổng số sân\n" + rows.size());
-        ((TextView) section.findViewById(R.id.adminActivePitches)).setText("Đang hoạt động\n" + active);
+        ((TextView) section.findViewById(R.id.adminTotalPitches)).setText(((TextView) section.findViewById(R.id.adminTotalPitches)).getContext().getString(R.string.ui_message_9cfdfd8462, String.valueOf(rows.size())));
+        ((TextView) section.findViewById(R.id.adminActivePitches)).setText(((TextView) section.findViewById(R.id.adminActivePitches)).getContext().getString(R.string.ui_message_52f984c4d1, String.valueOf(active)));
         View add = section.findViewById(R.id.adminAddPitch);
         add.setVisibility(canEdit ? View.VISIBLE : View.GONE);
         add.setOnClickListener(v -> onAdd.run());
@@ -86,7 +86,7 @@ final class AdminPitchSection {
         ((TextView) card.findViewById(R.id.adminPitchType)).setText(pitch.getType().getDisplayName());
         ((TextView) card.findViewById(R.id.adminPitchDistrict)).setText(pitch.getDistrict());
         ((TextView) card.findViewById(R.id.adminPitchAddress)).setText(pitch.getAddress());
-        ((TextView) card.findViewById(R.id.adminPitchPrice)).setText(CurrencyUtils.formatVnd(pitch.getMinPrice()) + " / khung giờ");
+        ((TextView) card.findViewById(R.id.adminPitchPrice)).setText(((TextView) card.findViewById(R.id.adminPitchPrice)).getContext().getString(R.string.ui_message_d7a6786c96, String.valueOf(CurrencyUtils.formatVnd(pitch.getMinPrice()))));
         View edit = card.findViewById(R.id.adminEditPitch);
         edit.setVisibility(canEdit ? View.VISIBLE : View.GONE);
         edit.setOnClickListener(v -> onEdit.accept(row));

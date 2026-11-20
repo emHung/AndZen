@@ -27,6 +27,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         this.listener = listener;
     }
 
+    public void updateData(List<NotificationItem> incoming) {
+        AdapterUpdates.replace(this, items, incoming, NotificationItem::getId);
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,8 +49,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.vUnreadDot.setVisibility(item.isRead() ? View.GONE : View.VISIBLE);
 
         holder.itemView.setOnClickListener(v -> {
+            int currentPosition = holder.getBindingAdapterPosition();
+            if (currentPosition == RecyclerView.NO_POSITION) return;
             item.setRead(true);
-            notifyItemChanged(position);
+            notifyItemChanged(currentPosition);
             if (listener != null) listener.onNotificationClick(item);
         });
     }

@@ -55,9 +55,9 @@ public class EditProfileActivity extends AppCompatActivity {
         etFullName = findViewById(R.id.etEditFullName);
         etPhone = findViewById(R.id.etEditPhone);
         etEmail = findViewById(R.id.etEditEmail);
-        tvDistrict = findViewById(R.id.tvEditDistrict);
-        tvBirthdate = findViewById(R.id.tvEditBirthdate);
-        tvGender = findViewById(R.id.tvEditGender);
+        tvDistrict = findViewById(R.id.btnSelectDistrict);
+        tvBirthdate = findViewById(R.id.btnSelectBirthdate);
+        tvGender = findViewById(R.id.btnSelectGender);
         ivAvatar = findViewById(R.id.ivEditAvatar);
     }
 
@@ -81,7 +81,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 catch (NumberFormatException ignored) { }
             }
             com.sanbong.app.util.ThemePickerUtils.showDatePicker(this, c, null, Calendar.getInstance(), (view, year, month, dayOfMonth) ->
-                    tvBirthdate.setText(String.format("%02d/%02d/%d", dayOfMonth, month + 1, year)));
+                    tvBirthdate.setText(String.format(java.util.Locale.ROOT, "%02d/%02d/%d", dayOfMonth, month + 1, year)));
         });
 
         findViewById(R.id.btnSelectGender).setOnClickListener(v -> {
@@ -126,11 +126,11 @@ public class EditProfileActivity extends AppCompatActivity {
                     etEmail.setText(originalEmail);
                     tvDistrict.setText(editableValue(profile, "district", "Chọn khu vực"));
                     tvGender.setText(editableValue(profile, "gender", "Chọn giới tính"));
-                    tvBirthdate.setText("Chọn ngày sinh");
+                    tvBirthdate.setText(R.string.ui_message_d49b276aaf);
                     String birthdate = profile.optString("birthdate", "");
                     if (!birthdate.isEmpty() && !"null".equals(birthdate)) {
                         String[] parts = birthdate.split("-");
-                        if (parts.length == 3) tvBirthdate.setText(parts[2] + "/" + parts[1] + "/" + parts[0]);
+                        if (parts.length == 3) tvBirthdate.setText(tvBirthdate.getContext().getString(R.string.ui_message_da44c630db, String.valueOf(parts[2]), String.valueOf(parts[1]), String.valueOf(parts[0])));
                     }
                     String avatarUrl = profile.optString("avatar_url", "");
                     if (!avatarUrl.isEmpty() && !"null".equals(avatarUrl)) loadAvatar(avatarUrl);

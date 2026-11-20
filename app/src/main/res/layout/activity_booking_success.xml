@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background">
-
+    android:orientation="vertical">
     <!-- Top Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -17,7 +15,6 @@
         app:navigationIconTint="@color/primary_green"
         app:title="Đặt sân thành công"
         app:titleTextColor="@color/primary_green">
-
         <ImageView
             android:id="@+id/btnToolbarHome"
             android:layout_width="36dp"
@@ -26,40 +23,37 @@
             android:layout_marginEnd="12dp"
             android:padding="6dp"
             android:src="@drawable/ic_ri_home"
-            app:tint="@color/primary_green" />
+            app:tint="@color/primary_green"
+            android:contentDescription="@string/ui_action_btntoolbarhome_86376d"
+            android:focusable="true"/>
     </com.google.android.material.appbar.MaterialToolbar>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:padding="20dp">
-
             <!-- Icon thành công to & nổi bật -->
             <FrameLayout
                 android:layout_width="84dp"
                 android:layout_height="84dp"
                 android:layout_marginTop="8dp">
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_rating_badge"
-                    android:backgroundTint="@color/slot_available_bg" />
-
+                    android:backgroundTint="@color/slot_available_bg"/>
                 <ImageView
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_ri_check_circle"
-                    app:tint="@color/primary_green" />
+                    app:tint="@color/primary_green"
+                    android:importantForAccessibility="no"/>
             </FrameLayout>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,16 +61,14 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                android:text="Đặt sân thành công!" />
-
+                android:text="@string/ui_activity_booking_success_textview_text_23fede"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:textSize="13sp"
                 android:textColor="@color/text_secondary"
-                android:text="Lịch đặt của bạn đã được ghi nhận vào hệ thống." />
-
+                android:text="@string/ui_activity_booking_success_textview_text_7f9ada"/>
             <!-- Card thông tin mã đặt chỗ -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -87,79 +79,65 @@
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/border"
                 app:cardBackgroundColor="@color/surface">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
                     <ImageView
                         android:id="@+id/ivSuccessBanner"
                         android:layout_width="match_parent"
                         android:layout_height="130dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_pitch_1" />
-
+                        android:src="@drawable/img_pitch_1"
+                        android:importantForAccessibility="no"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:padding="16dp">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:textColor="@color/text_muted"
-                            android:text="Mã đặt sân" />
-
-                        <LinearLayout
+                            android:text="@string/ui_activity_booking_success_textview_text_2d2c19"/>
+                        <TextView
+                            android:id="@+id/tvSuccessBookingCode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary_green"
+                            android:text="@string/ui_activity_booking_success_tvsuccessbookingcode_text_2e77be"
+                            app:drawableEndCompat="@drawable/ic_ri_copy_20x20"
+                            app:drawableTint="@color/primary_green"
+                            android:drawablePadding="8dp"
+                            android:contentDescription="@string/ui_action_btncopycode_cacda0"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:layout_marginTop="4dp"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:id="@+id/tvSuccessBookingCode"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="24sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/primary_green"
-                                android:text="SB-X8U4EE" />
-
-                            <ImageView
-                                android:id="@+id/btnCopyCode"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginStart="8dp"
-                                android:src="@drawable/ic_ri_copy"
-                                app:tint="@color/primary_green" />
-                        </LinearLayout>
-
+                            android:gravity="center_vertical"/>
                         <!-- Thông tin sân bóng -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:gravity="center_vertical">
-
                             <ImageView
                                 android:layout_width="36dp"
                                 android:layout_height="36dp"
                                 android:padding="6dp"
                                 android:background="@drawable/bg_type_badge"
                                 android:src="@drawable/ic_ri_football"
-                                app:tint="@color/primary_green" />
-
+                                app:tint="@color/primary_green"
+                                android:importantForAccessibility="no"/>
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginStart="10dp"
                                 android:orientation="vertical">
-
                                 <TextView
                                     android:id="@+id/tvSuccessPitchName"
                                     android:layout_width="wrap_content"
@@ -167,111 +145,83 @@
                                     android:textSize="15sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_primary"
-                                    android:text="" />
-
+                                    android:text=""/>
                                 <TextView
                                     android:id="@+id/tvSuccessAddress"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary"
-                                    android:text="" />
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginVertical="12dp"
-                            android:background="@color/border" />
-
+                            android:background="@color/border"/>
                         <!-- Ngày & Khung giờ -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
-
-                            <LinearLayout
+                            <TextView
+                                android:id="@+id/tvSuccessDate"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:text="@string/ui_activity_booking_success_tvsuccessdate_text_c073f1"
+                                app:drawableStartCompat="@drawable/ic_ri_calendar_16x16"
+                                app:drawableTint="@color/primary_green"
+                                android:drawablePadding="6dp"
                                 android:layout_weight="1"
-                                android:gravity="center_vertical">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/ic_ri_calendar"
-                                    app:tint="@color/primary_green" />
-
-                                <TextView
-                                    android:id="@+id/tvSuccessDate"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="6dp"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/text_primary"
-                                    android:text="Hôm nay, 14/10" />
-                            </LinearLayout>
-
-                            <LinearLayout
+                                android:gravity="center_vertical"/>
+                            <TextView
+                                android:id="@+id/tvSuccessTime"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:text="@string/ui_activity_booking_success_tvsuccesstime_text_df1fc4"
+                                app:drawableStartCompat="@drawable/ic_ri_time_16x16"
+                                app:drawableTint="@color/primary_green"
+                                android:drawablePadding="6dp"
                                 android:layout_weight="1"
-                                android:gravity="center_vertical|end">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/ic_ri_time"
-                                    app:tint="@color/primary_green" />
-
-                                <TextView
-                                    android:id="@+id/tvSuccessTime"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="6dp"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/text_primary"
-                                    android:text="16:30 – 18:00" />
-                            </LinearLayout>
+                                android:gravity="center_vertical|end"/>
                         </LinearLayout>
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginVertical="12dp"
-                            android:background="@color/border" />
-
+                            android:background="@color/border"/>
                         <!-- Giá thanh toán -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical">
-
                             <ImageView
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:padding="6dp"
                                 android:background="@drawable/bg_type_badge"
                                 android:src="@drawable/ic_ri_coins"
-                                app:tint="@color/primary_green" />
-
+                                app:tint="@color/primary_green"
+                                android:importantForAccessibility="no"/>
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginStart="10dp"
                                 android:orientation="vertical">
-
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary"
-                                    android:text="Tổng tiền" />
-
+                                    android:text="@string/ui_activity_booking_success_textview_text_0b9097"/>
                                 <TextView
                                     android:id="@+id/tvSuccessPrice"
                                     android:layout_width="wrap_content"
@@ -279,21 +229,19 @@
                                     android:textSize="18sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/primary_green"
-                                    android:text="" />
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
-
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
             <!-- Nút xem lịch của tôi -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGoToMyBookings"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="24dp"
-                android:text="Xem lịch của tôi"
+                android:text="@string/ui_activity_booking_success_btngotomybookings_text_0ca1e1"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:cornerRadius="12dp"
@@ -301,8 +249,7 @@
                 android:textColor="@color/surface"
                 app:icon="@drawable/ic_ri_calendar"
                 app:iconGravity="textStart"
-                app:iconTint="@color/surface" />
-
+                app:iconTint="@color/surface"/>
             <!-- Nút quay về trang chủ -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBackToHome"
@@ -310,37 +257,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="Về trang chủ"
+                android:text="@string/ui_activity_booking_success_btnbacktohome_text_86376d"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="@color/primary_green" />
-
+                android:textColor="@color/primary_green"/>
             <!-- Notice Box -->
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/primary_green"
+                android:text="@string/ui_activity_booking_success_textview_text_dc554b"
+                app:drawableStartCompat="@drawable/ic_ri_info_16x16"
+                app:drawableTint="@color/primary_green"
+                android:drawablePadding="8dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_rating_badge"
-                android:backgroundTint="@color/slot_available_bg"
                 android:padding="12dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_ri_info"
-                    app:tint="@color/primary_green" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/primary_green"
-                    android:text="Vui lòng đến trước giờ đá 10 phút." />
-            </LinearLayout>
-
+                android:gravity="center_vertical"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

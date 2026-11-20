@@ -52,10 +52,11 @@ public class DateChipAdapter extends RecyclerView.Adapter<DateChipAdapter.DateVi
     }
 
     public void updateDates(List<String> newDates) {
-        dates.clear();
-        if (newDates != null) dates.addAll(newDates);
+        int previousSelection = selectedPosition;
         selectedPosition = 0;
-        notifyDataSetChanged();
+        AdapterUpdates.replace(this, dates, newDates, value -> value);
+        if (previousSelection >= 0 && previousSelection < dates.size()) notifyItemChanged(previousSelection);
+        if (!dates.isEmpty()) notifyItemChanged(0);
     }
 
     public void setSlotCount(String isoDate, int count) {
@@ -81,7 +82,7 @@ public class DateChipAdapter extends RecyclerView.Adapter<DateChipAdapter.DateVi
         int availableSlots = cachedCount == null ? -1 : cachedCount;
         if (cachedCount == null) {
             slotCounts.put(isoDate, -1);
-            holder.tvDateStatus.setText("Đang tải...");
+            holder.tvDateStatus.setText(R.string.ui_message_577a1d5910);
             holder.tvDateStatus.setTag(isoDate);
             executor.execute(() -> {
                 try {
@@ -138,20 +139,21 @@ public class DateChipAdapter extends RecyclerView.Adapter<DateChipAdapter.DateVi
         }
 
         void bind(String isoDate, int availableSlots, boolean isSelected, View.OnClickListener onClickListener) {
+            cardDateChip.setSelected(isSelected);
             tvDateLabel.setText(DateTimeUtils.formatDisplayDate(isoDate));
 
             if (tvDateStatus != null) {
                 if (availableSlots == -2) {
-                    tvDateStatus.setText("Không tải được");
+                    tvDateStatus.setText(R.string.ui_message_09f0f163b9);
                     tvDateStatus.setTextColor(isSelected ? 0xFFC8E6C9 : 0xFF68776D);
                 } else if (availableSlots < 0) {
-                    tvDateStatus.setText("Đang tải...");
+                    tvDateStatus.setText(R.string.ui_message_577a1d5910);
                     tvDateStatus.setTextColor(isSelected ? 0xFFC8E6C9 : 0xFF68776D);
                 } else if (availableSlots > 0) {
-                    tvDateStatus.setText("Còn " + availableSlots + " khung");
+                    tvDateStatus.setText(tvDateStatus.getContext().getString(R.string.ui_message_07314a7f6d, String.valueOf(availableSlots)));
                     tvDateStatus.setTextColor(isSelected ? 0xFFC8E6C9 : 0xFF2E7D32);
                 } else {
-                    tvDateStatus.setText("Hết sân");
+                    tvDateStatus.setText(R.string.ui_message_59df313f31);
                     tvDateStatus.setTextColor(isSelected ? 0xFFFFCDD2 : 0xFFD32F2F);
                 }
             }

@@ -120,10 +120,10 @@ final class AdminSlotSection extends AdminSection {
         AlertDialog dialog = new AlertDialog.Builder(activity).setTitle("Tạo khung giờ").setView(scroll).setNegativeButton("Hủy",null).setPositiveButton("Tạo",null).create();
         dialog.setOnShowListener(d -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String from = start.getText().toString(), to = end.getText().toString();
-            if (to.compareTo(from) <= 0) { error.setText("Giờ kết thúc phải sau giờ bắt đầu."); return; }
-            if (DateTimeUtils.hasBookingStarted(targetDate, from + " - " + to)) { error.setText("Giờ bắt đầu đã qua. Hãy chọn giờ khác."); return; }
-            long amount; try { amount = Long.parseLong(price.getText().toString().trim()); } catch (NumberFormatException e) { error.setText("Nhập giá hợp lệ."); return; }
-            if (amount <= 0 || amount > 100_000_000) { error.setText("Giá phải lớn hơn 0 và không quá 100 triệu đồng."); return; }
+            if (to.compareTo(from) <= 0) { error.setText(R.string.ui_message_1bf896adae); return; }
+            if (DateTimeUtils.hasBookingStarted(targetDate, from + " - " + to)) { error.setText(R.string.ui_message_f1d27f2735); return; }
+            long amount; try { amount = Long.parseLong(price.getText().toString().trim()); } catch (NumberFormatException e) { error.setText(R.string.ui_message_f3e4d98622); return; }
+            if (amount <= 0 || amount > 100_000_000) { error.setText(R.string.ui_message_e7c68b1c32); return; }
             if (saving) return; saving = true; dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
             JSONObject payload = body("slot_date",targetDate);
             try { payload.put("starts_at",from).put("ends_at",to).put("price",amount); } catch (org.json.JSONException e) { throw new IllegalArgumentException(e); }

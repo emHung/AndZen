@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background">
-
+    android:orientation="vertical">
     <!-- Green Top Header -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +13,6 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="16dp">
-
         <ImageView
             android:id="@+id/btnFavBack"
             android:layout_width="24dp"
@@ -23,32 +20,29 @@
             android:src="@drawable/ic_ri_arrow_left"
             android:clickable="true"
             android:focusable="true"
-            app:tint="@color/white" />
-
+            app:tint="@color/white"
+            android:contentDescription="@string/ui_action_btnfavback_8a09e0"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="14dp"
             android:orientation="vertical">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sân yêu thích"
+                android:text="@string/ui_fragment_favorites_textview_text_9a1921"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Những sân bạn đã lưu để đặt nhanh hơn"
+                android:text="@string/ui_fragment_favorites_textview_text_dde5e0"
                 android:textColor="#C8E6C9"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
         </LinearLayout>
-
         <FrameLayout
             android:id="@+id/btnFavSearch"
             android:layout_width="40dp"
@@ -56,16 +50,15 @@
             android:background="@drawable/bg_header_action"
             android:clickable="true"
             android:focusable="true">
-
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_ri_search"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                android:importantForAccessibility="no"/>
         </FrameLayout>
     </LinearLayout>
-
     <!-- Filter Chips Row -->
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -73,12 +66,10 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp"
         android:scrollbars="none">
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:id="@+id/chipFavAll"
                 android:layout_width="wrap_content"
@@ -86,13 +77,12 @@
                 android:background="@drawable/bg_chip_selected_pill"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="Tất cả (3)"
+                android:text="@string/ui_fragment_favorites_chipfavall_text_48668c"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:clickable="true"
-                android:focusable="true" />
-
+                android:focusable="true"/>
             <TextView
                 android:id="@+id/chipFavRecent"
                 android:layout_width="wrap_content"
@@ -101,12 +91,11 @@
                 android:background="@drawable/bg_tag_light_green"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="Gần đây"
+                android:text="@string/ui_fragment_favorites_chipfavrecent_text_5c3d64"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 android:clickable="true"
-                android:focusable="true" />
-
+                android:focusable="true"/>
             <TextView
                 android:id="@+id/chipFavGoodPrice"
                 android:layout_width="wrap_content"
@@ -115,27 +104,24 @@
                 android:background="@drawable/bg_tag_light_green"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="Giá tốt"
+                android:text="@string/ui_fragment_favorites_chipfavgoodprice_text_07c941"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"/>
         </LinearLayout>
     </HorizontalScrollView>
-
     <!-- Favorites List -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFavoritePitches"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingHorizontal="16dp"
             android:paddingBottom="16dp"
-            android:clipToPadding="false" />
-
+            android:clipToPadding="false"/>
         <LinearLayout
             android:id="@+id/layoutEmptyFavorites"
             android:layout_width="match_parent"
@@ -144,32 +130,29 @@
             android:orientation="vertical"
             android:padding="24dp"
             android:visibility="gone">
-
             <ImageView
                 android:layout_width="220dp"
                 android:layout_height="220dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/img_empty_fav" />
-
+                android:src="@drawable/img_empty_fav"
+                android:importantForAccessibility="no"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Bạn chưa lưu sân nào"
+                android:text="@string/ui_fragment_favorites_textview_text_7674c7"
                 android:textColor="@color/primary_green"
                 android:textSize="20sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:lineSpacingExtra="4dp"
-                android:text="Chạm vào biểu tượng trái tim ở sân bạn thích\nđể lưu lại tại đây."
+                android:text="@string/ui_fragment_favorites_textview_text_dc7c3e"
                 android:textColor="@color/text_muted"
-                android:textSize="14sp" />
-
+                android:textSize="14sp"/>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEmptyExplorePitch"
                 android:layout_width="wrap_content"
@@ -177,15 +160,14 @@
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/primary_green"
                 android:paddingHorizontal="28dp"
-                android:text="Khám phá sân bóng"
+                android:text="@string/ui_fragment_favorites_btnemptyexplorepitch_text_1d7236"
                 android:textColor="@color/surface"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:cornerRadius="14dp"
                 app:icon="@drawable/ic_ri_arrow_right"
                 app:iconGravity="textEnd"
-                app:iconTint="@color/surface" />
+                app:iconTint="@color/surface"/>
         </LinearLayout>
     </FrameLayout>
-
 </LinearLayout>

@@ -10,24 +10,21 @@
     app:strokeWidth="1dp"
     app:strokeColor="#ECEFF1"
     app:cardBackgroundColor="@color/surface">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <!-- Top Image Container with Favorite Heart -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="170dp">
-
             <ImageView
                 android:id="@+id/ivFavPitchImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_pitch_sunset" />
-
+                android:src="@drawable/img_pitch_sunset"
+                android:importantForAccessibility="no"/>
             <!-- Red Heart Button in White Circle -->
             <FrameLayout
                 android:id="@+id/btnFavToggle"
@@ -38,29 +35,27 @@
                 android:background="@drawable/bg_favorite_heart"
                 android:clickable="true"
                 android:focusable="true">
-
                 <ImageView
                     android:id="@+id/ivFavHeartIcon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_ri_heart_fill"
-                    app:tint="#E53935" />
+                    app:tint="#E53935"
+                    android:contentDescription="@string/ui_action_ivfavhearticon_5e4cde"
+                    android:focusable="true"/>
             </FrameLayout>
         </FrameLayout>
-
         <!-- Pitch Content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:id="@+id/tvFavPitchName"
                     android:layout_width="0dp"
@@ -69,119 +64,78 @@
                     android:text=""
                     android:textColor="@color/text_primary"
                     android:textSize="17sp"
-                    android:textStyle="bold" />
-
+                    android:textStyle="bold"/>
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_ri_star"
-                    app:tint="#F59E0B" />
-
+                    app:tint="#F59E0B"
+                    android:importantForAccessibility="no"/>
                 <TextView
                     android:id="@+id/tvFavRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="Chưa có đánh giá"
+                    android:text="@string/ui_item_favorite_pitch_tvfavrating_text_ff107d"
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
             </LinearLayout>
-
             <!-- Address -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvFavAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/ui_item_favorite_pitch_tvfavaddress_text_443f1c"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                app:drawableStartCompat="@drawable/ic_ri_map_pin_14x14"
+                app:drawableTint="@color/primary_green"
+                android:drawablePadding="4dp"
                 android:layout_marginTop="6dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/ic_ri_map_pin"
-                    app:tint="@color/primary_green" />
-
-                <TextView
-                    android:id="@+id/tvFavAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="Chưa cập nhật"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
+                android:gravity="center_vertical"/>
             <!-- Tags Row (Sân 7 người, Còn giờ hôm nay) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical">
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvFavTypeTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_tag_light_green"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/ic_ri_group"
-                        app:tint="@color/primary_green" />
-
-                    <TextView
-                        android:id="@+id/tvFavTypeTag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="Sân 7 người"
-                        android:textColor="@color/primary_green"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
+                    android:text="@string/ui_item_favorite_pitch_tvfavtypetag_text_9408bf"
+                    android:textColor="@color/primary_green"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_ri_group_12x12"
+                    app:drawableTint="@color/primary_green"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"/>
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/ui_item_favorite_pitch_textview_text_bf5f10"
+                    android:textColor="@color/primary_green"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_ri_bolt_12x12"
+                    app:drawableTint="@color/primary_green"
+                    android:drawablePadding="4dp"
                     android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_tag_light_green"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/ic_ri_bolt"
-                        app:tint="@color/primary_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="Còn giờ hôm nay"
-                        android:textColor="@color/primary_green"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
-
             <!-- Price & Booking Action -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:gravity="center_vertical">
-
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical">
-
                     <TextView
                         android:id="@+id/tvFavPrice"
                         android:layout_width="wrap_content"
@@ -189,22 +143,20 @@
                         android:text=""
                         android:textColor="@color/text_primary"
                         android:textSize="17sp"
-                        android:textStyle="bold" />
-
+                        android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="/ trận"
+                        android:text="@string/ui_item_favorite_pitch_textview_text_36a4cb"
                         android:textColor="@color/text_muted"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"/>
                 </LinearLayout>
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFavBookNow"
                     android:layout_width="wrap_content"
                     android:layout_height="42dp"
-                    android:text="Đặt sân"
+                    android:text="@string/ui_item_favorite_pitch_btnfavbooknow_text_d4c09d"
                     android:textColor="@color/white"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -212,11 +164,8 @@
                     app:cornerRadius="10dp"
                     app:icon="@drawable/ic_ri_calendar"
                     app:iconTint="@color/white"
-                    app:iconSize="16dp" />
+                    app:iconSize="16dp"/>
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>

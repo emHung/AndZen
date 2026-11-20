@@ -35,17 +35,20 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.SlotVi
     }
 
     public void updateData(List<TimeSlot> newSlots) {
-        slots.clear();
+        String previousSelection = selectedSlotId;
         selectedSlotId = null;
-        if (newSlots != null) {
-            slots.addAll(newSlots);
+        AdapterUpdates.replace(this, slots, newSlots, TimeSlot::getId);
+        for (int i = 0; i < slots.size(); i++) {
+            if (slots.get(i).getId().equals(previousSelection)) notifyItemChanged(i);
         }
-        notifyDataSetChanged();
     }
 
     public void setSelectedSlotId(String slotId) {
+        String previous = selectedSlotId;
         this.selectedSlotId = slotId;
-        notifyDataSetChanged();
+        for (int i = 0; i < slots.size(); i++) {
+            if (slots.get(i).getId().equals(previous) || slots.get(i).getId().equals(slotId)) notifyItemChanged(i);
+        }
     }
 
     @NonNull
@@ -62,8 +65,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.SlotVi
         boolean isSelected = slot.getId().equals(selectedSlotId);
         holder.bind(slot, isSelected, v -> {
             if (slot.isAvailable()) {
-                selectedSlotId = slot.getId();
-                notifyDataSetChanged();
+                setSelectedSlotId(slot.getId());
                 listener.onSlotSelected(slot);
             }
         });
@@ -91,6 +93,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.SlotVi
         }
 
         void bind(TimeSlot slot, boolean isSelected, View.OnClickListener onClickListener) {
+            cardSlot.setSelected(isSelected);
             if (ivSelectedCheck != null) {
                 ivSelectedCheck.setVisibility(isSelected ? View.VISIBLE : View.GONE);
             }

@@ -127,7 +127,7 @@ public class FavoritesFragment extends Fragment {
                 activity.runOnUiThread(() -> {
                     if (!isAdded() || getView() == null) return;
                     favoriteData = list;
-                    if (chipFavAll != null) chipFavAll.setText("Tất cả (" + list.size() + ")");
+                    if (chipFavAll != null) chipFavAll.setText(chipFavAll.getContext().getString(R.string.ui_message_e8897069f1, String.valueOf(list.size())));
                     adapter.updateData(list);
                     if (layoutEmptyFavorites != null) layoutEmptyFavorites.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
                     rvFavorites.setVisibility(list.isEmpty() ? View.GONE : View.VISIBLE);

@@ -8,53 +8,47 @@
     app:cardElevation="8dp"
     app:cardBackgroundColor="@color/surface"
     app:strokeWidth="0dp">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:padding="20dp">
-
         <!-- Icon thùng rác đỏ trong hình tròn hồng nhạt -->
         <FrameLayout
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_marginTop="4dp">
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_rating_badge"
-                android:backgroundTint="#FEE2E2" />
-
+                android:backgroundTint="#FEE2E2"/>
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_ri_delete_bin"
-                app:tint="#DC2626" />
+                app:tint="#DC2626"
+                android:importantForAccessibility="no"/>
         </FrameLayout>
-
         <!-- Tiêu đề & nội dung cảnh báo -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:text="Hủy đặt sân?"
+            android:text="@string/ui_dialog_cancel_booking_textview_text_30672f"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/text_primary" />
-
+            android:textColor="@color/text_primary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:gravity="center"
-            android:text="Bạn có chắc muốn hủy khung giờ này không?\nKhung giờ sẽ được mở lại cho người khác."
+            android:text="@string/ui_dialog_cancel_booking_textview_text_15c9ae"
             android:textSize="13sp"
-            android:textColor="@color/text_secondary" />
-
+            android:textColor="@color/text_secondary"/>
         <!-- Hộp tóm tắt thông tin đặt sân trong dialog -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -65,30 +59,26 @@
             app:strokeWidth="1dp"
             app:strokeColor="@color/border"
             app:cardBackgroundColor="#F9FAFB">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="10dp">
-
                 <ImageView
                     android:id="@+id/ivDialogPitchImage"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:scaleType="centerCrop"
                     android:background="@drawable/bg_rating_badge"
-                    android:clipToOutline="true"
-                    android:src="@drawable/img_pitch_1" />
-
+                    android:src="@drawable/img_pitch_1"
+                    android:importantForAccessibility="no"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="10dp"
                     android:orientation="vertical">
-
                     <TextView
                         android:id="@+id/tvDialogPitchName"
                         android:layout_width="wrap_content"
@@ -96,92 +86,66 @@
                         android:text=""
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary" />
-
-                    <LinearLayout
+                        android:textColor="@color/text_primary"/>
+                    <TextView
+                        android:id="@+id/tvDialogDateTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@string/ui_dialog_cancel_booking_tvdialogdatetime_text_1ce795"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
+                        app:drawableStartCompat="@drawable/ic_ri_calendar_14x14"
+                        app:drawableTint="@color/text_secondary"
+                        android:drawablePadding="6dp"
                         android:layout_marginTop="4dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:src="@drawable/ic_ri_calendar"
-                            app:tint="@color/text_secondary" />
-
-                        <TextView
-                            android:id="@+id/tvDialogDateTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Hôm nay, 14/10 | 16:30 – 18:00"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_secondary" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                        android:gravity="center_vertical"/>
+                    <TextView
+                        android:id="@+id/tvDialogAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="11sp"
+                        android:textColor="@color/text_muted"
+                        app:drawableStartCompat="@drawable/ic_ri_map_pin_14x14"
+                        app:drawableTint="@color/text_muted"
+                        android:drawablePadding="6dp"
                         android:layout_marginTop="3dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:src="@drawable/ic_ri_map_pin"
-                            app:tint="@color/text_muted" />
-
-                        <TextView
-                            android:id="@+id/tvDialogAddress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text=""
-                            android:textSize="11sp"
-                            android:textColor="@color/text_muted" />
-                    </LinearLayout>
+                        android:gravity="center_vertical"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
         <!-- Hàng nút bấm: Giữ lại & Đồng ý hủy -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnKeepBooking"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="46dp"
                 android:layout_weight="1"
-                android:text="Giữ lại"
+                android:text="@string/ui_dialog_cancel_booking_btnkeepbooking_text_fc0ffc"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
                 app:strokeColor="@color/border"
                 app:strokeWidth="1dp"
-                app:cornerRadius="12dp" />
-
+                app:cornerRadius="12dp"/>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnConfirmCancel"
                 android:layout_width="0dp"
                 android:layout_height="46dp"
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
-                android:text="Đồng ý hủy"
+                android:text="@string/ui_dialog_cancel_booking_btnconfirmcancel_text_2b6373"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/surface"
                 android:backgroundTint="#DC2626"
                 app:strokeWidth="0dp"
-                app:cornerRadius="12dp" />
+                app:cornerRadius="12dp"/>
         </LinearLayout>
-
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

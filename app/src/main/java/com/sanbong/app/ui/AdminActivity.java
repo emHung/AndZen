@@ -45,12 +45,12 @@ public class AdminActivity extends AppCompatActivity {
         android.view.MenuItem notifications = toolbar.getMenu().add("Thông báo");
         notifications.setIcon(R.drawable.ic_ri_notification);
         androidx.core.graphics.drawable.DrawableCompat.setTint(notifications.getIcon(), getColor(R.color.white));
-        notifications.setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+        notifications.setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_IF_ROOM);
         notifications.setOnMenuItemClickListener(item -> {
             startActivity(new android.content.Intent(this, NotificationActivity.class));
             return true;
         });
-        message.setText("Đang kiểm tra quyền truy cập...");
+        message.setText(R.string.ui_message_f4e7c26919);
         verifyRole();
     }
 
@@ -61,14 +61,14 @@ public class AdminActivity extends AppCompatActivity {
                 role = profile.optString("role", "customer");
                 runOnUiThread(() -> {
                     if (!"admin".equals(role) && !"staff".equals(role)) {
-                        message.setText("Tài khoản này chưa được cấp quyền nhân viên hoặc quản trị viên.");
+                        message.setText(R.string.ui_message_27dc53636c);
                         tabs.setVisibility(View.GONE); content.removeAllViews(); return;
                     }
                     message.setText("admin".equals(role) ? "Quản trị viên" : "Nhân viên");
                     buildTabs(); loadData();
                 });
             } catch (Exception exception) {
-                runOnUiThread(() -> message.setText("Không xác minh được quyền: " + exception.getMessage()));
+                runOnUiThread(() -> message.setText(message.getContext().getString(R.string.ui_message_56b99dddd7, String.valueOf(exception.getMessage()))));
             }
         });
     }
@@ -115,7 +115,7 @@ public class AdminActivity extends AppCompatActivity {
                     if (isFinishing() || isDestroyed()) return;
                     pitches.clear(); pitches.addAll(loaded); render();
                 });
-            } catch (Exception exception) { runOnUiThread(() -> message.setText("Không tải được danh sách sân: " + exception.getMessage())); }
+            } catch (Exception exception) { runOnUiThread(() -> message.setText(message.getContext().getString(R.string.ui_message_d1daa4928b, String.valueOf(exception.getMessage())))); }
         });
     }
 

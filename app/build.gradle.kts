@@ -30,14 +30,15 @@ tasks.configureEach {
 
 android {
     namespace = "com.sanbong.app"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.sanbong.app"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "SUPABASE_URL", buildConfigValue("sanbong.supabaseUrl"))
         buildConfigField("String", "SUPABASE_PUBLISHABLE_KEY", buildConfigValue("sanbong.supabasePublishableKey"))
         buildConfigField("String", "API_BASE_URL", buildConfigValue("sanbong.apiBaseUrl", if (releaseApiUrl.isBlank()) "http://127.0.0.1:8000" else releaseApiUrl))
@@ -60,6 +61,11 @@ android {
         viewBinding = true
         buildConfig = true
     }
+
+    lint {
+        warningsAsErrors = true
+        abortOnError = true
+    }
 }
 
 dependencies {
@@ -70,4 +76,6 @@ dependencies {
     implementation(libs.androidx.recyclerview)
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.runner)
 }

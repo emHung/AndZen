@@ -37,9 +37,7 @@ public class FavoritePitchAdapter extends RecyclerView.Adapter<FavoritePitchAdap
     }
 
     public void updateData(List<Pitch> list) {
-        pitchList.clear();
-        if (list != null) pitchList.addAll(list);
-        notifyDataSetChanged();
+        AdapterUpdates.replace(this, pitchList, list, Pitch::getId);
     }
 
     @NonNull
@@ -56,8 +54,8 @@ public class FavoritePitchAdapter extends RecyclerView.Adapter<FavoritePitchAdap
         Context context = holder.itemView.getContext();
 
         holder.tvName.setText(pitch.getName());
-        holder.tvRating.setText(pitch.getRating() + " (256)");
-        holder.tvAddress.setText(pitch.getDistrict() + ", Hà Nội");
+        holder.tvRating.setText(holder.tvRating.getContext().getString(R.string.ui_message_4db0b46dfe, String.valueOf(pitch.getRating())));
+        holder.tvAddress.setText(holder.tvAddress.getContext().getString(R.string.ui_message_3ccf488c13, String.valueOf(pitch.getDistrict())));
         holder.tvTypeTag.setText(pitch.getType().getDisplayName());
         holder.tvPrice.setText(CurrencyUtils.formatVnd(pitch.getMinPrice()));
 

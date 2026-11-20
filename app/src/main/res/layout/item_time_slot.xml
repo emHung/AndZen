@@ -11,11 +11,9 @@
     app:strokeWidth="1.5dp"
     app:strokeColor="@color/slot_available_stroke"
     app:cardBackgroundColor="@color/slot_available_bg">
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +21,6 @@
             android:gravity="center"
             android:paddingVertical="12dp"
             android:paddingHorizontal="8dp">
-
             <TextView
                 android:id="@+id/tvTimeRange"
                 android:layout_width="wrap_content"
@@ -31,8 +28,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/slot_available_text"
-                android:text="15:00 - 16:30" />
-
+                android:text="@string/ui_item_time_slot_tvtimerange_text_bb8a0d"/>
             <TextView
                 android:id="@+id/tvSlotPrice"
                 android:layout_width="wrap_content"
@@ -41,18 +37,16 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:textColor="@color/slot_available_text"
-                android:text="" />
-
+                android:text=""/>
             <TextView
                 android:id="@+id/tvSlotStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:textSize="11sp"
-                android:text="Còn trống"
-                android:textColor="@color/slot_available_text" />
+                android:text="@string/ui_item_time_slot_tvslotstatus_text_b5b9cc"
+                android:textColor="@color/slot_available_text"/>
         </LinearLayout>
-
         <ImageView
             android:id="@+id/ivSelectedCheck"
             android:layout_width="22dp"
@@ -61,8 +55,7 @@
             android:layout_marginEnd="12dp"
             android:visibility="gone"
             android:src="@drawable/ic_ri_check_circle"
-            app:tint="@color/surface" />
-
+            app:tint="@color/surface"
+            android:importantForAccessibility="no"/>
     </FrameLayout>
 </com.google.android.material.card.MaterialCardView>
- 

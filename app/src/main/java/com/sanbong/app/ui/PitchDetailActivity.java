@@ -168,9 +168,9 @@ public class PitchDetailActivity extends AppCompatActivity {
         updateBottomSummary();
         rvSlots.setVisibility(View.GONE);
         layoutNoSlots.setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.tvNoSlots)).setText("Đang tải khung giờ...");
+        ((TextView) findViewById(R.id.tvNoSlots)).setText(R.string.ui_message_5dac10f08c);
         findViewById(R.id.btnSuggestNextAvailable).setVisibility(View.GONE);
-        if (tvAvailableTitle != null) tvAvailableTitle.setText("Đang tải khung giờ...");
+        if (tvAvailableTitle != null) tvAvailableTitle.setText(R.string.ui_message_5dac10f08c);
         slotExecutor.execute(() -> {
             try {
                 JSONArray response = ApiClient.getArray(this,
@@ -190,15 +190,15 @@ public class PitchDetailActivity extends AppCompatActivity {
                     }
                     dateAdapter.setSlotCount(requestedDate, availCount);
                     slotAdapter.updateData(display);
-                    ((TextView) findViewById(R.id.tvNoSlots)).setText("Ngày này không còn khung giờ có thể đặt.");
+                    ((TextView) findViewById(R.id.tvNoSlots)).setText(R.string.ui_message_09aa8135e7);
                     android.widget.Button retry = findViewById(R.id.btnSuggestNextAvailable);
-                    retry.setText("Chọn ngày khác");
+                    retry.setText(R.string.ui_message_891e54871d);
                     retry.setVisibility(View.VISIBLE);
                     retry.setOnClickListener(v -> suggestAvailableDate());
                     boolean hasAvail = (availCount > 0);
                     layoutNoSlots.setVisibility(display.isEmpty() ? View.VISIBLE : View.GONE);
                     rvSlots.setVisibility(display.isEmpty() ? View.GONE : View.VISIBLE);
-                    if (tvAvailableTitle != null) tvAvailableTitle.setText("Khung giờ còn trống (" + availCount + ")");
+                    if (tvAvailableTitle != null) tvAvailableTitle.setText(tvAvailableTitle.getContext().getString(R.string.ui_message_dca9dfc30c, String.valueOf(availCount)));
                     selectedSlot = null;
                     for (TimeSlot s : display) {
                         if (s.isAvailable()) { selectedSlot = s; slotAdapter.setSelectedSlotId(s.getId()); break; }
@@ -210,10 +210,10 @@ public class PitchDetailActivity extends AppCompatActivity {
                     if (isFinishing() || !requestedDate.equals(selectedDate)) return;
                     layoutNoSlots.setVisibility(View.VISIBLE);
                     rvSlots.setVisibility(View.GONE);
-                    if (tvAvailableTitle != null) tvAvailableTitle.setText("Khung giờ chưa tải được");
-                    ((TextView) findViewById(R.id.tvNoSlots)).setText("Không tải được lịch sân. Hãy thử lại.");
+                    if (tvAvailableTitle != null) tvAvailableTitle.setText(R.string.ui_message_cbfb7dff5b);
+                    ((TextView) findViewById(R.id.tvNoSlots)).setText(R.string.ui_message_84f06f8a6b);
                     android.widget.Button retry = findViewById(R.id.btnSuggestNextAvailable);
-                    retry.setVisibility(View.VISIBLE); retry.setText("Thử lại");
+                    retry.setVisibility(View.VISIBLE); retry.setText(R.string.ui_message_e353f2f3d3);
                     retry.setOnClickListener(v -> loadSlotsForDate());
                     selectedSlot = null;
                     updateBottomSummary();

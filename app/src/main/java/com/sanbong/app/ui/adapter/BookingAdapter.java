@@ -45,11 +45,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     }
 
     public void updateData(List<Booking> newBookings) {
-        bookings.clear();
-        if (newBookings != null) {
-            bookings.addAll(newBookings);
-        }
-        notifyDataSetChanged();
+        AdapterUpdates.replace(this, bookings, newBookings, Booking::getId);
     }
 
     @NonNull
@@ -96,7 +92,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         }
 
         void bind(Booking booking, OnCancelClickListener cancelListener, OnBookingClickListener itemClickListener) {
-            tvBookingCode.setText("Mã: " + booking.getBookingCode());
+            tvBookingCode.setText(tvBookingCode.getContext().getString(R.string.ui_message_f2282db4b6, String.valueOf(booking.getBookingCode())));
             tvPitchName.setText(booking.getPitchName());
             ((TextView) itemView.findViewById(R.id.tvBookingType)).setText(
                     booking.getPitch() == null ? "Sân bóng" : booking.getPitch().getType().getDisplayName());

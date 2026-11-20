@@ -26,7 +26,8 @@ public class BookingSuccessActivity extends AppCompatActivity {
     private TextView tvSuccessBookingCode, tvSuccessPitchName, tvSuccessAddress;
     private TextView tvSuccessDate, tvSuccessTime, tvSuccessPrice;
     private MaterialButton btnGoToMyBookings, btnBackToHome;
-    private ImageView btnCopyCode, btnToolbarHome;
+    private TextView btnCopyCode;
+    private ImageView btnToolbarHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +54,13 @@ public class BookingSuccessActivity extends AppCompatActivity {
         tvSuccessPrice = findViewById(R.id.tvSuccessPrice);
         btnGoToMyBookings = findViewById(R.id.btnGoToMyBookings);
         btnBackToHome = findViewById(R.id.btnBackToHome);
-        btnCopyCode = findViewById(R.id.btnCopyCode);
+        btnCopyCode = tvSuccessBookingCode;
         btnToolbarHome = findViewById(R.id.btnToolbarHome);
     }
 
     private void bindData() {
         tvSuccessBookingCode.setText(booking.getBookingCode());
+        tvSuccessBookingCode.setContentDescription(getString(R.string.copy_booking_code_accessibility, booking.getBookingCode()));
         if (tvSuccessPitchName != null) tvSuccessPitchName.setText(booking.getPitchName());
         if (tvSuccessAddress != null) tvSuccessAddress.setText(booking.getPitchAddress());
         if (tvSuccessDate != null) tvSuccessDate.setText(DateTimeUtils.formatDisplayDate(booking.getDate()));

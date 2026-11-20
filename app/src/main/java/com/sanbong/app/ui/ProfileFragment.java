@@ -56,10 +56,10 @@ public class ProfileFragment extends Fragment {
         tvFrequentPitchName = view.findViewById(R.id.tvFrequentPitchName);
         tvFrequentPitchAddress = view.findViewById(R.id.tvFrequentPitchAddress);
         tvFrequentPitchDate = view.findViewById(R.id.tvFrequentPitchDate);
-        tvStatBookingsNum.setText("—");
-        tvStatFavoritesNum.setText("—");
-        tvFrequentPitchName.setText("Chưa có lịch đặt");
-        tvFrequentPitchAddress.setText("Đặt sân để xem thông tin tại đây");
+        tvStatBookingsNum.setText(R.string.ui_message_1b93795b97);
+        tvStatFavoritesNum.setText(R.string.ui_message_1b93795b97);
+        tvFrequentPitchName.setText(R.string.ui_message_d9dfb31ed4);
+        tvFrequentPitchAddress.setText(R.string.ui_message_91e3b29dad);
         tvFrequentPitchDate.setText("");
     }
 
@@ -129,11 +129,11 @@ public class ProfileFragment extends Fragment {
                     frequentPitchId = latest.optString("pitch_id", "");
                     tvFrequentPitchName.setText(latest.optString("pitch_name", "Chưa có lịch đặt"));
                     tvFrequentPitchAddress.setText(latest.optString("pitch_address", ""));
-                    tvFrequentPitchDate.setText("Lần gần nhất · " + latest.optString("booking_date", ""));
+                    tvFrequentPitchDate.setText(tvFrequentPitchDate.getContext().getString(R.string.ui_message_44d667b4b0, String.valueOf(latest.optString("booking_date", ""))));
                 } else {
                     frequentPitchId = null;
-                    tvFrequentPitchName.setText("Chưa có lịch đặt");
-                    tvFrequentPitchAddress.setText("Đặt sân để xem thông tin tại đây");
+                    tvFrequentPitchName.setText(R.string.ui_message_d9dfb31ed4);
+                    tvFrequentPitchAddress.setText(R.string.ui_message_91e3b29dad);
                     tvFrequentPitchDate.setText("");
                 }
             });
@@ -281,7 +281,7 @@ public class ProfileFragment extends Fragment {
                 if (!isAdded()) return;
                 requireActivity().runOnUiThread(() -> {
                     android.widget.CheckBox checkBox = new android.widget.CheckBox(requireContext());
-                    checkBox.setText("Cho phép hiển thị hồ sơ công khai");
+                    checkBox.setText(R.string.ui_message_47252ad0fb);
                     checkBox.setChecked(settings.optBoolean("profile_public", false));
                     new AlertDialog.Builder(requireContext()).setTitle("Quyền riêng tư").setView(checkBox)
                             .setNegativeButton("Hủy", null)

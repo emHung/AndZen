@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"><item android:drawable="@drawable/bg_tag_light_green" android:width="36dp" android:height="36dp"/><item android:drawable="@drawable/profile_bubble_ic_ri_phone_icon" android:gravity="center" android:width="18dp" android:height="18dp"/></layer-list>

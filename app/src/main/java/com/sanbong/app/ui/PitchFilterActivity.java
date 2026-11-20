@@ -57,8 +57,8 @@ public class PitchFilterActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        tvDistrict = findViewById(R.id.tvFilterDistrict);
-        tvDate = findViewById(R.id.tvFilterDate);
+        tvDistrict = findViewById(R.id.btnFilterDistrict);
+        tvDate = findViewById(R.id.btnFilterDate);
         tvMaxPrice = findViewById(R.id.tvMaxPrice);
         chipType5 = findViewById(R.id.chipType5);
         chipType7 = findViewById(R.id.chipType7);
@@ -69,8 +69,8 @@ public class PitchFilterActivity extends AppCompatActivity {
         cbWater = findViewById(R.id.cbWater);
         cbShoes = findViewById(R.id.cbShoes);
         btnApply = findViewById(R.id.btnApplyFilter);
-        tvDistrict.setText("Tất cả khu vực");
-        tvDate.setText("Bất kỳ ngày nào");
+        tvDistrict.setText(R.string.ui_message_8581f79d89);
+        tvDate.setText(R.string.ui_message_a7d052e03b);
         cbLed.setChecked(false); cbParking.setChecked(false); cbWater.setChecked(false); cbShoes.setChecked(false);
     }
 
@@ -126,7 +126,7 @@ public class PitchFilterActivity extends AppCompatActivity {
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar s, int p, boolean f) {
                 int price = Math.max(200, p);
-                tvMaxPrice.setText(price + ".000 đ");
+                tvMaxPrice.setText(tvMaxPrice.getContext().getString(R.string.ui_message_dd2ac5e381, String.valueOf(price)));
             }
             public void onStartTrackingTouch(SeekBar s) {}
             public void onStopTrackingTouch(SeekBar s) {}
@@ -197,8 +197,8 @@ public class PitchFilterActivity extends AppCompatActivity {
 
 
     private void resetFilters() {
-        tvDistrict.setText("Tất cả khu vực");
-        tvDate.setText("Bất kỳ ngày nào");
+        tvDistrict.setText(R.string.ui_message_8581f79d89);
+        tvDate.setText(R.string.ui_message_a7d052e03b);
         selectedDate = null;
         selectType(0);
         selectTimeSlot(null);

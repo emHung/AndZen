@@ -35,17 +35,17 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
     }
 
     public void updateData(List<Pitch> newPitches) {
-        pitchList.clear();
-        if (newPitches != null) {
-            pitchList.addAll(newPitches);
-        }
-        notifyDataSetChanged();
+        AdapterUpdates.replace(this, pitchList, newPitches, Pitch::getId);
     }
 
     public void setFavoriteIds(java.util.Set<String> ids) {
+        java.util.Set<String> previousFavorites = new java.util.HashSet<>(favoriteIds);
         favoriteIds.clear();
         if (ids != null) favoriteIds.addAll(ids);
-        notifyDataSetChanged();
+        for (int i = 0; i < pitchList.size(); i++) {
+            String id = pitchList.get(i).getId();
+            if (previousFavorites.contains(id) != favoriteIds.contains(id)) notifyItemChanged(i);
+        }
     }
 
     @NonNull
@@ -103,12 +103,12 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
             tvAddress.setText(pitch.getAddress());
             tvPitchType.setText(pitch.getType().getDisplayName());
             tvAmenities.setText(String.join(" • ", pitch.getAmenities()));
-            tvPrice.setText(CurrencyUtils.formatVnd(pitch.getMinPrice()) + " / trận");
+            tvPrice.setText(tvPrice.getContext().getString(R.string.ui_message_041044b655, String.valueOf(CurrencyUtils.formatVnd(pitch.getMinPrice()))));
 
             if (tvAvailableSlots != null) {
                 String today = com.sanbong.app.util.DateTimeUtils.getNextDays(1).get(0);
                 tvAvailableSlots.setTag(pitch.getId());
-                tvAvailableSlots.setText("Đang tải khung giờ...");
+                tvAvailableSlots.setText(R.string.ui_message_5dac10f08c);
                 favoriteExecutor.execute(() -> {
                     try {
                         org.json.JSONArray slots = ApiClient.getArray(itemView.getContext(),
@@ -122,7 +122,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.PitchViewHol
                         });
                     } catch (Exception exception) {
                         new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
-                            if (pitch.getId().equals(tvAvailableSlots.getTag())) tvAvailableSlots.setText("Mở sân để xem khung giờ");
+                            if (pitch.getId().equals(tvAvailableSlots.getTag())) tvAvailableSlots.setText(R.string.ui_message_df123ea35a);
                         });
                     }
                 });

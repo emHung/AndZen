@@ -11,24 +11,21 @@
     app:strokeColor="@color/border"
     app:strokeWidth="1dp"
     app:cardBackgroundColor="@color/surface">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <!-- Ảnh bìa sân bóng + Nút yêu thích -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="160dp">
-
             <ImageView
                 android:id="@+id/ivPitchImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_pitch_1" />
-
+                android:src="@drawable/img_pitch_1"
+                android:importantForAccessibility="no"/>
             <ImageView
                 android:id="@+id/ivFavorite"
                 android:layout_width="32dp"
@@ -36,24 +33,21 @@
                 android:layout_gravity="top|end"
                 android:layout_margin="12dp"
                 android:src="@drawable/ic_ri_heart"
-                app:tint="@color/surface" />
-
-
+                app:tint="@color/surface"
+                android:contentDescription="@string/ui_action_ivfavorite_310e8f"
+                android:focusable="true"/>
         </FrameLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
             <!-- Tên sân & Đánh giá -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:id="@+id/tvPitchName"
                     android:layout_width="0dp"
@@ -62,71 +56,43 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:text="" />
-
-                <LinearLayout
+                    android:text=""/>
+                <TextView
+                    android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_type_badge"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="3dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_ri_star"
-                        app:tint="@color/star_gold" />
-
-                    <TextView
-                        android:id="@+id/tvRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:textColor="@color/primary_green"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="—" />
-                </LinearLayout>
+                    android:textColor="@color/primary_green"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:text="@string/ui_item_pitch_card_tvrating_text_1b9379"
+                    app:drawableStartCompat="@drawable/ic_ri_star_14x14"
+                    app:drawableTint="@color/star_gold"
+                    android:drawablePadding="3dp"
+                    android:gravity="center_vertical"/>
             </LinearLayout>
-
             <!-- Địa chỉ -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:text=""
+                app:drawableStartCompat="@drawable/ic_ri_map_pin_line_14x14"
+                app:drawableTint="@color/text_muted"
+                android:drawablePadding="6dp"
                 android:layout_marginTop="6dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/ic_ri_map_pin_line"
-                    app:tint="@color/text_muted" />
-
-                <TextView
-                    android:id="@+id/tvAddress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:textSize="13sp"
-                    android:textColor="@color/text_secondary"
-                    android:text="" />
-            </LinearLayout>
-
+                android:gravity="center_vertical"/>
             <!-- Huy hiệu loại sân & Tiện ích -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:scrollbars="none">
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <TextView
                         android:id="@+id/tvPitchType"
                         android:layout_width="wrap_content"
@@ -137,11 +103,10 @@
                         android:textColor="@color/primary_green"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:drawableStart="@drawable/ic_ri_group"
                         android:drawablePadding="4dp"
                         app:drawableTint="@color/primary_green"
-                        android:text="Sân 7 người" />
-
+                        android:text="@string/ui_item_pitch_card_tvpitchtype_text_9408bf"
+                        app:drawableStartCompat="@drawable/ic_ri_group"/>
                     <TextView
                         android:id="@+id/tvAmenities"
                         android:layout_width="wrap_content"
@@ -152,10 +117,9 @@
                         android:paddingVertical="4dp"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp"
-                        android:text="Đèn LED • Nước miễn phí" />
+                        android:text="@string/ui_item_pitch_card_tvamenities_text_59c5a8"/>
                 </LinearLayout>
             </HorizontalScrollView>
-
             <!-- Hàng giá & Nút đặt sân -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -163,34 +127,22 @@
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvAvailableSlots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:src="@drawable/ic_ri_time"
-                            app:tint="@color/text_muted" />
-
-                        <TextView
-                            android:id="@+id/tvAvailableSlots"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_muted"
-                            android:text="Còn 3 khung giờ" />
-                    </LinearLayout>
-
+                        android:textSize="12sp"
+                        android:textColor="@color/text_muted"
+                        android:text="@string/ui_item_pitch_card_tvavailableslots_text_65f389"
+                        app:drawableStartCompat="@drawable/ic_ri_time_12x12"
+                        app:drawableTint="@color/text_muted"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"/>
                     <TextView
                         android:id="@+id/tvPrice"
                         android:layout_width="wrap_content"
@@ -199,14 +151,13 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_green"
-                        android:text="" />
+                        android:text=""/>
                 </LinearLayout>
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnViewDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="42dp"
-                    android:text="Đặt sân"
+                    android:text="@string/ui_item_pitch_card_btnviewdetails_text_d4c09d"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     app:cornerRadius="10dp"
@@ -215,10 +166,8 @@
                     app:icon="@drawable/ic_ri_arrow_right_s"
                     app:iconGravity="end"
                     app:iconSize="16dp"
-                    app:iconTint="@color/surface" />
+                    app:iconTint="@color/surface"/>
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -88,7 +88,9 @@ public class BookingDetailActivity extends AppCompatActivity {
     }
 
     private void setupActionButtons() {
-        findViewById(R.id.btnCopyBookingCode).setOnClickListener(v -> {
+        findViewById(R.id.tvDetailBookingCode).setContentDescription(
+                getString(R.string.copy_booking_code_accessibility, booking.getBookingCode()));
+        findViewById(R.id.tvDetailBookingCode).setOnClickListener(v -> {
             if (booking == null) return;
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setPrimaryClip(ClipData.newPlainText("BookingCode", booking.getBookingCode()));
@@ -167,8 +169,7 @@ public class BookingDetailActivity extends AppCompatActivity {
             TimeSlot slot = available.get(i);
             RadioButton option = i < options.length ? options[i] : new RadioButton(this);
             option.setId(View.generateViewId());
-            option.setText(slot.getTimeRange() + "   •   " + CurrencyUtils.formatVnd(slot.getPrice())
-                    + (slot.getId().equals(booking.getSlotId()) && selectedDate.equals(booking.getDate()) ? " (Giờ hiện tại)" : " (Còn trống)"));
+            option.setText(option.getContext().getString(R.string.ui_message_15c051983b, String.valueOf(slot.getTimeRange()), String.valueOf(CurrencyUtils.formatVnd(slot.getPrice())), String.valueOf((slot.getId().equals(booking.getSlotId()) && selectedDate.equals(booking.getDate()) ? " (Giờ hiện tại)" : " (Còn trống)"))));
             option.setTextColor(getColor(R.color.text_primary));
             option.setTextSize(13);
             option.setTypeface(null, android.graphics.Typeface.BOLD);
@@ -214,8 +215,7 @@ public class BookingDetailActivity extends AppCompatActivity {
         AlertDialog dialog = new AlertDialog.Builder(this).setView(view).create();
         if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         ((TextView) view.findViewById(R.id.tvDialogPitchName)).setText(booking.getPitchName());
-        ((TextView) view.findViewById(R.id.tvDialogDateTime)).setText(
-                DateTimeUtils.formatDisplayDate(booking.getDate()) + " | " + booking.getTimeRange());
+        ((TextView) view.findViewById(R.id.tvDialogDateTime)).setText(((TextView) view.findViewById(R.id.tvDialogDateTime)).getContext().getString(R.string.ui_message_25c4b27b63, String.valueOf(DateTimeUtils.formatDisplayDate(booking.getDate())), String.valueOf(booking.getTimeRange())));
         ((TextView) view.findViewById(R.id.tvDialogAddress)).setText(booking.getPitchAddress());
         view.findViewById(R.id.btnKeepBooking).setOnClickListener(v -> dialog.dismiss());
         view.findViewById(R.id.btnConfirmCancel).setOnClickListener(v -> {

@@ -10,29 +10,27 @@
     app:strokeWidth="1dp"
     app:strokeColor="#E8E8E8"
     app:cardBackgroundColor="@color/surface">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:gravity="top">
-
+        android:gravity="top"
+        android:baselineAligned="false">
         <!-- Icon Container -->
         <FrameLayout
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:background="@drawable/bg_tag_light_green">
-
             <ImageView
                 android:id="@+id/ivNotifIcon"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_ri_football"
-                app:tint="@color/primary_green" />
+                app:tint="@color/primary_green"
+                android:importantForAccessibility="no"/>
         </FrameLayout>
-
         <!-- Content -->
         <LinearLayout
             android:layout_width="0dp"
@@ -40,31 +38,27 @@
             android:layout_weight="1"
             android:layout_marginStart="12dp"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:id="@+id/tvNotifTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Đặt sân thành công!"
+                    android:text="@string/ui_item_notification_tvnotiftitle_text_23fede"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
-
+                    android:textStyle="bold"/>
                 <View
                     android:id="@+id/vUnreadDot"
                     android:layout_width="8dp"
                     android:layout_height="8dp"
                     android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_badge_red" />
+                    android:background="@drawable/bg_badge_red"/>
             </LinearLayout>
-
             <TextView
                 android:id="@+id/tvNotifBody"
                 android:layout_width="match_parent"
@@ -73,18 +67,15 @@
                 android:text=""
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
-                android:lineSpacingExtra="2dp" />
-
+                android:lineSpacingExtra="2dp"/>
             <TextView
                 android:id="@+id/tvNotifTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="10 phút trước"
+                android:text="@string/ui_item_notification_tvnotiftime_text_e56455"
                 android:textColor="#9E9E9E"
-                android:textSize="11sp" />
+                android:textSize="11sp"/>
         </LinearLayout>
-
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>

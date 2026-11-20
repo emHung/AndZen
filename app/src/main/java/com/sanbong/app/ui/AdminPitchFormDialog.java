@@ -97,7 +97,7 @@ public class AdminPitchFormDialog {
                         this.customPickedBitmap = bmp;
                         this.selectedPresetKey = null;
                         ivPreview.setImageBitmap(bmp);
-                        badgeStatus.setText("✓ Đã chọn ảnh từ máy");
+                        badgeStatus.setText(R.string.ui_message_7ebad9cd00);
                         badgeStatus.setBackgroundResource(R.drawable.bg_tag_light_green);
                         badgeStatus.setTextColor(ContextCompat.getColor(activity, R.color.primary_green));
                         highlightPresetChip(null);
@@ -141,10 +141,10 @@ public class AdminPitchFormDialog {
         TextView tvTitle = dialogTitleView();
         if (current == null) {
             etId.setEnabled(true);
-            etPrice.setText("350000");
+            etPrice.setText(R.string.ui_message_1c4d5b436a);
             selectedPresetKey = "img_pitch_1";
             ivPreview.setImageResource(R.drawable.img_pitch_1);
-            badgeStatus.setText("✓ Ảnh mẫu 1");
+            badgeStatus.setText(R.string.ui_message_c88e8f18d2);
             highlightPresetChip("img_pitch_1");
             swActive.setChecked(true);
         } else {
@@ -173,7 +173,7 @@ public class AdminPitchFormDialog {
             Bitmap bmp = BitmapFactory.decodeFile(localFile.getAbsolutePath());
             if (bmp != null) {
                 ivPreview.setImageBitmap(bmp);
-                badgeStatus.setText("✓ Ảnh từ máy");
+                badgeStatus.setText(R.string.ui_message_783f0b12f5);
                 badgeStatus.setBackgroundResource(R.drawable.bg_tag_light_green);
                 selectedPresetKey = null;
                 highlightPresetChip(null);
@@ -184,12 +184,12 @@ public class AdminPitchFormDialog {
         if (preset != 0) {
             selectedPresetKey = key;
             ivPreview.setImageResource(preset);
-            badgeStatus.setText("✓ Ảnh mẫu");
+            badgeStatus.setText(R.string.ui_message_24fba73c12);
             highlightPresetChip(key);
         } else {
             selectedPresetKey = "img_pitch_1";
             ivPreview.setImageResource(R.drawable.img_pitch_1);
-            badgeStatus.setText("✓ Ảnh mặc định");
+            badgeStatus.setText(R.string.ui_message_48713c8b03);
             highlightPresetChip("img_pitch_1");
         }
     }
@@ -238,7 +238,7 @@ public class AdminPitchFormDialog {
         v.findViewById(tagId).setOnClickListener(view -> {
             String curr = etAmenities.getText().toString().trim();
             if (curr.isEmpty()) etAmenities.setText(text);
-            else if (!curr.toLowerCase().contains(text.toLowerCase())) etAmenities.setText(curr + ", " + text);
+            else if (!curr.toLowerCase(java.util.Locale.ROOT).contains(text.toLowerCase(java.util.Locale.ROOT))) etAmenities.setText(etAmenities.getContext().getString(R.string.ui_message_c76fbcd0bd, String.valueOf(curr), String.valueOf(text)));
         });
     }
 
@@ -344,10 +344,7 @@ public class AdminPitchFormDialog {
         }
 
         String imageKeyToSave = selectedPresetKey;
-        if (customPickedBitmap != null) {
-            String savedKey = saveCustomImageLocally(id, customPickedBitmap);
-            if (savedKey != null) imageKeyToSave = savedKey;
-        }
+        Bitmap pickedImage = customPickedBitmap;
 
         try {
             JSONObject body = new JSONObject();
@@ -371,21 +368,39 @@ public class AdminPitchFormDialog {
             tvError.setVisibility(View.GONE);
             if (btnSave != null) {
                 btnSave.setEnabled(false);
-                btnSave.setText("Đang lưu...");
+                btnSave.setText(R.string.ui_message_b98712c006);
             }
 
-            onSubmit.submit(body,
+            Consumer<String> onError =
                     errorMessage -> activity.runOnUiThread(() -> {
                         if (btnSave != null) {
                             btnSave.setEnabled(true);
-                            btnSave.setText("Lưu sân bóng");
+                            btnSave.setText(R.string.ui_message_b49d87ddf0);
                         }
                         showError(errorMessage);
-                    }),
-                    () -> activity.runOnUiThread(() -> {
+                    });
+            Runnable onSuccess = () -> activity.runOnUiThread(() -> {
                         if (dialog != null && dialog.isShowing()) dialog.dismiss();
-                    })
-            );
+                    });
+            if (pickedImage == null) {
+                onSubmit.submit(body, onError, onSuccess);
+            } else {
+                java.util.concurrent.CompletableFuture
+                        .supplyAsync(() -> saveCustomImageLocally(id, pickedImage))
+                        .whenComplete((savedKey, failure) -> activity.runOnUiThread(() -> {
+                            if (activity.isFinishing() || dialog == null || !dialog.isShowing()) return;
+                            if (failure != null || savedKey == null) {
+                                onError.accept(activity.getString(R.string.pitch_image_save_failed));
+                                return;
+                            }
+                            try {
+                                body.put("image_key", savedKey);
+                                onSubmit.submit(body, onError, onSuccess);
+                            } catch (org.json.JSONException invalid) {
+                                onError.accept(activity.getString(R.string.pitch_image_save_failed));
+                            }
+                        }));
+            }
         } catch (Exception ex) {
             showError("Lỗi cấu trúc dữ liệu: " + ex.getMessage());
         }
@@ -394,15 +409,15 @@ public class AdminPitchFormDialog {
     private String saveCustomImageLocally(String pitchId, Bitmap bmp) {
         try {
             File dir = new File(activity.getFilesDir(), "pitch_images");
-            if (!dir.exists()) dir.mkdirs();
+            if (!dir.isDirectory() && !dir.mkdirs()) return null;
             String fileName = "pitch_" + pitchId + ".jpg";
             File file = new File(dir, fileName);
             try (FileOutputStream out = new FileOutputStream(file)) {
-                bmp.compress(Bitmap.CompressFormat.JPEG, 85, out);
+                if (!bmp.compress(Bitmap.CompressFormat.JPEG, 85, out)) return null;
             }
             return "local:" + fileName;
         } catch (Exception ex) {
-            return selectedPresetKey;
+            return null;
         }
     }
 

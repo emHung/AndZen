@@ -199,8 +199,8 @@ public class MyBookingsFragment extends Fragment implements BookingAdapter.OnCan
         View btnConfirm = view.findViewById(R.id.btnConfirmCancel);
 
         tvName.setText(booking.getPitchName());
-        tvDateTime.setText("📅 " + com.sanbong.app.util.DateTimeUtils.formatDisplayDate(booking.getDate()) + " | " + booking.getTimeRange());
-        tvAddress.setText("📍 " + booking.getPitchAddress());
+        tvDateTime.setText(tvDateTime.getContext().getString(R.string.ui_message_480cdbcbf9, String.valueOf(com.sanbong.app.util.DateTimeUtils.formatDisplayDate(booking.getDate())), String.valueOf(booking.getTimeRange())));
+        tvAddress.setText(tvAddress.getContext().getString(R.string.ui_message_7daadb8f5c, String.valueOf(booking.getPitchAddress())));
 
         btnKeep.setOnClickListener(v -> dialog.dismiss());
         btnConfirm.setOnClickListener(v -> {

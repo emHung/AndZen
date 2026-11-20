@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAF9"
     android:orientation="vertical">
-
     <!-- Header Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarEditProfile"
@@ -15,20 +14,17 @@
         app:navigationIcon="@drawable/ic_ri_arrow_left"
         app:navigationIconTint="@color/surface"
         app:title="Chỉnh sửa thông tin"
-        app:titleTextColor="@color/surface" />
-
+        app:titleTextColor="@color/surface"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
             <!-- Avatar Section -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,19 +32,17 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingVertical="12dp">
-
                 <FrameLayout
                     android:layout_width="92dp"
                     android:layout_height="92dp">
-
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/ivEditAvatar"
                         android:layout_width="92dp"
                         android:layout_height="92dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_ri_user_fill"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
-
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                        android:importantForAccessibility="no"/>
                     <FrameLayout
                         android:id="@+id/btnEditAvatarPicker"
                         android:layout_width="30dp"
@@ -56,28 +50,27 @@
                         android:layout_gravity="bottom|end"
                         android:background="@drawable/bg_avatar_camera"
                         android:clickable="true"
-                        android:focusable="true">
-
+                        android:focusable="true"
+                        android:contentDescription="@string/accessibility_btn_edit_avatar_picker">
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_ri_camera"
-                            app:tint="@color/white" />
+                            app:tint="@color/white"
+                            android:importantForAccessibility="no"/>
                     </FrameLayout>
                 </FrameLayout>
-
                 <TextView
                     android:id="@+id/btnChangeAvatarText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Thay ảnh đại diện"
+                    android:text="@string/ui_activity_edit_profile_btnchangeavatartext_text_49ee65"
                     android:textColor="@color/primary_green"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
             </LinearLayout>
-
             <!-- Card 1: Thông tin cá nhân -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -88,30 +81,26 @@
                 app:cardElevation="0dp"
                 app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Thông tin cá nhân"
+                        android:text="@string/ui_activity_edit_profile_textview_text_5de3e5"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
-                        android:textStyle="bold" />
-
+                        android:textStyle="bold"/>
                     <!-- Họ và tên -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="Họ và tên"
+                        android:text="@string/ui_activity_edit_profile_textview_text_ad9f29"
                         android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-
+                        android:textSize="13sp"/>
                     <EditText
                         android:id="@+id/etEditFullName"
                         android:layout_width="match_parent"
@@ -119,19 +108,19 @@
                         android:layout_marginTop="6dp"
                         android:background="@drawable/bg_input_field"
                         android:paddingHorizontal="14dp"
-                    android:hint="Họ và tên"
+                        android:hint="@string/ui_activity_edit_profile_eteditfullname_hint_ad9f29"
                         android:textColor="@color/text_primary"
-                        android:textSize="14sp" />
-
+                        android:textSize="14sp"
+                        android:inputType="textPersonName"
+                        android:autofillHints="personName"/>
                     <!-- Số điện thoại -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="Số điện thoại liên hệ"
+                        android:text="@string/ui_activity_edit_profile_textview_text_a5c53d"
                         android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-
+                        android:textSize="13sp"/>
                     <EditText
                         android:id="@+id/etEditPhone"
                         android:layout_width="match_parent"
@@ -140,27 +129,25 @@
                         android:background="@drawable/bg_input_field"
                         android:inputType="phone"
                         android:paddingHorizontal="14dp"
-                        android:hint="Nhập số điện thoại liên hệ"
+                        android:hint="@string/ui_activity_edit_profile_eteditphone_hint_e4b858"
                         android:textColor="@color/text_primary"
-                        android:textSize="14sp" />
-
+                        android:textSize="14sp"
+                        android:autofillHints="phone"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Dùng để liên hệ khi đặt sân"
+                        android:text="@string/ui_activity_edit_profile_textview_text_d00ad0"
                         android:textColor="@color/text_muted"
-                        android:textSize="12sp" />
-
+                        android:textSize="12sp"/>
                     <!-- Email -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="Email"
+                        android:text="@string/ui_activity_edit_profile_textview_text_84add5"
                         android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-
+                        android:textSize="13sp"/>
                     <EditText
                         android:id="@+id/etEditEmail"
                         android:layout_width="match_parent"
@@ -169,48 +156,36 @@
                         android:background="@drawable/bg_input_field"
                         android:inputType="textEmailAddress"
                         android:paddingHorizontal="14dp"
-                        android:hint="Email"
+                        android:hint="@string/ui_activity_edit_profile_eteditemail_hint_84add5"
                         android:textColor="@color/text_primary"
-                        android:textSize="14sp" />
-
+                        android:textSize="14sp"
+                        android:autofillHints="emailAddress"/>
                     <!-- Khu vực -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="Khu vực"
+                        android:text="@string/ui_activity_edit_profile_textview_text_c12e4b"
                         android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-
-                    <LinearLayout
+                        android:textSize="13sp"/>
+                    <TextView
                         android:id="@+id/btnSelectDistrict"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:text="@string/ui_activity_edit_profile_tveditdistrict_text_443f1c"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        app:drawableEndCompat="@drawable/ic_ri_arrow_down_18x18"
+                        app:drawableTint="@color/text_muted"
+                        android:drawablePadding="0dp"
                         android:layout_marginTop="6dp"
-                        android:background="@drawable/bg_input_field"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="14dp">
-
-                        <TextView
-                            android:id="@+id/tvEditDistrict"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Chưa cập nhật"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_ri_arrow_down"
-                            app:tint="@color/text_muted" />
-                    </LinearLayout>
+                        android:background="@drawable/bg_input_field"
+                        android:paddingHorizontal="14dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
             <!-- Card 2: Thông tin thêm -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -221,121 +196,82 @@
                 app:cardElevation="0dp"
                 app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Thông tin thêm"
+                        android:text="@string/ui_activity_edit_profile_textview_text_77900f"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
-                        android:textStyle="bold" />
-
+                        android:textStyle="bold"/>
                     <!-- Ngày sinh -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="Ngày sinh"
+                        android:text="@string/ui_activity_edit_profile_textview_text_6f8de3"
                         android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-
-                    <LinearLayout
+                        android:textSize="13sp"/>
+                    <TextView
                         android:id="@+id/btnSelectBirthdate"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:hint="@string/ui_activity_edit_profile_tveditbirthdate_hint_d49b27"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_muted"
+                        android:textSize="14sp"
+                        app:drawableEndCompat="@drawable/ic_ri_calendar_18x18"
+                        app:drawableTint="@color/text_muted"
+                        android:drawablePadding="0dp"
                         android:layout_marginTop="6dp"
-                        android:background="@drawable/bg_input_field"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="14dp">
-
-                        <TextView
-                            android:id="@+id/tvEditBirthdate"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="Chọn ngày sinh"
-                            android:textColor="@color/text_primary"
-                            android:textColorHint="@color/text_muted"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_ri_calendar"
-                            app:tint="@color/text_muted" />
-                    </LinearLayout>
-
+                        android:background="@drawable/bg_input_field"
+                        android:paddingHorizontal="14dp"/>
                     <!-- Giới tính -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="Giới tính"
+                        android:text="@string/ui_activity_edit_profile_textview_text_80bbce"
                         android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-
-                    <LinearLayout
+                        android:textSize="13sp"/>
+                    <TextView
                         android:id="@+id/btnSelectGender"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:text="@string/ui_activity_edit_profile_tveditgender_text_4c682a"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        app:drawableEndCompat="@drawable/ic_ri_arrow_down_18x18"
+                        app:drawableTint="@color/text_muted"
+                        android:drawablePadding="0dp"
                         android:layout_marginTop="6dp"
-                        android:background="@drawable/bg_input_field"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="14dp">
-
-                        <TextView
-                            android:id="@+id/tvEditGender"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Chưa chọn"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_ri_arrow_down"
-                            app:tint="@color/text_muted" />
-                    </LinearLayout>
-
+                        android:background="@drawable/bg_input_field"
+                        android:paddingHorizontal="14dp"/>
                     <!-- Shield Security Notice -->
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@string/ui_activity_edit_profile_textview_text_6fae39"
+                        android:textColor="@color/primary_green"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_ri_shield_18x18"
+                        app:drawableTint="@color/primary_green"
+                        android:drawablePadding="8dp"
                         android:layout_marginTop="16dp"
-                        android:background="@drawable/bg_tag_light_green"
-                        android:gravity="center_vertical"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_ri_shield"
-                            app:tint="@color/primary_green" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:text="Thông tin của bạn chỉ dùng để quản lý lịch đặt sân."
-                            android:textColor="@color/primary_green"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                        android:padding="12dp"
+                        android:gravity="center_vertical"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
             <!-- Buttons -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveProfile"
@@ -343,12 +279,11 @@
                 android:layout_height="52dp"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/primary_green"
-                android:text="Lưu thay đổi"
+                android:text="@string/ui_activity_edit_profile_btnsaveprofile_text_c05f72"
                 android:textColor="@color/surface"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                app:cornerRadius="14dp" />
-
+                app:cornerRadius="14dp"/>
             <TextView
                 android:id="@+id/btnCancelEditProfile"
                 android:layout_width="wrap_content"
@@ -357,10 +292,10 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="24dp"
                 android:padding="8dp"
-                android:text="Hủy"
+                android:text="@string/ui_activity_edit_profile_btncanceleditprofile_text_34ca76"
                 android:textColor="@color/primary_green"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

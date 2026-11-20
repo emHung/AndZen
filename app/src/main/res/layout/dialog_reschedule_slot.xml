@@ -8,70 +8,62 @@
     app:cardElevation="8dp"
     app:cardBackgroundColor="@color/surface"
     app:strokeWidth="0dp">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp">
-
         <!-- Top icon & Title -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
-
+            android:gravity="center_vertical"
+            android:baselineAligned="false">
             <FrameLayout
                 android:layout_width="48dp"
                 android:layout_height="48dp">
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_rating_badge"
-                    android:backgroundTint="@color/slot_available_bg" />
-
+                    android:backgroundTint="@color/slot_available_bg"/>
                 <ImageView
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_ri_time"
-                    app:tint="@color/primary_green" />
+                    app:tint="@color/primary_green"
+                    android:importantForAccessibility="no"/>
             </FrameLayout>
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="14dp"
                 android:orientation="vertical">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đổi khung giờ sân"
+                    android:text="@string/ui_dialog_reschedule_slot_textview_text_31243a"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_green" />
-
+                    android:textColor="@color/primary_green"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Chọn khung giờ mới bạn muốn thay đổi"
+                    android:text="@string/ui_dialog_reschedule_slot_textview_text_68e3ce"
                     android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/text_secondary"/>
             </LinearLayout>
         </LinearLayout>
-
         <!-- Slot Options List -->
         <RadioGroup
             android:id="@+id/rgRescheduleSlots"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp">
-
             <!-- Slot 1 -->
             <RadioButton
                 android:id="@+id/rbSlot1"
@@ -84,8 +76,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:buttonTint="@color/primary_green" />
-
+                android:buttonTint="@color/primary_green"/>
             <!-- Slot 2 -->
             <RadioButton
                 android:id="@+id/rbSlot2"
@@ -98,8 +89,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:buttonTint="@color/primary_green" />
-
+                android:buttonTint="@color/primary_green"/>
             <!-- Slot 3 -->
             <RadioButton
                 android:id="@+id/rbSlot3"
@@ -108,13 +98,12 @@
                 android:background="@drawable/bg_input_field"
                 android:padding="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="19:30 – 21:00   •   400.000 đ (Còn trống)"
+                android:text="@string/ui_dialog_reschedule_slot_rbslot3_text_af0b3b"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:checked="true"
-                android:buttonTint="@color/primary_green" />
-
+                android:buttonTint="@color/primary_green"/>
             <!-- Slot 4 -->
             <RadioButton
                 android:id="@+id/rbSlot4"
@@ -122,20 +111,18 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_field"
                 android:padding="12dp"
-                android:text="20:30 – 22:00   •   400.000 đ (Còn trống)"
+                android:text="@string/ui_dialog_reschedule_slot_rbslot4_text_fddec1"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:buttonTint="@color/primary_green" />
+                android:buttonTint="@color/primary_green"/>
         </RadioGroup>
-
         <!-- Buttons Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelReschedule"
                 style="@style/Widget.Material3.Button.OutlinedButton"
@@ -143,11 +130,10 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp"
-                android:text="Giữ giờ cũ"
+                android:text="@string/ui_dialog_reschedule_slot_btncancelreschedule_text_82f860"
                 android:textColor="@color/text_secondary"
                 app:strokeColor="@color/border"
-                app:cornerRadius="12dp" />
-
+                app:cornerRadius="12dp"/>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnConfirmReschedule"
                 android:layout_width="0dp"
@@ -155,12 +141,12 @@
                 android:layout_weight="1.4"
                 android:layout_marginStart="6dp"
                 android:backgroundTint="@color/primary_green"
-                android:text="Xác nhận đổi"
+                android:text="@string/ui_dialog_reschedule_slot_btnconfirmreschedule_text_33891f"
                 android:textColor="@color/surface"
                 android:textStyle="bold"
                 app:icon="@drawable/ic_ri_check"
                 app:iconTint="@color/surface"
-                app:cornerRadius="12dp" />
+                app:cornerRadius="12dp"/>
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
